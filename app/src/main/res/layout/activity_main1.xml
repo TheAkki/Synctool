@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.synctool.theakki.synctool.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <Button
+            android:id="@+id/btn_AllJobs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_AllJobs"
+            tools:text="@string/MainMenu_AllJobs" />
+
+        <Button
+            android:id="@+id/btnTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_Test"
+            tools:text="@string/MainMenu_Test"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="3dp" />
+
+        <Spinner
+            android:id="@+id/spn_Setup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/TestSettings"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="127dp" />
+
+        <Button
+            android:id="@+id/btn_Setup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_Setup"
+            tools:text="@string/MainMenu_Setup"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="274dp" />
+
+        <Button
+            android:id="@+id/btn_NewJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_NewJob"
+            tools:text="@string/MainMenu_NewJob" />
+
+        <Button
+            android:id="@+id/btn_Exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_Exit"
+            tools:text="@string/MainMenu_Exit" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

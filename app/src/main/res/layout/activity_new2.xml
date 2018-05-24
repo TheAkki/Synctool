@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.synctool.theakki.synctool.Wizzard_New1"
+    tools:layout_editor_absoluteY="81dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_SourceTargetSettings"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_Connection_A"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <Spinner
+            android:id="@+id/spn_ConnectionTypeA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/ConnectionTypes"
+            android:prompt="@string/Text_SelectConnectionType" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spn_ConnectionNameA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:prompt="@string/Text_ConnectionName"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_AddConnectionNameA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Button_Add"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txt_LocalPathA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/Hint_RelativePath"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_Connection_B"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <Spinner
+            android:id="@+id/spn_ConnectionTypeB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/ConnectionTypes"
+            android:prompt="@string/Text_SelectConnectionType" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spn_ConnectionNameB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:prompt="@string/Text_ConnectionName"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_AddConnectionNameB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Button_Add"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txt_LocalPathB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/Hint_RelativePath"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_SyncDirection"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <Spinner
+            android:id="@+id/spn_SyncDirection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/SyncDirections" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_SyncStrategy"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <Spinner
+            android:id="@+id/spn_StrategyOneWay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/OneWaySyncStrategy" />
+
+        <Spinner
+            android:id="@+id/spn_StrategyTwoWay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/TwoWaySyncStrategy" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_Back"
+                style="?android:buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Button_Back" />
+
+            <Button
+                android:id="@+id/btn_Next"
+                style="?android:buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Button_Next" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

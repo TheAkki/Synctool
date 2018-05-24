@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Caption_NewOwnCloudConnection"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+
+    <EditText
+        android:id="@+id/txt_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/Hint_NameConnection"
+        android:inputType="text|textPersonName"
+        tools:text="Test Verbindung" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/txt_Url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/Hint_Url"
+            android:inputType="textUri|textPersonName"
+            android:text="@string/OwnCloud_Connection_Url" />
+
+        <Button
+            android:id="@+id/btn_Scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Button_Scan" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_ConnectionStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/ConnectionTestStatus_NotScanned" />
+
+    <EditText
+        android:id="@+id/txt_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/Hint_Username"
+        android:inputType="text"
+        android:text="@string/OwnCloud_Connection_User"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/txt_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/Hint_Password"
+        android:inputType="textPassword"
+        android:text="@string/OwnCloud_Connection_Pass"
+        android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/cb_AskPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Checkbox_AskPassword_NextTime"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_Back"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Button_Back" />
+
+        <Button
+            android:id="@+id/btn_Ok"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Button_Ok" />
+
+    </LinearLayout>
+</LinearLayout>

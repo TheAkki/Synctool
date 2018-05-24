@@ -1,0 +1,42 @@
+# built files
+*.apk
+*.ap_
+
+# files for the dex
+*.dex
+*.odex
+
+# java files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+
+# local properties
+/local.properties
+
+# Windows thumbnails
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Android Studio
+*.iml
+.idea
+/.idea/workspace.xml
+/.idea/libraries
+.gradle
+
+/build
+/captures
+output.json
+
+.externalNativeBuild
+
+# NDK
+obj/
+*.o
+*.so

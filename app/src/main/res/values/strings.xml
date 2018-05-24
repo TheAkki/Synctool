@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">SyncTool</string>
+
+    <string name="SyncStatus_NotStarted">Not Started</string>
+    <string name="SyncStatus_ConnectA">Connect to location A</string>
+    <string name="SyncStatus_ConnectB">Connect to location B</string>
+    <string name="SyncStatus_ReadFilesA">Read files from location A</string>
+    <string name="SyncStatus_ReadFilesB">Read files from location B</string>
+    <string name="SyncStatus_AnalyseFiles">Analyse files</string>
+    <string name="SyncStatus_CreateJobs">Create sync jobs</string>
+    <string name="SyncStatus_Finish">Finished</string>
+
+    <string name="JobInfo_Active" translatable="false">A</string>
+    <string name="JobInfo_NotActive" translatable="false">D</string>
+
+    <string name="JobInfo_DummyName">Name</string>
+    <string name="JobInfo_DummyStatus">Status</string>
+    <string name="JobInfo_Dummy0" translatable="false">0</string>
+    <string name="JobInfo_Slash" translatable="false">/</string>
+
+    <string name="MainMenu_AllJobs">All Jobs</string>
+    <string name="MainMenu_NewJob">New Job</string>
+    <string name="MainMenu_Exit">Exit</string>
+    <string name="MainMenu_Test" translatable="false">Test</string>
+    <string name="MainMenu_Setup" translatable="false">Setup</string>
+
+    <string name="Button_StartAllJobs">Start all Jobs</string>
+    <string name="Button_Cancel">Cancel</string>
+    <string name="Button_Back">Back</string>
+    <string name="Button_Next">Next</string>
+    <string name="Button_Ok">OK</string>
+
+    <string name="Button_Add" translatable="false">+</string>
+    <string name="Button_Scan" translatable="false">S</string>
+
+    <string name="Label_JobName">Name</string>
+    <string name="Label_Active">Job is active</string>
+
+    <string name="Text_SelectConnectionType">Select connection type</string>
+    <string name="Caption_Connection_A">Connection A</string>
+    <string name="Caption_Connection_B">Connection B</string>
+
+    <string name="Text_ConnectionName">Select existing connections</string>
+
+    <string name="Hint_JobName">Name of Job</string>
+    <string name="Hint_Url">https:// &#8230;</string>
+    <string name="Hint_NameConnection">Name of Connection</string>
+    <string name="Hint_Username">Username</string>
+    <string name="Hint_Password">Password</string>
+    <string name="Hint_RelativePath">Relative path</string>
+
+    <string name="Value_Active">Active</string>
+    <string name="Value_NotActive">NotActive</string>
+
+    <string name="Caption_GeneralJobSettings">General Settings</string>
+    <string name="Caption_SourceTargetSettings">Source/Target Settings</string>
+    <string name="Caption_NewOwnCloudConnection">New OwnCloud Connection</string>
+    <string name="Caption_SyncDirection">Sync direction</string>
+    <string name="Caption_SyncStrategy">Sync strategy</string>
+
+    <string name="Toast_JobExist">Job with name \'%1$s\' exist already</string>
+    <string name="Toast_JobNameIsEmpty">Name is empty</string>
+    <string name="Toast_JobNameIsInvalid">Name is invalid</string>
+    <string name="Toast_InvalidUserPassword">User and Password are not valid</string>
+    <string name="Toast_ConnectionExist">Connection with name \'%1$s\' exist already</string>
+    <string name="Toast_NoPathSelected">No Path selected</string>
+
+    <string name="ConnectionTestStatus_NotScanned">Not scanned</string>
+    <string name="ConnectionTestStatus_ScannedNotAvailable">Host not available</string>
+    <string name="ConnectionTestStatus_ScannedAvailable">Host available</string>
+    <string name="ConnectionTestStatus_AccessDenied">Access denied</string>
+    <string name="ConnectionTestStatus_AccessGranted">Access granted</string>
+
+    <string name="ContextM_SelectAction">Select Action</string>
+    <string name="ContextM_Edit">Edit</string>
+    <string name="ContextM_Delete">Delete</string>
+
+    <string name="Checkbox_AskPassword_NextTime">Ask password at next time</string>
+
+
+    <string-array name="ConnectionTypes">
+        <item>Local</item>
+        <item>OwnCloud</item>
+    </string-array>
+
+    <string-array name="SyncDirections">
+        <item>A to B</item>
+        <item>B to A</item>
+        <item>Booth directions</item>
+    </string-array>
+
+    <string-array name="OneWaySyncStrategy">
+        <item>Add new</item>
+        <item>Mirror</item>
+        <item>New files in date folder</item>
+        <item>All files in date folder</item>
+    </string-array>
+
+    <string-array name="TwoWaySyncStrategy">
+        <item>A wins</item>
+        <item>B wins</item>
+    </string-array>
+
+
+    <!-- DEBUG -->
+    <string name="OwnCloud_Connection_Url" translatable="false">http://192.168.178.42/owncloud</string>
+    <string name="OwnCloud_Connection_User" translatable="false">OwnCloudConnection</string>
+    <string name="OwnCloud_Connection_Pass" translatable="false">Test</string>
+</resources>
