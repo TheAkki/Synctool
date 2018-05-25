@@ -19,11 +19,11 @@ public class FileItemHelper
 
     public static String concatPath(String first, String last)
     {
-        if(first.endsWith(File.pathSeparator))
+        if(first.endsWith(File.separator))
         {
-            if(last.startsWith(File.pathSeparator))
+            if(last.startsWith(File.separator))
             {
-                return first + last.substring(File.pathSeparator.length());
+                return first + last.substring(File.separator.length());
             }
             else
             {
@@ -32,13 +32,13 @@ public class FileItemHelper
         }
         else
         {
-            if(last.startsWith(File.pathSeparator))
+            if(last.startsWith(File.separator))
             {
                 return first + last;
             }
             else
             {
-                return first + File.pathSeparator + last;
+                return first + File.separator + last;
             }
         }
     }
