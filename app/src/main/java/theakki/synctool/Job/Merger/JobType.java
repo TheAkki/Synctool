@@ -7,9 +7,14 @@ package theakki.synctool.Job.Merger;
  */
 public enum JobType
 {
-    Nothing,    /** Do nothing */
-    Read,       /** Read a file */
-    Write,      /** Write a file */
-    Delete,     /** Delete a file */
-    Move        /** Move a file */
+    /** Do nothing */
+    Nothing,
+    /** Read a file */
+    Read,
+    /** Write a file */
+    Write,
+    /** Delete a file */
+    Delete,
+    /** Move a file */
+    Move
 }
