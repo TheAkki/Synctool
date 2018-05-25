@@ -194,4 +194,23 @@ public class AnalyzeHelper
         // not in blacklist so it's valid
         return true;
     }
+
+
+    /**
+     * This Method filter a list of FileItem and return a list without these invalid files.
+     * @param filelist  List of FileItems
+     * @param blacklist Blacklist
+     * @param whitelist Whitelist
+     * @return Filtered list
+     */
+    public static ArrayList<FileItem> filterFileList(ArrayList<FileItem> filelist, ArrayList<AnalyzeResult> blacklist, ArrayList<AnalyzeResult> whitelist)
+    {
+        ArrayList<FileItem> result = new ArrayList<>();
+        for(FileItem file : filelist)
+        {
+            if(fileIsValid(file, blacklist, whitelist))
+                result.add(file);
+        }
+        return result;
+    }
 }

@@ -19,7 +19,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import theakki.synctool.Helper.Date;
+import theakki.synctool.Helper.StringHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionFactory;
+import theakki.synctool.Job.IncludeExclude.AnalyzeHelper;
+import theakki.synctool.Job.IncludeExclude.AnalyzeResult;
 import theakki.synctool.Job.Merger.DoingSide;
 import theakki.synctool.Job.Merger.JobType;
 import theakki.synctool.Job.Settings.OneWayStrategy;
@@ -111,6 +114,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
     }
 
 
+
     protected void insertInList(Element parent, ArrayList<String> list, boolean clear)
     {
         if(clear)
@@ -123,7 +127,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
             final String nodeName = child.getTagName();
             if(nodeName.compareToIgnoreCase(TAG_Item) != 0)
                 throw new IllegalArgumentException("Unexpected Nodename '" + nodeName + "'.");
-            list.add( child.getTextContent() );
+
+            /* It is necessary to trim this line. In other cases it's not so easy to match file properties */
+            final String trimmedLine = StringHelper.reduceSpaces( child.getTextContent() );
+            list.add( trimmedLine );
         }
     }
 
@@ -306,13 +313,19 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         publishProgress(STATUS_CONNECT_FILES_B, 0, 0);
         _SideB.Connect(context);
 
+        ArrayList<AnalyzeResult> whitelist = AnalyzeHelper.prepareList(_IncludeList);
+        ArrayList<AnalyzeResult> blacklist = AnalyzeHelper.prepareList(_ExcludeList);
+
         publishProgress(STATUS_READ_FILES_A, 0, 0);
         ArrayList<FileItem> FilesA = _SideA.getFileList();
+        ArrayList<FileItem> FilteredFilesA = AnalyzeHelper.filterFileList(FilesA, blacklist, whitelist);
+
         publishProgress(STATUS_READ_FILES_B, 0, 0);
         ArrayList<FileItem> FilesB = _SideB.getFileList();
+        ArrayList<FileItem> FilteredFilesB = AnalyzeHelper.filterFileList(FilesB, blacklist, whitelist);
 
         publishProgress(STATUS_ANALYSE_FILES, 0, 0);
-        ArrayList<FileMergeResult> MergedFiles = MergeFileList(FilesA, FilesB);
+        ArrayList<FileMergeResult> MergedFiles = MergeFileList(FilteredFilesA, FilteredFilesB);
         publishProgress(STATUS_CREATE_JOB, 0, 0);
         ArrayList<DoingList> JobList = ApplyStrategy(MergedFiles);
 
@@ -729,16 +742,6 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
             }
             result.add(tempResult);
         }
-    }
-
-    protected Boolean fileMatch(String FileName, ArrayList<String> List)
-    {
-        for(String Element : List)
-        {
-            if(FileName.endsWith(Element))
-                return true;
-        }
-        return false;
     }
 
 
