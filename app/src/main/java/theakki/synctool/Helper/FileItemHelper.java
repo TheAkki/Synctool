@@ -35,6 +35,15 @@ public class FileItemHelper
         return fileItems;
     }
 
+    public static ArrayList<FileItem> clone(ArrayList<FileItem> source)
+    {
+        ArrayList<FileItem> list = new ArrayList<>(source.size());
+        for(FileItem s : source)
+            list.add( s.clone() );
+
+        return list;
+    }
+
 
     /**
      * Concat two parts of a path. It's also adjust the necessary seperator
