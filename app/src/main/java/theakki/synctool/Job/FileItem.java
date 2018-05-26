@@ -63,4 +63,30 @@ public class FileItem implements Cloneable
 
         return result;
     }
+
+
+    /**
+     * Compares two instances of FileItem
+     * @param other Other Instance
+     * @param WithoutFlags Also equal when comparision flags are not equal
+     * @param WithoutMime Also equal when MimeType not match. It's not in every case possible to have a valid MimeType
+     * @return True when equal
+     */
+    public boolean isEqual(FileItem other, boolean WithoutFlags, boolean WithoutMime)
+    {
+        if(WithoutFlags == false && Flag != other.Flag)
+            return false;
+        if(FileName.equals(other.FileName) == false)
+            return false;
+        if(RelativePath.equals(other.RelativePath) == false)
+            return false;
+        if(FileSize != other.FileSize)
+            return false;
+        if(Modified != other.Modified)
+            return false;
+        if(WithoutMime == false && MimeType.equals(other.MimeType) == false)
+            return false;
+
+        return true;
+    }
 }

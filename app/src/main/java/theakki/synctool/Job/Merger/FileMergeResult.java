@@ -31,6 +31,25 @@ public class FileMergeResult
     }
 
 
+    /**
+     * Compare one FileMergeResult with an other
+     * @param other Other instance
+     * @param WithoutFlags Also equal when comparision flags are not equal
+     * @return True when booth are equal
+     */
+    public boolean isEqual(FileMergeResult other, boolean WithoutFlags)
+    {
+        if(State != other.State)
+            return false;
+
+        if(FileA.isEqual(other.FileA, WithoutFlags, false) == false)
+            return false;
+        if(FileA.isEqual(other.FileB, WithoutFlags, false) == false)
+            return false;
+
+        return true;
+    }
+
     public MergeResult State;
     public FileItem FileA;
     public FileItem FileB;
