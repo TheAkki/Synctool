@@ -8,7 +8,10 @@ package theakki.synctool.Job.Settings;
 
 public enum SyncDirection
 {
-    ToA,    /** Sync from B (Source) to A (Target) */
-    ToB,    /** Sync from A (Source) to B (Target) */
-    Booth   /** Sync in booth directions */
+    /** Sync from B (Source) to A (Target) */
+    ToA,
+    /** Sync from A (Source) to B (Target) */
+    ToB,
+    /** Sync in booth directions */
+    Booth
 }

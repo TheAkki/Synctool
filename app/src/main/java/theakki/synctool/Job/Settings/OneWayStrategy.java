@@ -8,8 +8,12 @@ package theakki.synctool.Job.Settings;
  */
 public enum OneWayStrategy
 {
-    Standard,               /** Copy changed files */
-    Mirror,                 /** Copy changed files, remove not existing files */
-    NewFilesInDateFolder,   /** Create Folder with actual Date and copy new Files in it */
-    AllFilesInDateFolder    /** Create Folder with actual Date and copy all Files in it */
+    /** Copy changed files */
+    Standard,
+    /** Copy changed files, remove not existing files */
+    Mirror,
+    /** Create Folder with actual Date and copy new Files in it */
+    NewFilesInDateFolder,
+    /** Create Folder with actual Date and copy all Files in it */
+    AllFilesInDateFolder
 }

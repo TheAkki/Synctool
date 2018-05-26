@@ -1,12 +1,14 @@
 package theakki.synctool.Job.Settings;
 
 /**
- * Strategy for syncronize in booth directions. (Conflict handling)
+ * Strategy for synchronize in booth directions. (Conflict handling)
  * @author theakki
  * @since 0.1
  */
 public enum TwoWayStrategy
 {
-    AWins,  /** A wins, B will be overwritten */
-    BWins   /** B wins, A will be overwritten */
+    /** A wins, B will be overwritten */
+    AWins,
+    /** B wins, A will be overwritten */
+    BWins
 }

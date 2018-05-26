@@ -1,8 +1,5 @@
 package theakki.synctool.Helper;
 
-/**
- * Created by theakki on 28.03.18.
- */
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -10,12 +7,23 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+/**
+ * Util class for handle Dates
+ * @author theakki
+ * @since 0.1
+ */
 public class Permissions
 {
     private final static String[] EXTERNAL_PERMS_SD = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final static String[] INTERNET_PERMS_INTERNET = {Manifest.permission.INTERNET};
     private final static int EXTERNAL_REQUEST = 128;
 
+
+    /**
+     * This Method request permissions to access on a SD-Card
+     * @param context Context in which the request is done.
+     * @return True when success
+     */
     public static boolean requestForPermissionSD(Activity context)
     {
         boolean isPermissionOn = true;
@@ -31,6 +39,12 @@ public class Permissions
         return isPermissionOn;
     }
 
+
+    /**
+     * This Method request permissions to access Internet
+     * @param context Context in which the request is done.
+     * @return True when success
+     */
     public static boolean requestForPermissionInternet(Activity context)
     {
         boolean isPermissionOn = true;
@@ -47,18 +61,34 @@ public class Permissions
     }
 
 
+    /**
+     * This Method check if access to internet is possible
+     * @param c Activity which is to check
+     * @return True when access is possible
+     */
     protected static boolean canAccessInternet(Activity c)
     {
         return (hasPermission(c, Manifest.permission.INTERNET));
     }
 
 
+    /**
+     * This Method check if access to SD-Card is possible
+     * @param c Activity which is to check
+     * @return True when access is possible
+     */
     protected static boolean canAccessExternalSd(Activity c)
     {
         return (hasPermission(c, Manifest.permission.WRITE_EXTERNAL_STORAGE));
     }
 
 
+    /**
+     * This Method check if a specified Permission is granted
+     * @param context Context of Activity which is to check
+     * @param Perm Permission which is need
+     * @return TTrue when permission is granted
+     */
     protected static boolean hasPermission(Activity context, String Perm)
     {
         return (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(context, Perm));
