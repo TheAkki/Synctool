@@ -231,16 +231,12 @@ public class LocalPath implements IConnection
             else
             {
                 /* Maybe check here some attributes like link */
-
-                FileItem temp = new FileItem();
-                temp.FileName = obj.getName();
+                final String Name = obj.getName();
                 final String Path = obj.getAbsolutePath();
-                final String PathWithoutName = Path.substring(0, Path.length() - temp.FileName.length());
+                final String PathWithoutName = Path.substring(0, Path.length() - Name.length());
                 final String PathWithoutNameAndBase = PathWithoutName.substring(BasePath.length());
-                temp.RelativePath = PathWithoutNameAndBase;
-                temp.FileSize = obj.length();
-                temp.Modified = obj.lastModified();
-                temp.MimeType = getMimeType(obj);
+
+                FileItem temp = new FileItem(Name, PathWithoutNameAndBase, obj.length(), obj.lastModified(), getMimeType(obj));
 
                 list.add(temp);
             }

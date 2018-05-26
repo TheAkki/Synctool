@@ -17,15 +17,7 @@ public class WebdavHelper
      */
     public static FileItem getFileItem(WebdavEntry webdavEntry)
     {
-        FileItem result = new FileItem();
-        result.FileName = webdavEntry.name();
-        result.RelativePath = webdavEntry.path();
-        result.Modified = webdavEntry.modifiedTimestamp();
-        result.FileSize = webdavEntry.size();
-        result.Flag = FileItem.FLAG_UNKNOWN;
-        result.MimeType = webdavEntry.contentType();
-
-        return result;
+        return  new FileItem(webdavEntry.name(), webdavEntry.path(), webdavEntry.size(), webdavEntry.modifiedTimestamp(), webdavEntry.contentType());
     }
 
 }

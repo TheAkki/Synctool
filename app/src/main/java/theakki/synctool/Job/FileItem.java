@@ -14,6 +14,22 @@ public class FileItem implements Cloneable
     final static public int FLAG_ANALYZED_MATCH_FILE = 4;
     final static public int FLAG_ANALYZED_MATCH_OBJECT = 5;
 
+    public FileItem(String name, String relativePath, long size, long modifiedAt)
+    {
+        Flag = FLAG_UNKNOWN;
+        FileName = name;
+        RelativePath = relativePath;
+        FileSize = size;
+        Modified = modifiedAt;
+    }
+
+    public FileItem(String name, String relativePath, long size, long modifiedAt, String mimeType)
+    {
+        this(name, relativePath, size, modifiedAt);
+        MimeType = mimeType;
+    }
+
+
     public int Flag = FLAG_UNKNOWN;
     public String FileName = "";
     public String RelativePath = "";
@@ -23,15 +39,10 @@ public class FileItem implements Cloneable
 
 
     @Override
-    protected FileItem clone()
+    public FileItem clone()
     {
-        FileItem result = new FileItem();
+        FileItem result = new FileItem(FileName, RelativePath, FileSize, Modified, MimeType);
         result.Flag = this.Flag;
-        result.FileName = this.FileName;
-        result.RelativePath = this.RelativePath;
-        result.FileSize = this.FileSize;
-        result.Modified = this.Modified;
-        result.MimeType = this.MimeType;
 
         return result;
     }
