@@ -1,17 +1,18 @@
 package theakki.synctool.Job;
 
 /**
- * Created by theakki on 27.03.18.
+ * Class to store information about a file item
+ * @author theakki
+ * @since 0.1
  */
-
 public class FileItem implements Cloneable
 {
     final static public int FLAG_UNKNOWN = 0;
-    final static public int FLAG_ANALIZED = 1;
-    final static public int FLAG_ANALIZED_MATCH_EXACTLY = 2;
-    final static public int FLAG_ANALIZED_MATCH_FOLDER = 3;
-    final static public int FLAG_ANALIZED_MATCH_FILE = 4;
-    final static public int FLAG_ANALIZED_MATCH_OBJECT = 5;
+    final static public int FLAG_ANALYZED = 1;
+    final static public int FLAG_ANALYZED_MATCH_EXACTLY = 2;
+    final static public int FLAG_ANALYZED_MATCH_FOLDER = 3;
+    final static public int FLAG_ANALYZED_MATCH_FILE = 4;
+    final static public int FLAG_ANALYZED_MATCH_OBJECT = 5;
 
     public int Flag = FLAG_UNKNOWN;
     public String FileName = "";

@@ -173,28 +173,28 @@ public class FileItemHelper
                 case MatchExactly:
                     if(SkipEqual)
                         continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_EXACTLY;
+                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_EXACTLY;
 
                 case DateChanged_ANewer:
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_FILE;
+                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_FILE;
 
                 case DateChanged_BNewer:
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_FILE;
+                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_FILE;
 
                 case Renamed_A: // fall through
                 case Renamed_B:
                     if(SkipMove)
                         continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_OBJECT;
+                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_OBJECT;
 
                 case Moved_A: // fall through
                 case Moved_B:
                     if(SkipMove)
                         continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_OBJECT;
+                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_OBJECT;
 
                 case NewFile:
-                    FileA.Flag = FileItem.FLAG_ANALIZED;
+                    FileA.Flag = FileItem.FLAG_ANALYZED;
             }
 
             FileMergeResult tempResult = new FileMergeResult();
