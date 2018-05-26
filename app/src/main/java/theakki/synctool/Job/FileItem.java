@@ -14,6 +14,14 @@ public class FileItem implements Cloneable
     final static public int FLAG_ANALYZED_MATCH_FILE = 4;
     final static public int FLAG_ANALYZED_MATCH_OBJECT = 5;
 
+
+    /**
+     * Constructor
+     * @param name File name
+     * @param relativePath Relative path
+     * @param size File size
+     * @param modifiedAt File last modified at
+     */
     public FileItem(String name, String relativePath, long size, long modifiedAt)
     {
         Flag = FLAG_UNKNOWN;
@@ -23,6 +31,15 @@ public class FileItem implements Cloneable
         Modified = modifiedAt;
     }
 
+
+    /**
+     * Contructor
+     * @param name File name
+     * @param relativePath Relative path
+     * @param size File size
+     * @param modifiedAt File last modified at
+     * @param mimeType MimeType
+     */
     public FileItem(String name, String relativePath, long size, long modifiedAt, String mimeType)
     {
         this(name, relativePath, size, modifiedAt);
