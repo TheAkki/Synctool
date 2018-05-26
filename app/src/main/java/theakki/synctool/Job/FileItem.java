@@ -89,4 +89,15 @@ public class FileItem implements Cloneable
 
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FileItem)
+        {
+            return isEqual((FileItem)obj, false, false);
+        }
+        return false;
+    }
+
 }

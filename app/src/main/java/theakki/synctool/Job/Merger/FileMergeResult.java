@@ -50,6 +50,24 @@ public class FileMergeResult
         return true;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FileMergeResult)
+        {
+            FileMergeResult o = (FileMergeResult)obj;
+            if(State != o.State)
+                return false;
+            if(FileA.equals(o.FileA) == false)
+                return false;
+            if(FileB.equals(o.FileB) == false)
+                return false;
+
+            return true;
+        }
+        return false;
+    }
+
     public MergeResult State;
     public FileItem FileA;
     public FileItem FileB;
