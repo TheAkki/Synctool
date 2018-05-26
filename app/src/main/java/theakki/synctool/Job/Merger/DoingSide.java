@@ -1,9 +1,10 @@
 package theakki.synctool.Job.Merger;
 
 /**
- * Created by theakki on 04.04.18.
+ * Class to store settings for doing on one synchronization side.
+ * @author theakki
+ * @since 0.1
  */
-
 public class DoingSide
 {
     public JobType Type = JobType.Nothing;

@@ -1,11 +1,33 @@
 package theakki.synctool.Job.Merger;
 
 /**
- * Created by theakki on 30.03.18.
+ * Class to store doing things. Necessary to synchronize files.
+ * @author theakki
+ * @since 0.1
  */
-
 public class DoingList
 {
-    public DoingSide SideA = new DoingSide();
-    public DoingSide SideB = new DoingSide();
+    /**
+     * Constructor
+     * @param sideA Side A
+     * @param sideB Side B
+     */
+    public DoingList(DoingSide sideA, DoingSide sideB)
+    {
+        SideA = sideA;
+        SideB = sideB;
+    }
+
+
+    /**
+     * Constructor
+     */
+    public DoingList()
+    {
+        SideA = new DoingSide();
+        SideB = new DoingSide();
+    }
+
+    public DoingSide SideA;
+    public DoingSide SideB;
 }
