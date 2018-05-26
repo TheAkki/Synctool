@@ -251,9 +251,12 @@ public class FileItemHelper
                 switch(singleside)
                 {
                     case Standard: // fall through
-                    case Mirror: // fall through
+                    case Mirror:
+                        onlyChanges = true;
+                        break;
                     case NewFilesInDateFolder:
                         onlyChanges = true;
+                        skipMoveAToB = true;
                         break;
                     case AllFilesInDateFolder:
                         onlyChanges = false;
