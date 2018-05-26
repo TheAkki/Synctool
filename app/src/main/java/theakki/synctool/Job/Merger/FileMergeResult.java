@@ -58,9 +58,25 @@ public class FileMergeResult
             FileMergeResult o = (FileMergeResult)obj;
             if(State != o.State)
                 return false;
-            if(FileA.equals(o.FileA) == false)
+
+            if(FileA != null && o.FileA != null)
+            {
+                if(FileA.equals(o.FileA) == false)
+                    return false;
+            }
+            else if(FileA == null && o.FileA != null)
                 return false;
-            if(FileB.equals(o.FileB) == false)
+            else if(FileA != null && o.FileA == null)
+                return false;
+
+            if(FileB != null && o.FileB != null)
+            {
+                if(FileB.equals(o.FileB) == false)
+                    return false;
+            }
+            else if(FileB == null && o.FileB != null)
+                return false;
+            else if(FileB != null && o.FileB == null)
                 return false;
 
             return true;
