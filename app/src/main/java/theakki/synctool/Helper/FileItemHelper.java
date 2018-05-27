@@ -86,8 +86,15 @@ public class FileItemHelper
      * @param SkipEqual Parameter to mark that files which are equal should not include in this list.
      * @param SkipMove Parameter to mark that file which are only moved should not include in this list.
      * @param AToB Parameter to mark that the direction is A to B.
+     * @param MoveAsNew Parameter to mark that a moved file is used as new file
      */
-    public static void fillMergeList(ArrayList<FileItem> filelistA, ArrayList<FileItem> filelistB, ArrayList<FileMergeResult> result, boolean SkipEqual, boolean SkipMove, boolean AToB)
+    public static void fillMergeList(   ArrayList<FileItem> filelistA,
+                                        ArrayList<FileItem> filelistB,
+                                        ArrayList<FileMergeResult> result,
+                                        boolean SkipEqual,
+                                        boolean SkipMove,
+                                        boolean AToB,
+                                        boolean MoveAsNew)
     {
         for(int i = 0; i < filelistA.size(); ++i)
         {
@@ -177,32 +184,46 @@ public class FileItemHelper
             MergeResult BestResultType = (resultMap.isEmpty()) ? MergeResult.NewFile : resultMap.firstKey();
             FileItem BestResult = (resultMap.isEmpty()) ? null : resultMap.get(BestResultType);
 
+            boolean bSwapFromTo = false;
             switch(BestResultType)
             {
                 case MatchExactly:
                     if(SkipEqual)
                         continue;
                     BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_EXACTLY;
+                    break;
 
                 case DateChanged_ANewer:
                     BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_FILE;
+                    break;
 
                 case DateChanged_BNewer:
                     BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_FILE;
+                    break;
 
                 case Renamed_A: // fall through
                 case Renamed_B:
                     if(SkipMove)
                         continue;
                     BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_OBJECT;
+                    bSwapFromTo = true;
+                    break;
 
                 case Moved_A: // fall through
                 case Moved_B:
-                    if(SkipMove)
-                        continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_OBJECT;
+                    if(MoveAsNew == false)
+                    {
+                        if(SkipMove)
+                            continue;
+                        BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALYZED_MATCH_OBJECT;
+                        bSwapFromTo = true;
+                        break;
+                    }
+                    // fall through to NewFile
 
                 case NewFile:
+                    BestResultType = MergeResult.NewFile;
+                    BestResult = null;
                     FileA.Flag = FileItem.FLAG_ANALYZED;
             }
 
@@ -210,7 +231,7 @@ public class FileItemHelper
             tempResult.State = BestResultType;
             tempResult.FileA = FileA.clone();
             tempResult.FileB = (BestResult == null) ? null : BestResult.clone();
-            if(AToB)
+            if(bSwapFromTo)
             {
                 FileItem temp = tempResult.FileA;
                 tempResult.FileA = tempResult.FileB;
@@ -234,19 +255,41 @@ public class FileItemHelper
         ArrayList<FileMergeResult> result = new ArrayList<>();
 
         boolean onlyChanges = true;
-        boolean aToB = true;    // Defaultwerte für ToB
-        boolean bToA = false;   // Defaultwerte für ToB
+        boolean aToB;
+        boolean bToA;
         boolean skipMoveAToB = false;
-        boolean skipMoveBToA = true;
+        boolean skipMoveBToA = false;
+        boolean movedFilesAsNewFile = false;
 
+        // Detect which calls
         switch(direction)
         {
             case ToA:
                 aToB = false;
                 bToA = true;
-                skipMoveAToB = true;
+                skipMoveAToB = false;   // don't care
                 skipMoveBToA = false;
-                // fall through
+                break;
+
+            case ToB:
+                aToB = true;
+                bToA = false;
+                skipMoveAToB = false;
+                skipMoveBToA = false; // don't care
+                break;
+
+            case Booth:
+                aToB = true;
+                bToA = true;
+                break;
+
+            default:
+                throw new RuntimeException("Illegal State detected");
+        }
+
+        switch(direction)
+        {
+            case ToA: // fallthrough
             case ToB:
                 switch(singleside)
                 {
@@ -256,27 +299,34 @@ public class FileItemHelper
                         break;
                     case NewFilesInDateFolder:
                         onlyChanges = true;
+                        // one of the next setting is don't care
                         skipMoveAToB = true;
+                        skipMoveBToA = true;
                         break;
                     case AllFilesInDateFolder:
+                        movedFilesAsNewFile = true;
                         onlyChanges = false;
+                        // one of the next setting is don't care
+                        skipMoveAToB = true;
+                        skipMoveBToA = true;
                         break;
+                    default:
+                        throw new RuntimeException("Illegal State detected");
                 }
                 break;
+
             case Booth:
-                aToB = true;
-                bToA = true;
                 onlyChanges = true;
                 break;
         }
 
         if(aToB)
         {
-            fillMergeList(filelistA, filelistB, result, onlyChanges, skipMoveAToB, false);
+            fillMergeList(filelistA, filelistB, result, onlyChanges, skipMoveAToB, true, movedFilesAsNewFile);
         }
         if(bToA)
         {
-            fillMergeList(filelistB, filelistA, result, onlyChanges, skipMoveBToA, true);
+            fillMergeList(filelistB, filelistA, result, onlyChanges, skipMoveBToA, false, movedFilesAsNewFile);
         }
 
         return result;
