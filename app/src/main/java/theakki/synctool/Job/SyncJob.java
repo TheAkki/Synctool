@@ -1,7 +1,3 @@
-/**
- * Created by theakki on 25.03.18.
- */
-
 package theakki.synctool.Job;
 
 import android.app.Activity;
@@ -15,10 +11,9 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import theakki.synctool.Helper.Date;
+import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Helper.StringHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionFactory;
 import theakki.synctool.Job.IncludeExclude.AnalyzeHelper;
@@ -28,12 +23,16 @@ import theakki.synctool.Job.Merger.JobType;
 import theakki.synctool.Job.Settings.OneWayStrategy;
 import theakki.synctool.Job.Merger.DoingList;
 import theakki.synctool.Job.Merger.FileMergeResult;
-import theakki.synctool.Job.Merger.MergeResult;
 import theakki.synctool.Job.Settings.SettingsHelper;
 import theakki.synctool.Job.Settings.SyncDirection;
 import theakki.synctool.Job.Settings.TwoWayStrategy;
 import theakki.synctool.R;
 
+/**
+ * This class define and handle a synchronization job.
+ * @author theakki
+ * @since 0.1
+ */
 public class SyncJob extends AsyncTask<Activity, Integer, Integer>
 {
     private final String TAG_ROOT = "SyncJob";
@@ -98,11 +97,11 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
             }
             else if(elementName.compareToIgnoreCase(TAG_OneWayStrategy) == 0)
             {
-                _SingleStategie = SettingsHelper.OneWayStrategyFromString( child.getTextContent(), true, OneWayStrategy.Standard );
+                _SingleStategy = SettingsHelper.OneWayStrategyFromString( child.getTextContent(), true, OneWayStrategy.Standard );
             }
             else if(elementName.compareToIgnoreCase(TAG_TwoWayStrategy) == 0)
             {
-                _BoothStrategie = SettingsHelper.TwoWayStrategyFromString( child.getTextContent(), true, TwoWayStrategy.AWins);
+                _BoothStrategy = SettingsHelper.TwoWayStrategyFromString( child.getTextContent(), true, TwoWayStrategy.AWins);
             }
         }
     }
@@ -110,7 +109,6 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
 
     public SyncJob()
     {
-
     }
 
 
@@ -176,12 +174,12 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
 
         // One Way Sync Strategy
         Element ows = doc.createElement(TAG_OneWayStrategy);
-        ows.setTextContent(_SingleStategie.toString() );
+        ows.setTextContent(_SingleStategy.toString() );
         root.appendChild(ows);
 
         // Two Way Sync Strategy
         Element tws = doc.createElement(TAG_TwoWayStrategy);
-        tws.setTextContent(_BoothStrategie.toString());
+        tws.setTextContent(_BoothStrategy.toString());
         root.appendChild(tws);
 
         // WhiteList
@@ -325,7 +323,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         ArrayList<FileItem> FilteredFilesB = AnalyzeHelper.filterFileList(FilesB, blacklist, whitelist);
 
         publishProgress(STATUS_ANALYSE_FILES, 0, 0);
-        ArrayList<FileMergeResult> MergedFiles = MergeFileList(FilteredFilesA, FilteredFilesB);
+        ArrayList<FileMergeResult> MergedFiles = FileItemHelper.mergeFileList(FilteredFilesA, FilteredFilesB, _Direction, _SingleStategy);
         publishProgress(STATUS_CREATE_JOB, 0, 0);
         ArrayList<DoingList> JobList = ApplyStrategy(MergedFiles);
 
@@ -461,15 +459,15 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         String prefixPathA = "";
         String prefixPathB = "";
 
-        if(_SingleStategie == OneWayStrategy.AllFilesInDateFolder || _SingleStategie == OneWayStrategy.NewFilesInDateFolder)
+        if(_SingleStategy == OneWayStrategy.AllFilesInDateFolder || _SingleStategy == OneWayStrategy.NewFilesInDateFolder)
         {
             if(_Direction == SyncDirection.ToA)
             {
-                prefixPathA = "/" + Date.getDate();
+                prefixPathA = FileItemHelper.concatPath("/", Date.getDate());
             }
             else if(_Direction == SyncDirection.ToB)
             {
-                prefixPathB = "/" + Date.getDate();
+                prefixPathB = FileItemHelper.concatPath("/", Date.getDate());
             }
         }
 
@@ -559,192 +557,6 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
     }
 
 
-
-    protected ArrayList<FileMergeResult> MergeFileList(ArrayList<FileItem> A, ArrayList<FileItem> B)
-    {
-        ArrayList<FileMergeResult> result = new ArrayList<>();
-
-        boolean onlyChanges = true;
-        boolean aToB = true;    // Defaultwerte für ToB
-        boolean bToA = false;   // Defaultwerte für ToB
-        boolean skipMoveAToB = false;
-        boolean skipMoveBToA = true;
-
-        switch(_Direction)
-        {
-            case ToA:
-                aToB = false;
-                bToA = true;
-                skipMoveAToB = true;
-                skipMoveBToA = false;
-                // fall through
-            case ToB:
-                switch(_SingleStategie)
-                {
-                    case Standard: // fall through
-                    case Mirror: // fall through
-                    case NewFilesInDateFolder:
-                        onlyChanges = true;
-                        break;
-                    case AllFilesInDateFolder:
-                        onlyChanges = false;
-                        break;
-                }
-                break;
-            case Booth:
-                aToB = true;
-                bToA = true;
-                onlyChanges = true;
-                break;
-        }
-
-        if(aToB)
-        {
-            fillMergeList(A, B, result, onlyChanges, skipMoveAToB, false);
-        }
-        if(bToA)
-        {
-            fillMergeList(B, A, result, onlyChanges, skipMoveBToA, true);
-        }
-
-        return result;
-    }
-
-
-    private void fillMergeList(ArrayList<FileItem> A, ArrayList<FileItem> B, ArrayList<FileMergeResult> result, boolean SkipEqual, boolean SkipMove, boolean AToB)
-    {
-        for(int i = 0; i < A.size(); ++i)
-        {
-            FileItem FileA = A.get(i);
-
-            // check if File A is already checked
-            if(FileA.Flag != FileItem.FLAG_UNKNOWN)
-                continue;
-
-            SortedMap<MergeResult, FileItem> resultMap = new TreeMap<MergeResult, FileItem>();
-
-
-            for(int j = 0; j < B.size(); ++j)
-            {
-                FileItem FileB = B.get(j);
-
-                // check if File B is already checked
-                if((FileB.Flag != FileItem.FLAG_UNKNOWN))
-                    continue;
-
-                // check: same folder & same filename
-                if((FileA.RelativePath.equals(FileB.RelativePath)) && (FileA.FileName.equals(FileB.FileName)))
-                {
-                    // match exactly
-                    if((FileA.Modified == FileB.Modified) && (FileA.FileSize == FileB.FileSize))
-                    {
-                        resultMap.put(MergeResult.MatchExactly, FileB);
-                        break;  // Do not check other files
-                    }
-                    // same name, same folder, but changed time or size: get newer one
-                    else if(FileA.FileSize == FileB.FileSize || FileA.Modified != FileB.Modified)
-                    {
-                        if(FileA.Modified > FileB.Modified)
-                        {
-                            resultMap.put(MergeResult.DateChanged_ANewer, FileB);
-                        }
-                        else
-                        {
-                            resultMap.put(MergeResult.DateChanged_BNewer, FileB);
-                        }
-
-                        break; // Do not check other files
-                    }
-                    else if(FileA.Modified == FileB.Modified)
-                    {
-                        // Same Filename, Folder and Time, but not the size: Something is wrong
-                        resultMap.put(MergeResult.NotRelatedFile, FileB);
-
-                        // Do not break here. Maybe there is an better solution
-                    }
-                }
-                // check same folder
-                else if(FileA.RelativePath.equals(FileB.RelativePath))
-                {
-                    // renamed
-                    if((FileA.Modified == FileB.Modified) && (FileA.FileSize == FileB.FileSize))
-                    {
-                        if(AToB)
-                        {
-                            resultMap.put(MergeResult.Renamed_B, FileB);
-                        }
-                        else
-                        {
-                            resultMap.put(MergeResult.Renamed_A, FileB);
-                        }
-                    }
-                }
-                // check same Filename
-                else if(FileA.FileName.equals(FileB.FileName))
-                {
-                    // moved
-                    if((FileA.Modified == FileB.Modified) && (FileA.FileSize == FileB.FileSize))
-                    {
-                        if(AToB)
-                        {
-                            resultMap.put(MergeResult.Moved_B, FileB);
-                        }
-                        else
-                        {
-                            resultMap.put(MergeResult.Moved_A, FileB);
-                        }
-                    }
-                }
-            }
-
-
-            MergeResult BestResultType = (resultMap.isEmpty()) ? MergeResult.NewFile : resultMap.firstKey();
-            FileItem BestResult = (resultMap.isEmpty()) ? null : resultMap.get(BestResultType);
-
-            switch(BestResultType)
-            {
-                case MatchExactly:
-                    if(SkipEqual)
-                        continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_EXACTLY;
-
-                case DateChanged_ANewer:
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_FILE;
-
-                case DateChanged_BNewer:
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_FILE;
-
-                case Renamed_A: // fall through
-                case Renamed_B:
-                    if(SkipMove)
-                        continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_OBJECT;
-
-                case Moved_A: // fall through
-                case Moved_B:
-                    if(SkipMove)
-                        continue;
-                    BestResult.Flag = FileA.Flag = FileItem.FLAG_ANALIZED_MATCH_OBJECT;
-
-                case NewFile:
-                    FileA.Flag = FileItem.FLAG_ANALIZED;
-            }
-
-            FileMergeResult tempResult = new FileMergeResult();
-            tempResult.State = BestResultType;
-            tempResult.FileA = FileA.clone();
-            tempResult.FileB = (BestResult == null) ? null : BestResult.clone();
-            if(AToB)
-            {
-                FileItem temp = tempResult.FileA;
-                tempResult.FileA = tempResult.FileB;
-                tempResult.FileB = temp;
-            }
-            result.add(tempResult);
-        }
-    }
-
-
     // Sync Direction
     private SyncDirection _Direction =  SyncDirection.Booth; //SyncDirection.ToB;
     public SyncDirection Direction()
@@ -756,13 +568,13 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         _Direction = Dir;
     }
 
-    private OneWayStrategy _SingleStategie = OneWayStrategy.Standard;
-    public OneWayStrategy StrategieOneWay() { return _SingleStategie; }
-    public void StrategieOneWay(OneWayStrategy Strategie) { _SingleStategie = Strategie; }
+    private OneWayStrategy _SingleStategy = OneWayStrategy.Standard;
+    public OneWayStrategy StrategyOneWay() { return _SingleStategy; }
+    public void StrategyOneWay(OneWayStrategy Strategie) { _SingleStategy = Strategie; }
 
-    private TwoWayStrategy _BoothStrategie = TwoWayStrategy.BWins;
-    public TwoWayStrategy StrategieTwoWay() { return _BoothStrategie; }
-    public void StrategieTwoWay(TwoWayStrategy Strategie){ _BoothStrategie = Strategie; }
+    private TwoWayStrategy _BoothStrategy = TwoWayStrategy.BWins;
+    public TwoWayStrategy StrategyTwoWay() { return _BoothStrategy; }
+    public void StrategyTwoWay(TwoWayStrategy Strategie){ _BoothStrategy = Strategie; }
 
 
     private boolean _isActive = true;

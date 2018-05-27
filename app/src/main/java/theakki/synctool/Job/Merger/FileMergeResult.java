@@ -31,6 +31,59 @@ public class FileMergeResult
     }
 
 
+    /**
+     * Compare one FileMergeResult with an other
+     * @param other Other instance
+     * @param WithoutFlags Also equal when comparision flags are not equal
+     * @return True when booth are equal
+     */
+    public boolean isEqual(FileMergeResult other, boolean WithoutFlags)
+    {
+        if(State != other.State)
+            return false;
+
+        if(FileA.isEqual(other.FileA, WithoutFlags, false) == false)
+            return false;
+        if(FileA.isEqual(other.FileB, WithoutFlags, false) == false)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FileMergeResult)
+        {
+            FileMergeResult o = (FileMergeResult)obj;
+            if(State != o.State)
+                return false;
+
+            if(FileA != null && o.FileA != null)
+            {
+                if(FileA.equals(o.FileA) == false)
+                    return false;
+            }
+            else if(FileA == null && o.FileA != null)
+                return false;
+            else if(FileA != null && o.FileA == null)
+                return false;
+
+            if(FileB != null && o.FileB != null)
+            {
+                if(FileB.equals(o.FileB) == false)
+                    return false;
+            }
+            else if(FileB == null && o.FileB != null)
+                return false;
+            else if(FileB != null && o.FileB == null)
+                return false;
+
+            return true;
+        }
+        return false;
+    }
+
     public MergeResult State;
     public FileItem FileA;
     public FileItem FileB;

@@ -227,7 +227,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private void restoreStrategyOneWay()
     {
-        final OneWayStrategy strategy = _job.StrategieOneWay();
+        final OneWayStrategy strategy = _job.StrategyOneWay();
         switch(strategy)
         {
             case Mirror:
@@ -248,7 +248,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private void restoreStrategyTwoWay()
     {
-        final TwoWayStrategy strategy = _job.StrategieTwoWay();
+        final TwoWayStrategy strategy = _job.StrategyTwoWay();
         switch(strategy)
         {
             case AWins:
@@ -454,19 +454,19 @@ public class Wizzard_New2 extends AppCompatActivity
         switch(iSelectedStrategy1)
         {
             case SpinnerIdxS1W.CopyNew:
-                _job.StrategieOneWay(OneWayStrategy.Standard);
+                _job.StrategyOneWay(OneWayStrategy.Standard);
                 break;
 
             case SpinnerIdxS1W.Mirror:
-                _job.StrategieOneWay(OneWayStrategy.Mirror);
+                _job.StrategyOneWay(OneWayStrategy.Mirror);
                 break;
 
             case SpinnerIdxS1W.NewDate:
-                _job.StrategieOneWay(OneWayStrategy.NewFilesInDateFolder);
+                _job.StrategyOneWay(OneWayStrategy.NewFilesInDateFolder);
                 break;
 
             case SpinnerIdxS1W.AllDate:
-                _job.StrategieOneWay(OneWayStrategy.AllFilesInDateFolder);
+                _job.StrategyOneWay(OneWayStrategy.AllFilesInDateFolder);
                 break;
         }
 
@@ -474,11 +474,11 @@ public class Wizzard_New2 extends AppCompatActivity
         switch(iSelectedStrategy2)
         {
             case SpinnerIdxS2W.AWins:
-                _job.StrategieTwoWay(TwoWayStrategy.AWins);
+                _job.StrategyTwoWay(TwoWayStrategy.AWins);
                 break;
 
             case SpinnerIdxS2W.BWins:
-                _job.StrategieTwoWay(TwoWayStrategy.BWins);
+                _job.StrategyTwoWay(TwoWayStrategy.BWins);
                 break;
         }
     }
