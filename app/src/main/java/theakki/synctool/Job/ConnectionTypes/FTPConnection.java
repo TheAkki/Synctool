@@ -76,7 +76,7 @@ public class FTPConnection extends ExternalBase implements IConnection
 
 
     @Override
-    public boolean Write(File SourceFile, String TargetFile)
+    public boolean Write(File SourceFile, FileItem TargetFile)
     {
         return false;
     }
