@@ -1,5 +1,7 @@
 package theakki.synctool.Job.Merger;
 
+import theakki.synctool.Job.FileItem;
+
 /**
  * Class to store settings for doing on one synchronization side.
  * @author theakki
@@ -8,7 +10,6 @@ package theakki.synctool.Job.Merger;
 public class DoingSide
 {
     public JobType Type = JobType.Nothing;
-    public String Filename;
+    public FileItem File;
     public String Param = "";
-    public long Timestamp = 0;
 }

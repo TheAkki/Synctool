@@ -357,11 +357,11 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                             throw new IllegalStateException("Side A + B are empty");
 
                         case Move:
-                            result = conSideB.Move(job.SideB.Filename, job.SideB.Param);
+                            result = conSideB.Move(FileItemHelper.concatPath(job.SideB.File.RelativePath, job.SideB.File.FileName), job.SideB.Param);
                             break;
 
                         case Delete:
-                            result = conSideB.Delete(job.SideB.Filename);
+                            result = conSideB.Delete(FileItemHelper.concatPath(job.SideB.File.RelativePath, job.SideB.File.FileName));
                             break;
 
                         default:
@@ -379,7 +379,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         default:
                             throwIllegalState(job);
                     }
-                    result = conSideA.Move(job.SideA.Filename, job.SideA.Param);
+                    result = conSideA.Move(FileItemHelper.concatPath(job.SideA.File.RelativePath, job.SideA.File.FileName), job.SideA.Param);
                     break;
 
                 case Delete:
@@ -392,7 +392,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         default:
                             throwIllegalState(job);
                     }
-                    result = conSideA.Delete(job.SideA.Filename);
+                    result = conSideA.Delete(FileItemHelper.concatPath(job.SideA.File.RelativePath, job.SideA.File.FileName));
                     break;
 
                 case Read:
@@ -438,8 +438,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         try
         {
             File tempFile = File.createTempFile("temporaery", ".tmp");
-            conSource.Read(Source.Filename, tempFile);
-            conTarget.Write(tempFile, Target.Filename);
+            final String strFileSource = FileItemHelper.concatPath(Source.File.RelativePath, Source.File.FileName);
+
+            conSource.Read(strFileSource, tempFile);
+            conTarget.Write(tempFile, Target.File);
 
             tempFile.delete();
         }
@@ -486,9 +488,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         DoingList temp = new DoingList();
                         temp.SideA.Type= JobType.Read;
                         temp.SideB.Type= JobType.Write;
-                        temp.SideA.Filename= prefixPathA + res.FileA.RelativePath + res.FileA.FileName;
-                        temp.SideB.Filename = prefixPathB + res.FileB.RelativePath + res.FileB.FileName;
-                        temp.SideB.Timestamp = res.FileA.Modified;
+                        temp.SideA.File = res.FileA.clone();
+                        temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
+                        temp.SideB.File = res.FileA.clone();
+                        temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
                         result.add(temp);
                     }
                     break;
@@ -499,9 +502,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         DoingList temp = new DoingList();
                         temp.SideA.Type = JobType.Write;
                         temp.SideB.Type = JobType.Read;
-                        temp.SideA.Filename = prefixPathA + res.FileA.RelativePath + res.FileA.FileName;
-                        temp.SideB.Filename = prefixPathB + res.FileB.RelativePath + res.FileB.FileName;
-                        temp.SideA.Timestamp = res.FileB.Modified;
+                        temp.SideA.File = res.FileB.clone();
+                        temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
+                        temp.SideB.File = res.FileB.clone();
+                        temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
                         result.add(temp);
                     }
                     break;
@@ -511,9 +515,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                     {
                         DoingList temp = new DoingList();
                         temp.SideA.Type = JobType.Move;
-                        temp.SideA.Filename = prefixPathA + res.FileA.RelativePath + res.FileA.FileName;
+                        temp.SideA.File = res.FileA.clone();
+                        temp.SideA.File.RelativePath = prefixPathA + res.FileA.RelativePath;
+                        temp.SideA.File.Modified = res.FileB.Modified;
                         temp.SideA.Param= prefixPathA + res.FileB.RelativePath + res.FileB.FileName;
-                        temp.SideA.Timestamp = res.FileB.Modified;
                         result.add(temp);
                     }
                     break;
@@ -523,9 +528,10 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                     {
                         DoingList temp = new DoingList();
                         temp.SideB.Type = JobType.Move;
-                        temp.SideB.Filename = prefixPathB + res.FileB.RelativePath + res.FileB.FileName;
-                        temp.SideB.Param = prefixPathB + res.FileA.RelativePath + res.FileA.FileName;
-                        temp.SideB.Timestamp = res.FileA.Modified;
+                        temp.SideB.File = res.FileB.clone();
+                        temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
+                        temp.SideB.File.Modified = res.FileA.Modified;
+                        temp.SideB.Param= prefixPathB + res.FileA.RelativePath + res.FileA.FileName;
                         result.add(temp);
                     }
                     break;
@@ -535,19 +541,23 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                     {
                         DoingList temp = new DoingList();
                         temp.SideB.Type = JobType.Read;
-                        temp.SideB.Filename = prefixPathB + res.FileB.RelativePath + res.FileB.FileName;
+                        temp.SideB.File = res.FileB.clone();
+                        temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
+
                         temp.SideA.Type = JobType.Write;
-                        temp.SideA.Filename = prefixPathA + res.FileB.RelativePath + res.FileB.FileName;
-                        temp.SideA.Timestamp = res.FileB.Modified;
+                        temp.SideA.File = res.FileB.clone();
+                        temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
                     }
                     else
                     {
                         DoingList temp = new DoingList();
                         temp.SideA.Type = JobType.Read;
-                        temp.SideA.Filename = prefixPathA + res.FileA.RelativePath + res.FileA.FileName;
+                        temp.SideA.File = res.FileA.clone();
+                        temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
+
                         temp.SideB.Type = JobType.Write;
-                        temp.SideB.Filename = prefixPathB + res.FileA.RelativePath + res.FileA.FileName;
-                        temp.SideB.Timestamp = res.FileA.Modified;
+                        temp.SideB.File = res.FileA.clone();
+                        temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
                     }
                     break;
             }
