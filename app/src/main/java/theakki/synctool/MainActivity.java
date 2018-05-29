@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
 
-        final boolean DEBUG = true;
+        final boolean DEBUG = false;
 
         initSingletonData();
 
