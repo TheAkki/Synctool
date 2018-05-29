@@ -108,9 +108,11 @@ public class LocalPath implements IConnection
 
 
     @Override
-    public boolean Write(File SourceFile, String TargetFile)
+    public boolean Write(File SourceFile, FileItem TargetFile)
     {
-        File target = new File(TargetFile);
+        final String strTargetFilePath = FileItemHelper.concatPath(TargetFile.RelativePath, TargetFile.FileName);
+
+        File target = new File( FileItemHelper.concatPath(_Path, strTargetFilePath)  );
         target.mkdirs();
 
         try
@@ -221,6 +223,9 @@ public class LocalPath implements IConnection
 
     private void fillArrayList(ArrayList<FileItem> list, File[] Folder, String BasePath)
     {
+        if(Folder == null)
+            return;
+
         for(int i = 0; i < Folder.length; ++i)
         {
             File obj = Folder[i];

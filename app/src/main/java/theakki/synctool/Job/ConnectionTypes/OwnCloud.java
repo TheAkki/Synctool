@@ -23,9 +23,12 @@ import com.owncloud.android.lib.common.network.NetworkUtils;
 import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
 import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult;
+import com.owncloud.android.lib.resources.files.CreateRemoteFolderOperation;
 import com.owncloud.android.lib.resources.files.DownloadRemoteFileOperation;
+import com.owncloud.android.lib.resources.files.MoveRemoteFileOperation;
 import com.owncloud.android.lib.resources.files.ReadRemoteFolderOperation;
 import com.owncloud.android.lib.resources.files.RemoveRemoteFileOperation;
+import com.owncloud.android.lib.resources.files.UploadRemoteFileOperation;
 
 /**
  * Created by theakki on 29.03.18.
@@ -78,7 +81,20 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     @Override
     public boolean Move(String SourceFile, String TargetFile)
     {
-        return false;
+        final String strFullSource = FileItemHelper.concatPath(_LocalPath, SourceFile);
+        final String strFullTarget = FileItemHelper.concatPath(_LocalPath, TargetFile);
+        final String strPathTarget = strFullTarget.substring(0, strFullTarget.lastIndexOf(File.separator));
+
+        CreateRemoteFolderOperation mkdir = new CreateRemoteFolderOperation(strPathTarget, true);
+        RemoteOperationResult resultMkdir = mkdir.execute(_Client);
+
+        if(resultMkdir.isSuccess() == false)
+            return false;
+
+        MoveRemoteFileOperation mv = new MoveRemoteFileOperation(strFullSource, strFullTarget, true);
+        RemoteOperationResult result = mv.execute(_Client);
+
+        return result.isSuccess();
     }
 
 
@@ -92,7 +108,8 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
 
 
     @Override
-    public boolean Read(String SourceFile, File TempFile) {
+    public boolean Read(String SourceFile, File TempFile)
+    {
         DownloadRemoteFileOperation download = new DownloadRemoteFileOperation(FileItemHelper.concatPath(_LocalPath, SourceFile), TempFile.getAbsolutePath());
         RemoteOperationResult result = download.execute(_Client);
         return result.isSuccess();
@@ -100,8 +117,22 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
 
 
     @Override
-    public boolean Write(File File, String TargetFile) {
-        return false;
+    public boolean Write(File file, FileItem TargetFile)
+    {
+        final String strFullFolderPath = FileItemHelper.concatPath(_LocalPath, TargetFile.RelativePath);
+        CreateRemoteFolderOperation mkdir = new CreateRemoteFolderOperation(strFullFolderPath, true);
+        RemoteOperationResult resultMkdir = mkdir.execute(_Client);
+
+        if(resultMkdir.isSuccess() == false)
+            return false;
+
+        final String strRemotePath = FileItemHelper.concatPath(strFullFolderPath, TargetFile.FileName);
+        UploadRemoteFileOperation upload = new UploadRemoteFileOperation(   file.getAbsolutePath(),
+                                                                            strRemotePath,
+                                                                            TargetFile.MimeType,
+                                                                            getDateFromTimestamp(TargetFile.Modified));
+        RemoteOperationResult result = upload.execute(_Client);
+        return  result.isSuccess();
     }
 
 
@@ -151,10 +182,10 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
         );
         _Client.setContext(context);
 
-        ReadRemoteFilesOperation read = new ReadRemoteFilesOperation("/", ReadRemoteFilesOperation.SearchObjects.OnlyFiles);
-        RemoteOperationResult res =  read.execute(_Client);
+        //ReadRemoteFilesOperation read = new ReadRemoteFilesOperation("/", ReadRemoteFilesOperation.SearchObjects.OnlyFiles);
+        //RemoteOperationResult res =  read.execute(_Client);
 
-        res.getData();
+        //res.getData();
     }
 
 
@@ -203,5 +234,11 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
         RemoteOperationResult result = read.execute(_Client);
 
         return FileItemHelper.convertFromObjectArray(result.getData());
+    }
+
+
+    protected static String getDateFromTimestamp(long timestamp)
+    {
+        return Long.toString(timestamp / 1000);
     }
 }

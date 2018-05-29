@@ -25,5 +25,5 @@ public interface IConnection
     boolean Move(String SourceFile, String TargetFile);
     boolean Delete(String File);
     boolean Read(String SourceFile, File TempFile);
-    boolean Write(File SourceFile, String TargetFile);
+    boolean Write(File SourceFile, FileItem TargetFile);
 }
