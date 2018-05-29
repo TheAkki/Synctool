@@ -26,6 +26,7 @@
     <string-array name="ConnectionTypes">
         <item>Lokal</item>
         <item>OwnCloud</item>
+        <item>FTP</item>
     </string-array>
     
     <string name="Caption_Connection_A">Verbinduing A</string>
@@ -33,4 +34,13 @@
     <string name="Text_ConnectionName">Wähle existierende Verbindung</string>
     <string name="Text_SelectConnectionType">Wähle  Verbindungstyp</string>
     <string name="MainMenu_Exit">Verlassen</string>
+    <string name="SyncStatus_Finish">Beendet</string>
+    <string name="MainMenu_AllJobs">Alle Aufgaben</string>
+    <string name="MainMenu_NewJob">Neue Aufgabe</string>
+    <string name="Button_Ok">OK</string>
+    <string name="Hint_Username">Benutzername</string>
+    <string name="Hint_Password">Passwort</string>
+    <string name="Caption_NewOwnCloudConnection">Neue OwnCloud Verbindung</string>
+    <string name="Caption_SyncDirection">Synchronisationsrichtung</string>
+    <string name="Caption_SyncStrategy">Synchronisationsstrategie</string>
 </resources>

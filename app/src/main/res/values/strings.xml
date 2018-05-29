@@ -55,6 +55,7 @@
     <string name="Caption_GeneralJobSettings">General Settings</string>
     <string name="Caption_SourceTargetSettings">Source/Target Settings</string>
     <string name="Caption_NewOwnCloudConnection">New OwnCloud Connection</string>
+    <string name="Caption_NewFtpConnection">New FTP Connection</string>
     <string name="Caption_SyncDirection">Sync direction</string>
     <string name="Caption_SyncStrategy">Sync strategy</string>
 
@@ -81,6 +82,7 @@
     <string-array name="ConnectionTypes">
         <item>Local</item>
         <item>OwnCloud</item>
+        <item>FTP</item>
     </string-array>
 
     <string-array name="SyncDirections">
