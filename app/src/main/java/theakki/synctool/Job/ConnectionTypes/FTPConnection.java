@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by theakki on 27.03.18.
  */
 
-public class FTPConnection extends ExternalBase implements IConnection
+public class FTPConnection extends StoredBase implements IConnection
 
 {
     private FTPClient _Connection = new FTPClient();
@@ -42,6 +42,14 @@ public class FTPConnection extends ExternalBase implements IConnection
             setValue( (Element)childs.item(i) );
         }
     }
+
+    public FTPConnection(String connectionName, String localPath)
+    {
+        _ConnectionName = connectionName;
+        _LocalPath = localPath;
+        _Port = 21;
+    }
+
 
 
     @Override
@@ -107,7 +115,7 @@ public class FTPConnection extends ExternalBase implements IConnection
     {
         Boolean isConnected = false;
         try{
-            _Connection.connect(_URL, _Port);
+            _Connection.connect(Url(), _Port);
             isConnected = FTPReply.isPositiveCompletion(_Connection.getReplyCode());
         }
         catch(Exception e)
@@ -122,7 +130,13 @@ public class FTPConnection extends ExternalBase implements IConnection
     @Override
     public void Disconnect()
     {
-
+        try
+        {
+            _Connection.disconnect();
+        }
+        catch(Exception e)
+        {
+        }
     }
 
 
