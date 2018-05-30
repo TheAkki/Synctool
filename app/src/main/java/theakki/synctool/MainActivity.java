@@ -120,6 +120,21 @@ public class MainActivity extends AppCompatActivity {
         };
         Button newJobButton = findViewById(R.id.btn_NewJob);
         newJobButton.setOnClickListener(newJobListener);
+
+
+        // Exit
+        Button exitButton = findViewById(R.id.btn_Exit);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onExitClick();
+            }
+        });
+    }
+
+    private void onExitClick()
+    {
+        finish();
     }
 
     private void initSingletonData()
