@@ -8,13 +8,20 @@
     <string name="SyncStatus_ReadFilesB">Lese Dateien von Quelle B</string>
     <string name="SyncStatus_AnalyseFiles">Analysiere Dateien</string>
     <string name="SyncStatus_CreateJobs">Beendet</string>
+    <string name="SyncStatus_Finish">Beendet</string>
 
+
+
+    <string name="MainMenu_AllJobs">Alle Aufgaben</string>
+    <string name="MainMenu_NewJob">Neue Aufgabe</string>
     <string name="MainMenu_Exit">Verlassen</string>
 
     <string name="Button_StartAllJobs">Starte alle Aufgaben</string>
     <string name="Button_Cancel">Abbruch</string>
     <string name="Button_Back">Zurück</string>
     <string name="Button_Next">Weiter</string>
+    <string name="Button_Ok">OK</string>
+
 
     <string name="Label_JobName">Name</string>
     <string name="Label_Active">Aufgabe ist aktiv</string>
@@ -26,34 +33,49 @@
     <string name="Text_ConnectionName">Wähle existierende Verbindung</string>
 
     <string name="Hint_JobName">Name der Aufgabe</string>
+    <string name="Hint_IP_Domain">IP oder Url</string>
     <string name="Hint_NameConnection">Verbindungsname</string>
+    <string name="Hint_Username">Benutzername</string>
+    <string name="Hint_Password">Passwort</string>
+    <string name="Hint_RelativePath">Relativer Pfad</string>
+    <string name="Hint_Port">Port</string>
 
     <string name="Value_Active">Aktiv</string>
     <string name="Value_NotActive">Nicht aktiv</string>
 
     <string name="Caption_GeneralJobSettings">Allgemeine Einstellungen</string>
     <string name="Caption_SourceTargetSettings">Quell- und Zieleinstellungen</string>
+    <string name="Caption_NewOwnCloudConnection">Neue OwnCloud Verbindung</string>
+    <string name="Caption_NewFtpConnection">Neue FTP Verbindung</string>
+    <string name="Caption_SyncDirection">Synchronisationsrichtung</string>
+    <string name="Caption_SyncStrategy">Synchronisationsstrategie</string>
 
     <string name="Toast_JobExist">Aufgabe mit Name \'%1$s\' existiert bereits</string>
     <string name="Toast_JobNameIsEmpty">Name der Aufgabe ist leer</string>
     <string name="Toast_JobNameIsInvalid">Name der Aufgabe ist ungültig</string>
+    <string name="Toast_InvalidUserPassword">Benutzername/Passwort ist ungültig</string>
+    <string name="Toast_ConnectionExist">Verbindung \'%1$s\' existiert bereits.</string>
+    <string name="Toast_NoPathSelected">Kein Pfad ausgewählt</string>
 
+    <string name="ConnectionTestStatus_NotScanned">Not gescannt</string>
+    <string name="ConnectionTestStatus_ScannedNotAvailable">Host nicht erreichbar</string>
+    <string name="ConnectionTestStatus_ScannedAvailable">Host verfügbar</string>
     <string name="ConnectionTestStatus_AccessDenied">Zugriff verweigert</string>
     <string name="ConnectionTestStatus_AccessGranted">Zugriff gewährt</string>
 
-    <string-array name="ConnectionTypes">
-        <item>Lokal</item>
-        <item>OwnCloud</item>
-        <item>FTP</item>
-    </string-array>
+    <string name="ContextM_SelectAction">Aktion auswählen</string>
+    <string name="ContextM_Edit">Bearbeiten</string>
+    <string name="ContextM_Delete">Löschen</string>
 
-    <string name="SyncStatus_Finish">Beendet</string>
-    <string name="MainMenu_AllJobs">Alle Aufgaben</string>
-    <string name="MainMenu_NewJob">Neue Aufgabe</string>
-    <string name="Button_Ok">OK</string>
-    <string name="Hint_Username">Benutzername</string>
-    <string name="Hint_Password">Passwort</string>
-    <string name="Caption_NewOwnCloudConnection">Neue OwnCloud Verbindung</string>
-    <string name="Caption_SyncDirection">Synchronisationsrichtung</string>
-    <string name="Caption_SyncStrategy">Synchronisationsstrategie</string>
+    <string name="Checkbox_AskPassword_NextTime">Passwort nicht speichern</string>
+    <string name="Checkbox_UseFTPS">Nutze sichere Verbindung</string>
+
+
+
+
+
+
+
+
+    <!-- DEBUG -->
 </resources>
