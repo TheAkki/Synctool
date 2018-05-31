@@ -56,7 +56,8 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private String[] _TypesStrings;
 
-    private final int REQUESTCODE_NewOwnCloud = 1;
+    private static final int REQUESTCODE_NewOwnCloud = 1;
+    private static final int REQUESTCODE_NewFtp = 2;
     public final static String Extra_ConnectionName = "ConnectionName";
 
     // ToDo: Test against array
@@ -331,6 +332,12 @@ public class Wizzard_New2 extends AppCompatActivity
                 if(spnName.getAdapter().getCount() == 1)
                     spnName.setSelection(0);
                 break;
+
+            case SpinnerIdxType.Ftp:    // FTP
+                fillSpinnerWithFtpConnections(spnName);
+                if(spnName.getAdapter().getCount() == 1)
+                    spnName.setSelection(0);
+                break;
         }
     }
 
@@ -351,7 +358,8 @@ public class Wizzard_New2 extends AppCompatActivity
                 btnAdd.setVisibility(View.VISIBLE);
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View view)
+                    {
                         callNewOwncloudConnection();
                     }
                 });
@@ -362,6 +370,22 @@ public class Wizzard_New2 extends AppCompatActivity
                 // When no connection available -> Start Dialog
                 if(spnName.getAdapter().getCount() == 0)
                     callNewOwncloudConnection();
+                break;
+
+            case SpinnerIdxType.Ftp: // FTP
+                spnName.setVisibility(View.VISIBLE);
+                btnAdd.setVisibility(View.VISIBLE);
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        callNewFtpConnection();
+                    }
+                });
+
+                fillSpinnerWithFtpConnections(spnName);
+                if(spnName.getAdapter().getCount() == 0)
+                    callNewFtpConnection();
                 break;
         }
     }
@@ -392,6 +416,13 @@ public class Wizzard_New2 extends AppCompatActivity
     }
 
 
+    private void callNewFtpConnection()
+    {
+        Intent intentNew = new Intent(Wizzard_New2.this, Wizzard_NewFtpConnection.class);
+        startActivityForResult(intentNew, REQUESTCODE_NewFtp);
+    }
+
+
     private void fillSpinnerWithOwnCloudConnections(Spinner spnSpinner)
     {
         List<String> list = new ArrayList<>();
@@ -410,14 +441,43 @@ public class Wizzard_New2 extends AppCompatActivity
         spnSpinner.setAdapter(dataAdapter);
     }
 
+
+    private void fillSpinnerWithFtpConnections(Spinner spnSpinner)
+    {
+        List<String> list = new ArrayList<>();
+
+        // fill here
+        ArrayList<NamedConnectionHandler.Connections> connections =
+            NamedConnectionHandler.getInstance().getConnections(ConnectionTypes.FTP);
+        for(NamedConnectionHandler.Connections con : connections)
+        {
+            list.add(con.Name);
+        }
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnSpinner.setAdapter(dataAdapter);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
         // check that it is the SecondActivity with an OK result
-        if (requestCode == REQUESTCODE_NewOwnCloud) {
-            if (resultCode == RESULT_OK) { // Activity.RESULT_OK
+        if (requestCode == REQUESTCODE_NewOwnCloud)
+        {
+            if (resultCode == RESULT_OK) // Activity.RESULT_OK
+            {
+                fillData(_spinnerTypeA, _spinnerNameA);
+                fillData(_spinnerTypeB, _spinnerNameB);
+            }
+        }
+        else if(requestCode == REQUESTCODE_NewFtp)
+        {
+            if(resultCode == RESULT_OK)
+            {
                 fillData(_spinnerTypeA, _spinnerNameA);
                 fillData(_spinnerTypeB, _spinnerNameB);
             }

@@ -44,10 +44,12 @@
 
     <string name="Hint_JobName">Name of Job</string>
     <string name="Hint_Url">https:// &#8230;</string>
+    <string name="Hint_IP_Domain">IP or url</string>
     <string name="Hint_NameConnection">Name of Connection</string>
     <string name="Hint_Username">Username</string>
     <string name="Hint_Password">Password</string>
     <string name="Hint_RelativePath">Relative path</string>
+    <string name="Hint_Port">Port</string>
 
     <string name="Value_Active">Active</string>
     <string name="Value_NotActive">NotActive</string>
@@ -77,6 +79,9 @@
     <string name="ContextM_Delete">Delete</string>
 
     <string name="Checkbox_AskPassword_NextTime">Ask password at next time</string>
+    <string name="Checkbox_UseFTPS">Use FTPs</string>
+
+    <string name="Ftp_DefaultPort" translatable="false">21</string>
 
 
     <string-array name="ConnectionTypes">
@@ -108,4 +113,7 @@
     <string name="OwnCloud_Connection_Url" translatable="false">http://192.168.178.42/owncloud</string>
     <string name="OwnCloud_Connection_User" translatable="false">OwnCloudConnection</string>
     <string name="OwnCloud_Connection_Pass" translatable="false">Test</string>
+    <string name="Ftp_Connection_Url" translatable="false">192.168.178.42</string>
+    <string name="Ftp_Connection_User" translatable="false">FtpTestGuy</string>
+    <string name="Ftp_Connection_Pass" translatable="false">12345</string>
 </resources>
