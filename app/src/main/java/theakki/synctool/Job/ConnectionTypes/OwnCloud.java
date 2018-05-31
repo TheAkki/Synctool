@@ -3,7 +3,6 @@ package theakki.synctool.Job.ConnectionTypes;
 import android.app.Activity;
 import android.net.Uri;
 
-import org.apache.jackrabbit.webdav.DavConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -11,13 +10,17 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.util.ArrayList;
 
+import theakki.synctool.FromOwnCloud.GetServerInfoOperation;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Job.FileItem;
 import theakki.synctool.Job.IConnection;
 import theakki.synctool.OwnCloud.ReadRemoteFilesOperation;
 
+import com.owncloud.android.lib.common.OwnCloudAccount;
 import com.owncloud.android.lib.common.OwnCloudClient;
 import com.owncloud.android.lib.common.OwnCloudClientFactory;
+import com.owncloud.android.lib.common.OwnCloudClientManagerFactory;
+import com.owncloud.android.lib.common.authentication.OwnCloudCredentials;
 import com.owncloud.android.lib.common.authentication.OwnCloudCredentialsFactory;
 import com.owncloud.android.lib.common.network.NetworkUtils;
 import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
@@ -29,25 +32,29 @@ import com.owncloud.android.lib.resources.files.MoveRemoteFileOperation;
 import com.owncloud.android.lib.resources.files.ReadRemoteFolderOperation;
 import com.owncloud.android.lib.resources.files.RemoveRemoteFileOperation;
 import com.owncloud.android.lib.resources.files.UploadRemoteFileOperation;
+import com.owncloud.android.lib.resources.users.GetRemoteUserInfoOperation;
 
 /**
- * Created by theakki on 29.03.18.
+ * This class handle OwnCloud files
+ * @author theakki
+ * @since 0.1
  */
-
 public class OwnCloud extends StoredBase implements OnRemoteOperationListener, IConnection
 {
     final private String TAG_NAME = "OwnCloud";
     private OwnCloudClient _Client;
 
+    public static int iDEF_PORT = 443;
 
+    /**
+     * Create a owncloud connection from XML node
+     * @param Node XML Node
+     */
     public OwnCloud(Element Node)
     {
         final String name = Node.getNodeName();
         if(name.compareToIgnoreCase(TAG_NAME) != 0)
             throw new IllegalArgumentException("Unexpected Node name '" + name + "'");
-
-        // Defaultwert für OwnCloud
-        _Port = 443;    // https
 
         NodeList childs = Node.getChildNodes();
         for(int i = 0; i < childs.getLength(); ++i)
@@ -60,11 +67,15 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     }
 
 
-    public OwnCloud(String connectionName, String localPath)
+    /**
+     * Constructor to create a FTP Connection
+     * @param connectionName NamedConnection
+     * @param remotePath Path on the Connection
+     */
+    public OwnCloud(String connectionName, String remotePath)
     {
         _ConnectionName = connectionName;
-        _LocalPath = localPath;
-        _Port = 443;
+        _LocalPath = remotePath;
     }
 
 
@@ -136,6 +147,10 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     }
 
 
+    /**
+     * This method return the type of this Connection as String
+     * @return "OwnCloud"
+     */
     static public final String getType()
     {
         return "OwnCloud";
@@ -156,7 +171,7 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     }
 
 
-    @Override
+    /*
     public boolean IsAvailable()
     {
         ReadRemoteFilesOperation read = new ReadRemoteFilesOperation("/", ReadRemoteFilesOperation.SearchObjects.OnlyFiles);
@@ -164,6 +179,58 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
         RemoteOperationResult result = read.execute(_Client);
 
         return result.isSuccess();
+    }*/
+
+    /**
+     * This method check if a FTP server is available
+     * @param connection Connection string (IP, url)
+     * @param context Context of Application
+     * @return True when available
+     */
+    public static boolean isAvailable(String connection, Activity context)
+    {
+        try {
+            Uri uri = Uri.parse(connection);
+
+            OwnCloudAccount acc = new OwnCloudAccount(uri, OwnCloudCredentialsFactory.getAnonymousCredentials());
+            OwnCloudClient client = OwnCloudClientManagerFactory.getDefaultSingleton().getClientFor(acc, context);
+
+            GetServerInfoOperation serverInfo = new GetServerInfoOperation(connection, context);
+            RemoteOperationResult res = serverInfo.execute(client);
+            return res.isSuccess();
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * This method check if a FTP server available and the user are valid
+     * @param connection Connection string (IP, url)
+     * @param context Context of Application
+     * @param username Username
+     * @param password Password
+     * @return True when available and login is possible
+     */
+    public static boolean IsAccessible(String connection, Activity context, String username, String password)
+    {
+        try {
+            OwnCloudCredentials cred = OwnCloudCredentialsFactory.newBasicCredentials(username, password);
+            Uri uri = Uri.parse(connection);
+            OwnCloudAccount acc = new OwnCloudAccount(uri, cred);
+            OwnCloudClient client = OwnCloudClientManagerFactory.getDefaultSingleton().getClientFor(acc, context);
+            client.setBaseUri(uri);
+
+            GetRemoteUserInfoOperation op = new GetRemoteUserInfoOperation();
+            RemoteOperationResult result = op.execute(client);
+            return result.isSuccess();
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
 
 
@@ -237,6 +304,11 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     }
 
 
+    /**
+     * Method convert a timestamp (in milliseconds) into an time string which is understand by OwnCloud Client
+     * @param timestamp Timestamp in milliseconds
+     * @return Time string
+     */
     protected static String getDateFromTimestamp(long timestamp)
     {
         return Long.toString(timestamp / 1000);

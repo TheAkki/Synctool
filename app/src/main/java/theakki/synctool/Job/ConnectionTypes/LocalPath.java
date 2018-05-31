@@ -20,19 +20,30 @@ import theakki.synctool.Job.FileItem;
 import theakki.synctool.Job.IConnection;
 
 /**
- * Created by theakki on 25.03.18.
+ * This class handle local files
+ * @author theakki
+ * @since 0.1
  */
-
 public class LocalPath implements IConnection
 {
     final private String TAG_Name = "LocalPath";
     final private String TAG_Path = "Path";
 
+
+    /**
+     * Constructor
+     * @param Path Local path as base
+     */
     public LocalPath(String Path)
     {
         _Path = Path;
     }
 
+
+    /**
+     * Create a Local path from XML node
+     * @param Node XML Node
+     */
     public LocalPath(Element Node)
     {
         final String name = Node.getNodeName();
@@ -148,6 +159,12 @@ public class LocalPath implements IConnection
     }
 
 
+    /**
+     * Copy one file to an other
+     * @param src Source file
+     * @param dst Target file
+     * @throws IOException
+     */
     private  static void copy(File src, File dst) throws IOException {
         try (InputStream in = new FileInputStream(src)) {
             try (OutputStream out = new FileOutputStream(dst)) {
@@ -162,6 +179,10 @@ public class LocalPath implements IConnection
     }
 
 
+    /**
+     * This method return the type of this Connection as String
+     * @return "LocalPath"
+     */
     static public String getType()
     {
         return "LocalPath";
@@ -175,7 +196,7 @@ public class LocalPath implements IConnection
     }
 
 
-    @Override
+    /*
     public boolean IsAvailable() {
         if(_Path.length() == 0)
             return false;
@@ -186,7 +207,8 @@ public class LocalPath implements IConnection
             return false;
 
         return true;
-    }
+    }*/
+
 
 
     @Override
@@ -221,17 +243,23 @@ public class LocalPath implements IConnection
     }
 
 
-    private void fillArrayList(ArrayList<FileItem> list, File[] Folder, String BasePath)
+    /**
+     * This method read all files on ftp server. This is done recursive
+     * @param result List of all items
+     * @param items List of items in this folder
+     * @param basePath String to get the base path of the file. Remove that part from full string to get relative path
+     */
+    private void fillArrayList(ArrayList<FileItem> result, File[] items, String basePath)
     {
-        if(Folder == null)
+        if(items == null)
             return;
 
-        for(int i = 0; i < Folder.length; ++i)
+        for(int i = 0; i < items.length; ++i)
         {
-            File obj = Folder[i];
+            File obj = items[i];
             if(obj.isDirectory())
             {
-                fillArrayList(list, obj.listFiles(), BasePath);
+                fillArrayList(result, obj.listFiles(), basePath);
             }
             else
             {
@@ -239,11 +267,11 @@ public class LocalPath implements IConnection
                 final String Name = obj.getName();
                 final String Path = obj.getAbsolutePath();
                 final String PathWithoutName = Path.substring(0, Path.length() - Name.length());
-                final String PathWithoutNameAndBase = PathWithoutName.substring(BasePath.length());
+                final String PathWithoutNameAndBase = PathWithoutName.substring(basePath.length());
 
                 FileItem temp = new FileItem(Name, PathWithoutNameAndBase, obj.length(), obj.lastModified(), getMimeType(obj));
 
-                list.add(temp);
+                result.add(temp);
             }
         }
     }
