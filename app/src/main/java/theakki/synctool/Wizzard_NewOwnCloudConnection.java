@@ -2,7 +2,6 @@ package theakki.synctool;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,15 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.owncloud.android.lib.common.OwnCloudAccount;
-import com.owncloud.android.lib.common.OwnCloudClient;
-import com.owncloud.android.lib.common.OwnCloudClientManagerFactory;
-import com.owncloud.android.lib.common.authentication.OwnCloudCredentials;
-import com.owncloud.android.lib.common.authentication.OwnCloudCredentialsFactory;
-import com.owncloud.android.lib.common.operations.RemoteOperationResult;
-import com.owncloud.android.lib.resources.users.GetRemoteUserInfoOperation;
-
-import theakki.synctool.FromOwnCloud.GetServerInfoOperation;
 import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
@@ -99,6 +89,8 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         Permissions.requestForPermissionInternet(this);
     }
 
+    private Activity getContext() { return this; }
+
     private boolean _bConnectionValid = false;
     private void clickScan()
     {
@@ -106,12 +98,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-                try {
-                    RemoteOperationResult res = testConnection( OwnCloudCredentialsFactory.getAnonymousCredentials(), strUri );
-                    _bConnectionValid = res.isSuccess();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                _bConnectionValid = OwnCloud.isAvailable(strUri, getContext());
             }
         });
         thread.start();
@@ -131,28 +118,11 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
     }
 
 
-    private RemoteOperationResult testConnection(OwnCloudCredentials cred, String uriServer)
-    {
-        try {
-            Uri uri = Uri.parse(uriServer);
-
-            OwnCloudAccount acc = new OwnCloudAccount(uri, cred);
-            OwnCloudClient client = OwnCloudClientManagerFactory.getDefaultSingleton().getClientFor(acc, this);
-
-            GetServerInfoOperation serverInfo = new GetServerInfoOperation(uriServer, this);
-            return serverInfo.execute(client);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return new RemoteOperationResult(RemoteOperationResult.ResultCode.UNKNOWN_ERROR);
-    }
-
-
     private void clickBack()
     {
-        this.onBackPressed();
+        final Intent intent = new Intent();
+        setResult(Activity.RESULT_CANCELED, intent);
+        finish();
     }
 
 
@@ -176,16 +146,11 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    final String username = _txtUser.getText().toString().trim();
-                    final String password = _txtPassword.getText().toString();
-                    final String strUri = _txtUrl.getText().toString().trim();
+                final String username = _txtUser.getText().toString().trim();
+                final String password = _txtPassword.getText().toString();
+                final String strUri = _txtUrl.getText().toString().trim();
 
-                    RemoteOperationResult res = checkCredentials(OwnCloudCredentialsFactory.newBasicCredentials(username, password), strUri);
-                    _bUserPermissionOk = res.isSuccess();
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                _bUserPermissionOk = OwnCloud.IsAccessible(strUri, getContext(), username, password);
             }
         });
         thread.start();
@@ -206,6 +171,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         connection.User = _txtUser.getText().toString().trim();
         connection.Password = _txtPassword.getText().toString();
         connection.Type = ConnectionTypes.OwnCloud;
+        connection.Port = OwnCloud.iDEF_PORT;
         boolean storePassword = !_cbAskPassword.isChecked();
 
         NamedConnectionHandler.getInstance().add(strName, connection, storePassword);
@@ -217,27 +183,6 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         finish();
     }
 
-    private RemoteOperationResult checkCredentials(OwnCloudCredentials cred, String uriServer)
-    {
-        try
-        {
-            Uri uri = Uri.parse(uriServer);
-
-            OwnCloudAccount acc = new OwnCloudAccount(uri, cred);
-            OwnCloudClient client = OwnCloudClientManagerFactory.getDefaultSingleton().getClientFor(acc, this);
-            client.setBaseUri(uri);
-
-            GetRemoteUserInfoOperation op = new GetRemoteUserInfoOperation();
-            return op.execute(client);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return new RemoteOperationResult(RemoteOperationResult.ResultCode.UNKNOWN_ERROR);
-        }
-
-    }
-
 
     private void setVisibleCredentials(boolean visible)
     {
@@ -247,6 +192,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         _txtPassword.setVisibility(vis);
         _cbAskPassword.setVisibility(vis);
     }
+
 
     private void setEnableOkButton(boolean visible)
     {
