@@ -70,11 +70,11 @@
     <string name="Checkbox_AskPassword_NextTime">Passwort nicht speichern</string>
     <string name="Checkbox_UseFTPS">Nutze sichere Verbindung</string>
 
-
-
-
-
-
+    <string-array name="ConnectionTypes">
+        <item>Lokal</item>
+        <item>OwnCloud</item>
+        <item>FTP</item>
+    </string-array>
 
 
     <!-- DEBUG -->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="TestSettings">
+    <string-array name="TestSettings" translatable="false">
         <item>Sync A&lt;&gt;B, B Master</item>
     </string-array>
 </resources>

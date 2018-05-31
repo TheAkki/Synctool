@@ -13,8 +13,8 @@
     <string name="JobInfo_Active" translatable="false">A</string>
     <string name="JobInfo_NotActive" translatable="false">D</string>
 
-    <string name="JobInfo_DummyName">Name</string>
-    <string name="JobInfo_DummyStatus">Status</string>
+    <string name="JobInfo_DummyName" translatable="false">Name</string>
+    <string name="JobInfo_DummyStatus" translatable="false">Status</string>
     <string name="JobInfo_Dummy0" translatable="false">0</string>
     <string name="JobInfo_Slash" translatable="false">/</string>
 
@@ -43,7 +43,7 @@
     <string name="Text_ConnectionName">Select existing connections</string>
 
     <string name="Hint_JobName">Name of Job</string>
-    <string name="Hint_Url">https:// &#8230;</string>
+    <string name="Hint_Url" translatable="false">https:// &#8230;</string>
     <string name="Hint_IP_Domain">IP or url</string>
     <string name="Hint_NameConnection">Name of Connection</string>
     <string name="Hint_Username">Username</string>
