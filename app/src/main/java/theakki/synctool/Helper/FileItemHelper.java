@@ -77,6 +77,20 @@ public class FileItemHelper
         }
     }
 
+    public static String[] splittPath(String path)
+    {
+        String p;
+        if(path.startsWith(File.separator))
+        {
+            p = path.substring(1);
+        }
+        else
+            p = path;
+
+        return p.split(File.separator);
+    }
+
+
 
     /**
      * This method analyse file items and write them in a list. This list is the parameter result. All entrys will be added.
