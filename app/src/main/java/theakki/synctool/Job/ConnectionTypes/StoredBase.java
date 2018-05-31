@@ -12,14 +12,16 @@ import theakki.synctool.Job.NamedConnectionHandler;
 public abstract class StoredBase
 {
     protected String _LocalPath = "";
-    protected int _Port = 0;
+    //protected int _Port = 0;
 
     protected String _ConnectionName = "";
 
     final private String TAG_LocalPath = "LocalPath";
-    final private String TAG_Port = "Port";
+    //final private String TAG_Port = "Port";
 
     final private String TAG_ConnectionName = "ConnectionName";
+
+    public final static String ANONYMOUS_LOGIN = "Anonymous";
 
 
     protected void setValue(Element Node)
@@ -32,10 +34,6 @@ public abstract class StoredBase
         else if(name.compareToIgnoreCase(TAG_LocalPath) == 0)
         {
             _LocalPath = Node.getTextContent();
-        }
-        else if(name.compareToIgnoreCase(TAG_Port) == 0)
-        {
-            _Port = Integer.parseInt(Node.getTextContent());
         }
         else
         {
@@ -54,12 +52,14 @@ public abstract class StoredBase
         Element localPath = doc.createElement(TAG_LocalPath);
         localPath.setTextContent(_LocalPath);
         node.appendChild(localPath);
-
-        // Port
-        Element port = doc.createElement(TAG_Port);
-        port.setTextContent(String.valueOf(_Port));
-        node.appendChild(port);
     }
+
+
+    public boolean isAnonymous()
+    {
+        return ANONYMOUS_LOGIN.equals(_ConnectionName);
+    }
+
 
     public String User()
     {
@@ -72,8 +72,12 @@ public abstract class StoredBase
         NamedConnectionHandler.getInstance().update(_ConnectionName, temp);
     }
 
+
     public String Password()
     {
+        if(isAnonymous())
+            return "";
+
         return NamedConnectionHandler.getInstance().getConnection(_ConnectionName).Password;
     }
     public void Password(String password)
@@ -82,6 +86,7 @@ public abstract class StoredBase
         temp.Password = password;
         NamedConnectionHandler.getInstance().update(_ConnectionName, temp);
     }
+
 
     public String Url()
     {
@@ -94,11 +99,21 @@ public abstract class StoredBase
         NamedConnectionHandler.getInstance().update(_ConnectionName, temp);
     }
 
+
+    public int Port()
+    {
+        return NamedConnectionHandler.getInstance().getConnection(_ConnectionName).Port;
+    }
+    public void Port(int port)
+    {
+        NamedConnectionHandler.Connection temp = NamedConnectionHandler.getInstance().getConnection(_ConnectionName);
+        temp.Port = port;
+        NamedConnectionHandler.getInstance().update(_ConnectionName, temp);
+    }
+
+
     public String LocalPath(){ return _LocalPath; }
     public void LocalPath(String path){ _LocalPath = path; }
-
-    public int Port(){ return _Port; }
-    public void Port(int port){ _Port = port; }
 
     public String ConnectionName()
     {

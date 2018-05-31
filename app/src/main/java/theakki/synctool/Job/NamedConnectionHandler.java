@@ -33,6 +33,7 @@ public class NamedConnectionHandler {
         public ConnectionTypes Type;
         public String User;
         public String Password;
+        public int Port = 0;
     }
 
     public static class Connections
@@ -54,6 +55,7 @@ public class NamedConnectionHandler {
     private final String TAG_User = "User";
     private final String TAG_Password = "Password";
     private final String TAG_TYPE = "Type";
+    private final String TAG_Port = "Port";
 
 
     //private ArrayList<Connection> _Connections = new ArrayList<>();
@@ -136,6 +138,10 @@ public class NamedConnectionHandler {
                 {
                     container.Connection.Type = ConnectionFactory.connectiontypeFromString(elem.getTextContent(), ConnectionTypes.Local);
                 }
+                else if(TAG_Port.compareToIgnoreCase(elemName) == 0)
+                {
+                    container.Connection.Port = Integer.parseInt( elem.getTextContent() );
+                }
             }
 
             if(container.Connection.Url == null)
@@ -185,6 +191,11 @@ public class NamedConnectionHandler {
                 Element elementType = doc.createElement(TAG_TYPE);
                 elementType.setTextContent(entry.getValue().Connection.Type.toString());
                 elemConnection.appendChild(elementType);
+
+                // Port
+                Element elementPort = doc.createElement(TAG_Port);
+                elementPort.setTextContent( Integer.toString(entry.getValue().Connection.Port) );
+                elemConnection.appendChild(elementPort);
             }
 
             doc.appendChild(root);
