@@ -220,15 +220,21 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         return result;
     }
 
+    public class SyncStatus
+    {
+        public static final int NOT_STARTED = 0;
+        public static final int CONNECT_FILES_A = 1;
+        public static final int CONNECT_FILES_B = 2;
+        public static final int READ_FILES_A = 3;
+        public static final int READ_FILES_B = 4;
+        public static final int ANALYSE_FILES = 5;
+        public static final int CREATE_JOB = 6;
+        public static final int COPY_FILES = 7;
+        public static final int FINISH = 10;
+    }
 
-    public static final int STATUS_NOT_STARTED = 0;
-    public static final int STATUS_CONNECT_FILES_A = 1;
-    public static final int STATUS_CONNECT_FILES_B = 2;
-    public static final int STATUS_READ_FILES_A = 3;
-    public static final int STATUS_READ_FILES_B = 4;
-    public static final int STATUS_ANALYSE_FILES = 5;
-    public static final int STATUS_CREATE_JOB = 6;
-    public static final int STATUS_FINISH = 10;
+
+
 
 
     private int _status = 0;
@@ -266,21 +272,23 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
     {
         switch(status)
         {
-            case STATUS_NOT_STARTED:
+            case SyncStatus.NOT_STARTED:
                 return R.string.SyncStatus_NotStarted;
-            case STATUS_CONNECT_FILES_A:
+            case SyncStatus.CONNECT_FILES_A:
                 return R.string.SyncStatus_ConnectA;
-            case STATUS_CONNECT_FILES_B:
+            case SyncStatus.CONNECT_FILES_B:
                 return R.string.SyncStatus_ConnectB;
-            case STATUS_READ_FILES_A:
+            case SyncStatus.READ_FILES_A:
                 return R.string.SyncStatus_ReadFilesA;
-            case STATUS_READ_FILES_B:
+            case SyncStatus.READ_FILES_B:
                 return R.string.SyncStatus_ReadFilesB;
-            case STATUS_ANALYSE_FILES:
+            case SyncStatus.ANALYSE_FILES:
                 return R.string.SyncStatus_AnalyseFiles;
-            case STATUS_CREATE_JOB:
+            case SyncStatus.CREATE_JOB:
                 return R.string.SyncStatus_CreateJobs;
-            case STATUS_FINISH:
+            case SyncStatus.COPY_FILES:
+                return R.string.SyncStatus_CopyFiles;
+            case SyncStatus.FINISH:
                 return R.string.SyncStatus_Finish;
 
             default:
@@ -306,31 +314,33 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
         _SideA.RequestPermissions(context);
         _SideB.RequestPermissions(context);
 
-        publishProgress(STATUS_CONNECT_FILES_A, 0, 0);
+        publishProgress(SyncStatus.CONNECT_FILES_A, 0, 0);
         _SideA.Connect(context);
-        publishProgress(STATUS_CONNECT_FILES_B, 0, 0);
+        publishProgress(SyncStatus.CONNECT_FILES_B, 0, 0);
         _SideB.Connect(context);
 
         ArrayList<AnalyzeResult> whitelist = AnalyzeHelper.prepareList(_IncludeList);
         ArrayList<AnalyzeResult> blacklist = AnalyzeHelper.prepareList(_ExcludeList);
 
-        publishProgress(STATUS_READ_FILES_A, 0, 0);
+        publishProgress(SyncStatus.READ_FILES_A, 0, 0);
         ArrayList<FileItem> FilesA = _SideA.getFileList();
         ArrayList<FileItem> FilteredFilesA = AnalyzeHelper.filterFileList(FilesA, blacklist, whitelist);
 
-        publishProgress(STATUS_READ_FILES_B, 0, 0);
+        publishProgress(SyncStatus.READ_FILES_B, 0, 0);
         ArrayList<FileItem> FilesB = _SideB.getFileList();
         ArrayList<FileItem> FilteredFilesB = AnalyzeHelper.filterFileList(FilesB, blacklist, whitelist);
 
-        publishProgress(STATUS_ANALYSE_FILES, 0, 0);
+        publishProgress(SyncStatus.ANALYSE_FILES, 0, 0);
         ArrayList<FileMergeResult> MergedFiles = FileItemHelper.mergeFileList(FilteredFilesA, FilteredFilesB, _Direction, _SingleStategy);
-        publishProgress(STATUS_CREATE_JOB, 0, 0);
+        publishProgress(SyncStatus.CREATE_JOB, 0, 0);
         ArrayList<DoingList> JobList = ApplyStrategy(MergedFiles);
 
         Apply(JobList, _SideA, _SideB);
 
         _SideA.Disconnect();
         _SideB.Disconnect();
+
+        publishProgress(SyncStatus.FINISH, 1, 1);
     }
 
 
@@ -343,6 +353,8 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
 
     protected void Apply(ArrayList<DoingList> list, IConnection conSideA, IConnection conSideB)
     {
+        int success = 0;
+        int errors = 0;
         for(DoingList job : list)
         {
             boolean result = false;
@@ -428,6 +440,11 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
             if(result == false)
             {
                 // fail...
+                errors++;
+            }
+            else
+            {
+                publishProgress(SyncStatus.COPY_FILES, success, list.size());
             }
         }
     }
@@ -547,6 +564,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         temp.SideA.Type = JobType.Write;
                         temp.SideA.File = res.FileB.clone();
                         temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
+                        result.add(temp);
                     }
                     else
                     {
@@ -558,6 +576,7 @@ public class SyncJob extends AsyncTask<Activity, Integer, Integer>
                         temp.SideB.Type = JobType.Write;
                         temp.SideB.File = res.FileA.clone();
                         temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
+                        result.add(temp);
                     }
                     break;
             }

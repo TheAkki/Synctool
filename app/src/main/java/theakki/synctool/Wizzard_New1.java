@@ -2,6 +2,7 @@ package theakki.synctool;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Job.JobHandler;
+import theakki.synctool.Job.NamedConnectionHandler;
 import theakki.synctool.Job.SyncJob;
 
 /**
@@ -143,6 +146,9 @@ public class Wizzard_New1 extends AppCompatActivity
         {
             if(resultCode == RESULT_OK)
             {
+                // Save Connections
+                PreferencesHelper.getInstance().saveData(this, NamedConnectionHandler.getInstance());
+
                 setResult(RESULT_OK, data);
                 finish();
             }

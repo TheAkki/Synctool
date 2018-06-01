@@ -134,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void onExitClick()
     {
+        PreferencesHelper.getInstance().saveData(this, NamedConnectionHandler.getInstance());
+        PreferencesHelper.getInstance().saveData(this, JobHandler.getInstance());
+
         finish();
     }
 

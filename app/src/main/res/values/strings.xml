@@ -8,6 +8,7 @@
     <string name="SyncStatus_ReadFilesB">Read files from location B</string>
     <string name="SyncStatus_AnalyseFiles">Analyse files</string>
     <string name="SyncStatus_CreateJobs">Create sync jobs</string>
+    <string name="SyncStatus_CopyFiles">CopyFiles</string>
     <string name="SyncStatus_Finish">Finished</string>
 
     <string name="JobInfo_Active" translatable="false">A</string>
