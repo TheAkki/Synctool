@@ -20,6 +20,9 @@ out/
 # Windows thumbnails
 Thumbs.db
 
+#dolphin (wtf)
+.directory
+
 # OSX files
 .DS_Store
 

@@ -14,9 +14,10 @@ import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.SyncJob;
 
 /**
- * Created by theakki on 06.04.18.
+ * Class to show the first wizzard page for new job
+ * @author theakki
+ * @since 0.1
  */
-
 public class Wizzard_New1 extends AppCompatActivity
 {
     private EditText _textName;
@@ -29,6 +30,8 @@ public class Wizzard_New1 extends AppCompatActivity
     private Boolean _bNewCreated = false;
 
     public final static String SETTINGS = "Settings";
+
+    public final int REQUESTCODE_NEXT_PAGE = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -54,33 +57,6 @@ public class Wizzard_New1 extends AppCompatActivity
         // Name
         _textName = findViewById(R.id.edit_JobName);
 
-        /*
-        _textName.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus)
-                {
-                    String strName = _textName.getText().toString().trim();
-                    if(strName.length() > 0)
-                    {
-                        boolean bNameExist = JobHandler.getInstance().existJobByName(strName);
-                        if(bNameExist == true)
-                        {
-                            String strError =getString(R.string.Toast_JobExist, strName);
-                            Toast.makeText(v.getContext(), strError, Toast.LENGTH_SHORT).show();
-                            _bNameIsValid = true;
-                        }
-                        else
-                        {
-                            _bNameIsValid = true;
-                        }
-                    }
-                }
-            }
-        });
-        */
-
 
         // Cancel
         _buttonCancel = findViewById(R.id.btn_Cancel);
@@ -89,9 +65,7 @@ public class Wizzard_New1 extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intentCancel = new Intent(Wizzard_New1.this, MainActivity.class);
-                startActivity(intentCancel);
-                //clickBack();
+                clickBack();
             }
         });
 
@@ -151,13 +125,27 @@ public class Wizzard_New1 extends AppCompatActivity
         Intent intentNext = new Intent(Wizzard_New1.this, Wizzard_New2.class);
         final String strSettings = JobHandler.getSettings(_job);
         intentNext.putExtra(SETTINGS, strSettings );
-        startActivity(intentNext);
+        startActivityForResult(intentNext, REQUESTCODE_NEXT_PAGE);
     }
+
 
     private void clickBack()
     {
-        Intent intent = new Intent();
-        setResult(Activity.RESULT_CANCELED, intent);
+        setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == REQUESTCODE_NEXT_PAGE)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        }
     }
 }

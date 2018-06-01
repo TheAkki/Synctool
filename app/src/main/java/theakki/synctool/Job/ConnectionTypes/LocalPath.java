@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Job.FileItem;
@@ -137,6 +138,40 @@ public class LocalPath implements IConnection
         return false;
     }
 
+    /**
+     * This method read all folders on local device. This is done recursive
+     * @param parent Parent Tree node
+     * @param items List of items in this folder
+     */
+    private void fillTreeList(StringTree parent, File[] items)
+    {
+        if(items == null || items.length == 0)
+            return;
+
+        for(int i = 0; i < items.length; ++i)
+        {
+            File obj = items[i];
+            if(obj.isDirectory())
+            {
+                StringTree folder = new StringTree(obj.getName());
+                fillTreeList(folder, obj.listFiles());
+                parent.add(folder);
+            }
+        }
+    }
+
+
+    @Override
+    public StringTree Tree()
+    {
+        StringTree result = new StringTree("");
+
+        File rootFile = new File(_Path);
+        fillTreeList(result, rootFile.listFiles());
+
+        return result;
+    }
+
 
     private static String getMimeType(File f)
     {
@@ -196,21 +231,6 @@ public class LocalPath implements IConnection
     }
 
 
-    /*
-    public boolean IsAvailable() {
-        if(_Path.length() == 0)
-            return false;
-        File f = new File(_Path);
-        if(f.exists() == false)
-            return false;
-        if(f.isDirectory() == false)
-            return false;
-
-        return true;
-    }*/
-
-
-
     @Override
     public void Connect(Activity context)
     {
@@ -234,7 +254,6 @@ public class LocalPath implements IConnection
     public ArrayList<FileItem> getFileList()
     {
         ArrayList<FileItem> result = new ArrayList<>();
-        //_Path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SyncTest/A";
 
         File root = new File(_Path);
         fillArrayList(result, root.listFiles(), _Path);
@@ -244,7 +263,7 @@ public class LocalPath implements IConnection
 
 
     /**
-     * This method read all files on ftp server. This is done recursive
+     * This method read all files on local device. This is done recursive
      * @param result List of all items
      * @param items List of items in this folder
      * @param basePath String to get the base path of the file. Remove that part from full string to get relative path

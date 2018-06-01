@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.synctool.theakki.synctool.Wizzard_New1"
+    tools:context="theakki.synctool.Wizzard_New2"
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
@@ -52,15 +52,30 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Button_Add"
                 android:visibility="gone" />
+
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/txt_LocalPathA"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/Hint_RelativePath"
-            android:inputType="textPersonName" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txt_LocalPathA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/Hint_RelativePath"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/btn_BrowseA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Button_Browse" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -96,14 +111,27 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/txt_LocalPathB"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/Hint_RelativePath"
-            android:inputType="textPersonName" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txt_LocalPathB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/Hint_RelativePath"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/btn_BrowseB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Button_Browse" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package theakki.synctool;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Helper.ViewHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
@@ -31,9 +33,10 @@ import theakki.synctool.Job.Settings.TwoWayStrategy;
 import theakki.synctool.Job.SyncJob;
 
 /**
- * Created by theakki on 06.04.18.
+ * Class to show the second wizzard page for new job
+ * @author theakki
+ * @since 0.1
  */
-
 public class Wizzard_New2 extends AppCompatActivity
 {
     private SyncJob _job;
@@ -49,6 +52,8 @@ public class Wizzard_New2 extends AppCompatActivity
     private Button _buttonAddB;
     private EditText _txtRelativePathA;
     private EditText _txtRelativePathB;
+    private Button _buttonBrowseA;
+    private Button _buttonBrowseB;
 
     private Spinner _spinnerDirection;
     private Spinner _spinnerStrategy1;
@@ -58,6 +63,9 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private static final int REQUESTCODE_NewOwnCloud = 1;
     private static final int REQUESTCODE_NewFtp = 2;
+
+    private static final int REQUESTCODE_BrowseA = 10;
+    private static final int REQUESTCODE_BrowseB = 11;
     public final static String Extra_ConnectionName = "ConnectionName";
 
     // ToDo: Test against array
@@ -133,6 +141,15 @@ public class Wizzard_New2 extends AppCompatActivity
         // Relative Path A
         _txtRelativePathA = findViewById(R.id.txt_LocalPathA);
 
+        // Browse A
+        _buttonBrowseA = findViewById(R.id.btn_BrowseA);
+        _buttonBrowseA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browse(_spinnerTypeA, _spinnerNameA, REQUESTCODE_BrowseA);
+            }
+        });
+
         // Spinner Type B
         _spinnerTypeB = findViewById(R.id.spn_ConnectionTypeB);
         _spinnerTypeB.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,6 +171,15 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Relative Path B
         _txtRelativePathB = findViewById(R.id.txt_LocalPathB);
+
+        // Browse B
+        _buttonBrowseB = findViewById(R.id.btn_BrowseB);
+        _buttonBrowseB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browse(_spinnerTypeB, _spinnerNameB, REQUESTCODE_BrowseB);
+            }
+        });
 
         // Spinner Sync Direction
         _spinnerDirection = findViewById(R.id.spn_SyncDirection);
@@ -200,6 +226,62 @@ public class Wizzard_New2 extends AppCompatActivity
         });
 
         restoreDataFromJob();
+    }
+
+    private void browse(Spinner spnType, Spinner spnName, int Requestcode)
+    {
+        final int iSelectedType = spnType.getSelectedItemPosition();
+        final String strSelectedName = (String)spnName.getSelectedItem();
+        Intent intentBrowse = new Intent(Wizzard_New2.this, Wizzard_FolderBrowser.class);
+        final IConnection connection;
+
+        switch(iSelectedType)
+        {
+            case SpinnerIdxType.Local: // Local
+                final String BasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                connection = new LocalPath(BasePath);
+                intentBrowse.putExtra(Wizzard_FolderBrowser.EXTRA_RECEIVE_PATH_OFFSET, BasePath);
+                break;
+
+            case SpinnerIdxType.Owncloud:
+                connection = new OwnCloud(strSelectedName, "/");
+                break;
+
+            case SpinnerIdxType.Ftp:    // FTP
+                connection = new FTPConnection(strSelectedName, "/");
+                break;
+
+            default:
+                return;
+        }
+
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                  readTree(connection);
+            }
+        });
+
+        try
+        {
+            thread.start();
+            thread.join();
+        }
+        catch(Exception e)
+        {
+            return;
+        }
+
+        intentBrowse.putExtra(Wizzard_FolderBrowser.EXTRA_RECEIVE_FOLDERS, _Tree);
+        startActivityForResult(intentBrowse, Requestcode);
+    }
+
+    private StringTree _Tree;
+    private void readTree(IConnection connection)
+    {
+        connection.RequestPermissions(this);
+        connection.Connect(this);
+        _Tree = connection.Tree();
     }
 
 
@@ -463,8 +545,6 @@ public class Wizzard_New2 extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-
         // check that it is the SecondActivity with an OK result
         if (requestCode == REQUESTCODE_NewOwnCloud)
         {
@@ -482,6 +562,24 @@ public class Wizzard_New2 extends AppCompatActivity
                 fillData(_spinnerTypeB, _spinnerNameB);
             }
         }
+        else if(requestCode == REQUESTCODE_BrowseA)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
+                _txtRelativePathA.setText( folder );
+            }
+        }
+        else if(requestCode == REQUESTCODE_BrowseB)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
+                _txtRelativePathB.setText( folder );
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -576,10 +674,9 @@ public class Wizzard_New2 extends AppCompatActivity
         // Creation is finished => Store
         storeJob();
 
-        //Intent intentNext = new Intent(Wizzard_New2.this, MainActivity.class);
         Intent intentNext = new Intent();
-        setResult(Activity.RESULT_OK);
         intentNext.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
+        setResult(Activity.RESULT_OK, intentNext);
         finish();
     }
 

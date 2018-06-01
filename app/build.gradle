@@ -28,6 +28,9 @@ dependencies {
 
     implementation 'com.github.owncloud:android-library:oc-android-library-0.9.19'
 
+    //Tree View
+    implementation 'com.github.bmelnychuk:atv:1.2.+'
+
     // Latest version for Tika and JAVA 7: 1.17
     //implementation 'org.apache.tika:tika-parsers:1.12'
     implementation 'commons-net:commons-net:3.6'

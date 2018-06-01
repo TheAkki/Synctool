@@ -31,6 +31,7 @@
     <string name="Button_Ok">OK</string>
 
     <string name="Button_Add" translatable="false">+</string>
+    <string name="Button_Browse" translatable="false">B</string>
     <string name="Button_Scan" translatable="false">S</string>
 
     <string name="Label_JobName">Name</string>

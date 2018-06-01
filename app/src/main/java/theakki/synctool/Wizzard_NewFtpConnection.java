@@ -109,8 +109,7 @@ public class Wizzard_NewFtpConnection extends AppCompatActivity
 
     private void clickBack()
     {
-        final Intent intent = new Intent();
-        setResult(Activity.RESULT_CANCELED, intent);
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 
@@ -156,7 +155,15 @@ public class Wizzard_NewFtpConnection extends AppCompatActivity
                 }
             }
         });
-        thread.start();
+
+        try
+        {
+            thread.start();
+            thread.join();
+        }
+        catch(Exception e)
+        {}
+
 
         if(_bConnectionValid)
         {

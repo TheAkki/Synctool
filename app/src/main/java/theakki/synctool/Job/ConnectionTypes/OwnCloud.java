@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.util.ArrayList;
 
+import theakki.synctool.Data.StringTree;
 import theakki.synctool.FromOwnCloud.GetServerInfoOperation;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Job.FileItem;
@@ -147,6 +148,35 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     }
 
 
+    @Override
+    public StringTree Tree() {
+        StringTree root = new StringTree("");
+
+        ReadRemoteFilesOperation read = new ReadRemoteFilesOperation("/", ReadRemoteFilesOperation.SearchObjects.OnlyDirs);
+        RemoteOperationResult result = read.execute(_Client);
+
+        return convertToTree(result.getData());
+    }
+
+
+    /**
+     * Convert a ArrayList of FileItem, which are containing paths to a tree
+     * @param objects List of paths
+     * @return Tree
+     */
+    private StringTree convertToTree(ArrayList<Object> objects)
+    {
+        StringTree root = new StringTree("");
+        for(Object o : objects)
+        {
+            FileItem fi = (FileItem)o;
+            String[] parts = FileItemHelper.splittPath(fi.RelativePath);
+            root.include(parts);
+        }
+        return root;
+    }
+
+
     /**
      * This method return the type of this Connection as String
      * @return "OwnCloud"
@@ -170,16 +200,6 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
 
     }
 
-
-    /*
-    public boolean IsAvailable()
-    {
-        ReadRemoteFilesOperation read = new ReadRemoteFilesOperation("/", ReadRemoteFilesOperation.SearchObjects.OnlyFiles);
-        read.Deep(DavConstants.DEPTH_0);
-        RemoteOperationResult result = read.execute(_Client);
-
-        return result.isSuccess();
-    }*/
 
     /**
      * This method check if a FTP server is available

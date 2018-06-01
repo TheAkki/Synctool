@@ -101,7 +101,12 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
                 _bConnectionValid = OwnCloud.isAvailable(strUri, getContext());
             }
         });
-        thread.start();
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch(Exception e)
+        {}
 
         if(_bConnectionValid)
         {
@@ -120,8 +125,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 
     private void clickBack()
     {
-        final Intent intent = new Intent();
-        setResult(Activity.RESULT_CANCELED, intent);
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 
@@ -153,7 +157,12 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
                 _bUserPermissionOk = OwnCloud.IsAccessible(strUri, getContext(), username, password);
             }
         });
-        thread.start();
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch(Exception e)
+        {}
 
         if(_bUserPermissionOk)
         {
