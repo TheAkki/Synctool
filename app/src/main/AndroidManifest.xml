@@ -26,6 +26,7 @@
         <activity android:name=".Wizzard_New2" />
         <activity android:name=".Wizzard_NewOwnCloudConnection" />
         <activity android:name=".Wizzard_NewFtpConnection" />
+        <activity android:name=".Wizzard_FolderBrowser" />
     </application>
 
 </manifest>
