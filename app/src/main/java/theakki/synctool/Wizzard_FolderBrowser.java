@@ -1,11 +1,9 @@
 package theakki.synctool;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -28,6 +26,7 @@ import theakki.synctool.View.TreeItemHolder;
 public class Wizzard_FolderBrowser extends AppCompatActivity
 {
     public static final String EXTRA_RECEIVE_FOLDERS = "Folders";
+    public static final String EXTRA_RECEIVE_PATH_OFFSET = "PathOffset";
     public static final String EXTRA_SEND_SELECTED = "SelectedFolder";
 
     private TreeNode _treeData;
@@ -37,6 +36,7 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
     private TextView _txtSelectedPath;
 
     private String _SelectedPath = "/";
+    private String _PathOffset = "/";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -45,6 +45,10 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_folderbrowser);
         Bundle extras = getIntent().getExtras();
+
+        String pathOffset = extras.getString(EXTRA_RECEIVE_PATH_OFFSET);
+        if(pathOffset != null)
+            _PathOffset = pathOffset;
 
         StringTree data = extras.getParcelable(EXTRA_RECEIVE_FOLDERS);
         _treeData = transform(data);
@@ -113,7 +117,7 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
     private void onOkClick()
     {
         Intent intentOk = new Intent();
-        intentOk.putExtra(EXTRA_SEND_SELECTED, _SelectedPath);
+        intentOk.putExtra(EXTRA_SEND_SELECTED, FileItemHelper.concatPath(_PathOffset, _SelectedPath));
         setResult(Activity.RESULT_OK, intentOk);
         finish();
     }

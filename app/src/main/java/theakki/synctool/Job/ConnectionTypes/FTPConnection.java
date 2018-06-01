@@ -2,9 +2,11 @@ package theakki.synctool.Job.ConnectionTypes;
 
 import android.app.Activity;
 
+import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Job.FileItem;
 import theakki.synctool.Job.IConnection;
+
 
 import org.apache.commons.net.ftp.*;
 import org.w3c.dom.Document;
@@ -162,6 +164,53 @@ public class FTPConnection extends StoredBase implements IConnection
         }
 
         return true;
+    }
+
+
+    /**
+     * This method read all folders on local device. This is done recursive
+     * @param parent Parent Tree node
+     * @param items List of items in this folder
+     */
+    private void fillTreeList(StringTree parent, FTPFile[] items)
+    {
+        for(FTPFile file : items)
+        {
+            final String folder = file.getName();
+            StringTree child = new StringTree( folder );
+
+            try
+            {
+                _Connection.changeWorkingDirectory(folder);
+                FTPFile[] subDirs = _Connection.listDirectories();
+                fillTreeList(child, subDirs);
+                _Connection.changeToParentDirectory();
+                parent.add(child);
+            }
+            catch(Exception e)
+            {
+                return;
+            }
+        }
+    }
+
+    @Override
+    public StringTree Tree()
+    {
+        StringTree result = new StringTree("");
+
+        try
+        {
+            _Connection.changeWorkingDirectory("/");
+            fillTreeList(result, _Connection.listDirectories());
+            _Connection.changeWorkingDirectory(_LocalPath);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 

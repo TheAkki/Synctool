@@ -8,6 +8,8 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 
+import theakki.synctool.Data.StringTree;
+
 /**
  * Interface to describe basic method for a connection.
  * @author theakki
@@ -81,4 +83,11 @@ public interface IConnection
      * @return True when success
      */
     boolean Write(File SourceFile, FileItem TargetFile);
+
+
+    /**
+     * Return a tree with folder names with the given local path as base
+     * @return Tree
+     */
+    StringTree Tree();
 }
