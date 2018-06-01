@@ -135,8 +135,9 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
         CreateRemoteFolderOperation mkdir = new CreateRemoteFolderOperation(strFullFolderPath, true);
         RemoteOperationResult resultMkdir = mkdir.execute(_Client);
 
-        if(resultMkdir.isSuccess() == false)
-            return false;
+        // ToDo: No Error when path already exist
+        //if(resultMkdir.isSuccess() == false)
+        //    return false;
 
         final String strRemotePath = FileItemHelper.concatPath(strFullFolderPath, TargetFile.FileName);
         UploadRemoteFileOperation upload = new UploadRemoteFileOperation(   file.getAbsolutePath(),
