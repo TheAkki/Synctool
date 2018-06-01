@@ -5,6 +5,9 @@ Prio number 1 usecase is synchronize data from Smartphone to Owncloud server.
 
 In every case I need nice guys who are helping me in GUI things. I'm a very bad GUI creator. ;)
 
+## Screenshots
+![Alt text](docu/MainMenue.png?raw=true "Main Menue")
+
 ## Features
 ### Targets
 - Local Files
