@@ -182,7 +182,7 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
      * This method return the type of this Connection as String
      * @return "OwnCloud"
      */
-    static public final String getType()
+    static public String getType()
     {
         return "OwnCloud";
     }

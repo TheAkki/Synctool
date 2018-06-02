@@ -196,7 +196,7 @@ public class AccountUtils {
     */
 
 
-    /**
+    /*
      * Update the accounts in AccountManager to meet the current version of accounts expected by the app, if needed.
      *
      * Introduced to handle a change in the structure of stored account names needed to allow different OC servers

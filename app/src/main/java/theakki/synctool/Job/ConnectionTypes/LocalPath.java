@@ -48,7 +48,7 @@ public class LocalPath implements IConnection
     public LocalPath(Element Node)
     {
         final String name = Node.getNodeName();
-        if(name.compareToIgnoreCase(name) != 0)
+        if(name.compareToIgnoreCase(TAG_Name) != 0)
             throw new IllegalArgumentException("Unexpected Node '" + name + "'");
 
         NodeList childs = Node.getChildNodes();

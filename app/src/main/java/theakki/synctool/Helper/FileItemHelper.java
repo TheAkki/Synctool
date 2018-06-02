@@ -118,7 +118,7 @@ public class FileItemHelper
             if(FileA.Flag != FileItem.FLAG_UNKNOWN)
                 continue;
 
-            SortedMap<MergeResult, FileItem> resultMap = new TreeMap<MergeResult, FileItem>();
+            SortedMap<MergeResult, FileItem> resultMap = new TreeMap<>();
 
 
             for(int j = 0; j < filelistB.size(); ++j)

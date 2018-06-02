@@ -142,7 +142,7 @@ public class FileItemHelper_FillMergeList_Test
         final ArrayList<FileItem> listA = new ArrayList<>(Arrays.asList( file1A ));
         final ArrayList<FileItem> listB = new ArrayList<>(Arrays.asList( file1B ));
 
-        /**
+        /*
          *  A is Master. So rename B
          *  FileA: B
          *  FileB: A
@@ -165,7 +165,7 @@ public class FileItemHelper_FillMergeList_Test
         final ArrayList<FileItem> listA = new ArrayList<>(Arrays.asList( file1A ));
         final ArrayList<FileItem> listB = new ArrayList<>(Arrays.asList( file1B ));
 
-        /**
+        /*
          *  B is Master. So rename A
          *  FileA: A
          *  FileB: B
