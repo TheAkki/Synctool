@@ -1,6 +1,7 @@
 package theakki.synctool.Job;
 
 import android.app.Activity;
+import android.content.Context;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,13 +28,13 @@ public interface IConnection
      * Request all necessary permissions for this Connection type
      * @param context Context of Application
      */
-    void RequestPermissions(Activity context);
+    void RequestPermissions(Context context);
 
     /**
      * Connect, login and prepare Connection
      * @param context Context of Application
      */
-    void Connect(Activity context);
+    void Connect(Context context);
 
     /**
      * Disconnect
@@ -51,7 +52,7 @@ public interface IConnection
      * @param doc XML Document as base for create nodes
      * @return Node with settings
      */
-    Element getSettings(Document doc);
+    Element getJobSettings(Document doc);
 
     /**
      * Move/Rename a file

@@ -1,6 +1,6 @@
 package theakki.synctool.Job.ConnectionTypes;
 
-import android.app.Activity;
+import android.content.Context;
 
 import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.FileItemHelper;
@@ -43,18 +43,7 @@ public class FTPConnection extends StoredBase implements IConnection
      */
     public FTPConnection(Element Node)
     {
-        final String name = Node.getNodeName();
-        if(name.compareToIgnoreCase(TAG_NAME) != 0)
-            throw new IllegalArgumentException("Unexpected Node name '" + name + "'");
-
-        NodeList childs = Node.getChildNodes();
-        for(int i = 0; i < childs.getLength(); ++i)
-        {
-            // work with locale Nodes
-
-            // base nodes
-            setValue( (Element)childs.item(i) );
-        }
+        loadJobSettings(Node);
     }
 
 
@@ -70,9 +59,29 @@ public class FTPConnection extends StoredBase implements IConnection
     }
 
 
+    /**
+     * Load Settings from a XML Node
+     * @param Node XML Node with Content
+     */
+    public void loadJobSettings(Element Node)
+    {
+        final String name = Node.getNodeName();
+        if(name.compareToIgnoreCase(TAG_NAME) != 0)
+            throw new IllegalArgumentException("Unexpected Node name '" + name + "'");
+
+        NodeList childs = Node.getChildNodes();
+        for(int i = 0; i < childs.getLength(); ++i)
+        {
+            // work with locale Nodes
+
+            // base nodes
+            setValue( (Element)childs.item(i) );
+        }
+    }
+
 
     @Override
-    public Element getSettings(Document doc)
+    public Element getJobSettings(Document doc)
     {
         Element root = doc.createElement(TAG_NAME);
         appendSettings(doc, root);
@@ -246,7 +255,8 @@ public class FTPConnection extends StoredBase implements IConnection
     {
         try {
 
-            for(String folder : folders) {
+            for(String folder : folders)
+            {
                 _Connection.makeDirectory(folder);
                 _Connection.changeWorkingDirectory(folder);
             }
@@ -340,7 +350,7 @@ public class FTPConnection extends StoredBase implements IConnection
 
 
     @Override
-    public void Connect(Activity context)
+    public void Connect(Context context)
     {
         try{
             _Connection.connect(Url(), Port());
@@ -442,7 +452,7 @@ public class FTPConnection extends StoredBase implements IConnection
 
 
     @Override
-    public void RequestPermissions(Activity context)
+    public void RequestPermissions(Context context)
     {
     }
 }

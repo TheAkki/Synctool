@@ -1,6 +1,6 @@
 package theakki.synctool.Job.ConnectionTypes;
 
-import android.app.Activity;
+import android.content.Context;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,6 +47,16 @@ public class LocalPath implements IConnection
      */
     public LocalPath(Element Node)
     {
+        loadJobSettings(Node);
+    }
+
+
+    /**
+     * Load Settings from a XML Node
+     * @param Node XML Node with Content
+     */
+    public void loadJobSettings(Element Node)
+    {
         final String name = Node.getNodeName();
         if(name.compareToIgnoreCase(TAG_Name) != 0)
             throw new IllegalArgumentException("Unexpected Node '" + name + "'");
@@ -74,7 +84,7 @@ public class LocalPath implements IConnection
 
 
     @Override
-    public Element getSettings(Document doc) {
+    public Element getJobSettings(Document doc) {
         Element root = doc.createElement(TAG_Name);
 
         Element path = doc.createElement(TAG_Path);
@@ -232,7 +242,7 @@ public class LocalPath implements IConnection
 
 
     @Override
-    public void Connect(Activity context)
+    public void Connect(Context context)
     {
     }
 
@@ -244,7 +254,7 @@ public class LocalPath implements IConnection
 
 
     @Override
-    public void RequestPermissions(Activity context)
+    public void RequestPermissions(Context context)
     {
         Permissions.requestForPermissionSD(context);
     }

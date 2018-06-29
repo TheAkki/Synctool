@@ -1,6 +1,7 @@
 package theakki.synctool;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import theakki.synctool.Helper.TestEnvironmentHelper;
 import theakki.synctool.Job.ConnectionTypes.OwnCloud;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
+import theakki.synctool.Job.Scheduler.Scheduler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main1);
 
         final boolean DEBUG = false;
+
 
         initSingletonData();
 
@@ -143,11 +146,15 @@ public class MainActivity extends AppCompatActivity {
     private void initSingletonData()
     {
         // Jobs
-        final String Settings = "<JobHandler><SyncJob><Name>Test</Name><SideA type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/A</Path></LocalPath></SideA><SideB type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/B</Path></LocalPath></SideB></SyncJob></JobHandler>";
-        PreferencesHelper.getInstance().loadData(this, JobHandler.getInstance(), Settings);
+        final String DefaultSettings = "<JobHandler><SyncJob><Name>Test</Name><SideA type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/A</Path></LocalPath></SideA><SideB type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/B</Path></LocalPath></SideB></SyncJob></JobHandler>";
+        PreferencesHelper.getInstance().loadData(this, JobHandler.getInstance(), DefaultSettings);
 
         // Connections
         PreferencesHelper.getInstance().loadData(this, NamedConnectionHandler.getInstance());
+
+        // Scheduler
+        Scheduler.getInstance().init(this);
+        Scheduler.getInstance().update(JobHandler.getInstance().getSchedulers(true));
     }
 
     @Override
@@ -155,4 +162,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onPause();
     }
+
+
 }

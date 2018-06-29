@@ -2,10 +2,12 @@ package theakki.synctool.Helper;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 /**
  * Util class for handle Dates
@@ -14,6 +16,8 @@ import android.support.v4.content.ContextCompat;
  */
 public class Permissions
 {
+    final static String L_TAG = Permissions.class.getSimpleName();
+
     private final static String[] EXTERNAL_PERMS_SD = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final static String[] INTERNET_PERMS_INTERNET = {Manifest.permission.INTERNET};
     private final static int EXTERNAL_REQUEST = 128;
@@ -24,16 +28,24 @@ public class Permissions
      * @param context Context in which the request is done.
      * @return True when success
      */
-    public static boolean requestForPermissionSD(Activity context)
+    public static boolean requestForPermissionSD(Context context)
     {
+        if(!(context instanceof Activity))
+        {
+            Log.d(L_TAG, "Context is not a instance of Activity");
+            return false;
+        }
+
+        Activity act = (Activity) context;
+
         boolean isPermissionOn = true;
         final int version = Build.VERSION.SDK_INT;
         if(version >= 23)
         {
-            if(!canAccessExternalSd(context))
+            if(!canAccessExternalSd(act))
             {
                 isPermissionOn = false;
-                ActivityCompat.requestPermissions(context, EXTERNAL_PERMS_SD , EXTERNAL_REQUEST);
+                ActivityCompat.requestPermissions(act, EXTERNAL_PERMS_SD , EXTERNAL_REQUEST);
             }
         }
         return isPermissionOn;
@@ -45,16 +57,24 @@ public class Permissions
      * @param context Context in which the request is done.
      * @return True when success
      */
-    public static boolean requestForPermissionInternet(Activity context)
+    public static boolean requestForPermissionInternet(Context context)
     {
+        if(!(context instanceof Activity))
+        {
+            Log.d(L_TAG, "Context is not a instance of Activity");
+            return false;
+        }
+
+        Activity act = (Activity) context;
+
         boolean isPermissionOn = true;
         final int version = Build.VERSION.SDK_INT;
         if(version >= 23)
         {
-            if(!canAccessInternet(context))
+            if(!canAccessInternet(act))
             {
                 isPermissionOn = false;
-                ActivityCompat.requestPermissions(context, INTERNET_PERMS_INTERNET , EXTERNAL_REQUEST);
+                ActivityCompat.requestPermissions(act, INTERNET_PERMS_INTERNET , EXTERNAL_REQUEST);
             }
         }
         return isPermissionOn;
