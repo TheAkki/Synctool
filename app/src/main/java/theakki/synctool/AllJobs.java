@@ -1,6 +1,5 @@
 package theakki.synctool;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -101,10 +100,10 @@ public class AllJobs extends AppCompatActivity
 
     private void onContextEditClick(long id)
     {
-        Intent editIntent = new Intent(this, Wizzard_New1.class);
+        Intent editIntent = new Intent(this, Wizzard_New1_General.class);
         JobInfo o = (JobInfo) _listAllJobs.getAdapter().getItem((int)id);
         final String setting = JobHandler.getSettings(JobHandler.getInstance().getByName(o.Name));
-        editIntent.putExtra(Wizzard_New1.SETTINGS, setting);
+        editIntent.putExtra(Wizzard_New1_General.SETTINGS, setting);
         startActivityForResult(editIntent, REQUEST_EDIT);
     }
 
