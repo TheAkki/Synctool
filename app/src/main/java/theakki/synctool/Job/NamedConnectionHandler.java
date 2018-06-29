@@ -76,23 +76,23 @@ public class NamedConnectionHandler {
         public boolean DontStore = true;
     }
 
-    private final String TAG_Name = "ConnectionHandler";
-    private final String TAG_Connection = "Connection";
-    private final String ATTR_Name = "Name";
-    private final String TAG_URL = "Url";
-    private final String TAG_User = "User";
-    private final String TAG_Password = "Password";
-    private final String TAG_TYPE = "Type";
-    private final String TAG_Port = "Port";
+    private final static String TAG_Name = "ConnectionHandler";
+    private final static String TAG_Connection = "Connection";
+    private final static String ATTR_Name = "Name";
+    private final static String TAG_URL = "Url";
+    private final static String TAG_User = "User";
+    private final static String TAG_Password = "Password";
+    private final static String TAG_TYPE = "Type";
+    private final static String TAG_Port = "Port";
 
+
+    public final static String DEFAULT_SETTINGS = "<" + TAG_Name + "/>";
 
     //private ArrayList<Connection> _Connections = new ArrayList<>();
     private Map<String, ConnectionContainer> _Connections = new HashMap<>();
 
-
+    // Singleton
     private static final NamedConnectionHandler ourInstance = new NamedConnectionHandler();
-
-
     public static NamedConnectionHandler getInstance() {
         return ourInstance;
     }

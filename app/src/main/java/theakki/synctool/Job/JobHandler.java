@@ -35,9 +35,12 @@ public class JobHandler
 {
     private final static String L_Tag = JobHandler.class.getSimpleName();
 
-    private final String TAG_Name = "JobHandler";
+    private final static String TAG_Name = "JobHandler";
     private final static String TAG_Settings = "Settings";
 
+    public static final String DEFAULT_SETTINGS = "<" + TAG_Name + "/>";
+
+    // Singleton
     private static final JobHandler ourInstance = new JobHandler();
     public static JobHandler getInstance()
     {
@@ -92,10 +95,10 @@ public class JobHandler
             throw new IllegalArgumentException(strErrorMessage);
         }
 
-        NodeList childs = Node.getChildNodes();
-        for(int i = 0; i < childs.getLength(); ++i)
+        NodeList children = Node.getChildNodes();
+        for(int i = 0; i < children.getLength(); ++i)
         {
-            Element child = (Element) childs.item(i);
+            Element child = (Element) children.item(i);
             SyncJob job = new SyncJob(child);
             if(job == null)
             {
