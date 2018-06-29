@@ -17,8 +17,6 @@ import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
 import theakki.synctool.Job.ConnectionTypes.OwnCloud;
 import theakki.synctool.Job.NamedConnectionHandler;
 
-import android.R.*;
-
 public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 {
     private Button _btnBack;
@@ -187,7 +185,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
         PreferencesHelper.getInstance().saveData(this, NamedConnectionHandler.getInstance());
 
         final Intent intent = new Intent();
-        intent.putExtra(Wizzard_New2.Extra_ConnectionName, strName);
+        intent.putExtra(Wizzard_New2_SourceTarget.Extra_ConnectionName, strName);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

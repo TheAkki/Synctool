@@ -1,7 +1,6 @@
 package theakki.synctool;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.Spinner;
 import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Helper.TestEnvironmentHelper;
-import theakki.synctool.Job.ConnectionTypes.OwnCloud;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
 import theakki.synctool.Job.Scheduler.Scheduler;
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intentNewJob = new Intent(MainActivity.this, Wizzard_New1.class);
+                Intent intentNewJob = new Intent(MainActivity.this, Wizzard_New1_General.class);
                 startActivity(intentNewJob);
             }
         };

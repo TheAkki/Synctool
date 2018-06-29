@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="theakki.synctool.Wizzard_New3">
+    tools:context="theakki.synctool.Wizzard_New3_Trigger">
 
     <LinearLayout
         android:layout_width="match_parent"
