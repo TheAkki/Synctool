@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,12 +24,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-/**
- * Created by theakki on 26.03.18.
- */
+import theakki.synctool.Job.Scheduler.SchedulerInfo;
 
+/**
+ * This class collect all synchronization jobs.
+ * @author theakki
+ * @since 0.1
+ */
 public class JobHandler
 {
+    private final static String L_Tag = JobHandler.class.getSimpleName();
+
     private final String TAG_Name = "JobHandler";
     private final static String TAG_Settings = "Settings";
 
@@ -56,6 +62,7 @@ public class JobHandler
 
         if(_initDone == true)
         {
+            Log.d(L_Tag, "Init already done");
             return;
         }
 
@@ -72,13 +79,18 @@ public class JobHandler
         }
         catch (Exception e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
             e.printStackTrace();
             return;
         }
 
         final String name = Node.getTagName();
         if(name.compareToIgnoreCase(TAG_Name) != 0)
-            throw new IllegalArgumentException("Name of Node '" + name + "' not expected");
+        {
+            final String strErrorMessage = "Name of Node '" + name + "' not expected";
+            Log.e(L_Tag, strErrorMessage);
+            throw new IllegalArgumentException(strErrorMessage);
+        }
 
         NodeList childs = Node.getChildNodes();
         for(int i = 0; i < childs.getLength(); ++i)
@@ -86,7 +98,11 @@ public class JobHandler
             Element child = (Element) childs.item(i);
             SyncJob job = new SyncJob(child);
             if(job == null)
-                throw new IllegalStateException("Job is not created");
+            {
+                final String strErrorMessage = "Job is not created";
+                Log.e(L_Tag, strErrorMessage);
+                throw new IllegalStateException(strErrorMessage);
+            }
 
             _Jobs.add(job);
         }
@@ -109,14 +125,20 @@ public class JobHandler
         }
         catch (Exception e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
+            e.printStackTrace();
             return null;
         }
 
         final String name = Node.getTagName();
         if(name.compareToIgnoreCase(TAG_Settings) != 0)
-            throw new IllegalArgumentException("Name of Node '" + name + "' not expected");
+        {
+            final String strErrorMessage = "Name of Node '" + name + "' not expected";
+            Log.e(L_Tag, strErrorMessage);
+            throw new IllegalArgumentException(strErrorMessage);
+        }
 
-        return  new SyncJob( (Element) Node.getChildNodes().item(0) );
+        return new SyncJob( (Element) Node.getChildNodes().item(0) );
     }
 
 
@@ -132,7 +154,7 @@ public class JobHandler
 
             for (SyncJob Job : _Jobs)
             {
-                Element child = Job.getSettings(doc);
+                Element child = Job.getJobSettings(doc);
                 root.appendChild(child);
             }
 
@@ -146,6 +168,7 @@ public class JobHandler
         }
         catch (Exception e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
             e.printStackTrace();
             return "";
         }
@@ -162,7 +185,7 @@ public class JobHandler
             Document doc = parser.newDocument();
             Element root = doc.createElement(TAG_Settings);
 
-            Element child = job.getSettings(doc);
+            Element child = job.getJobSettings(doc);
             root.appendChild(child);
 
             doc.appendChild(root);
@@ -175,14 +198,17 @@ public class JobHandler
         }
         catch(TransformerException e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
             e.printStackTrace();
         }
         catch(ParserConfigurationException e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
             e.printStackTrace();
         }
         catch (Exception e)
         {
+            Log.e(L_Tag, e.getStackTrace().toString());
             e.printStackTrace();
             throw e;
         }
@@ -208,7 +234,27 @@ public class JobHandler
             if(job.Name().compareTo(name) == 0)
                 return job;
         }
-        throw new Resources.NotFoundException("Job with name '" + name + "' not found");
+
+        final String strError = "Job with name '" + name + "' not found";
+        Log.e(L_Tag, strError);
+        throw new Resources.NotFoundException(strError);
+    }
+
+
+    public ArrayList<SyncJob> getByScheduler(SchedulerInfo schedulerInfo, boolean onlyActive)
+    {
+        ArrayList<SyncJob> result = new ArrayList<>();
+        for(SyncJob job : _Jobs)
+        {
+            if(job.Active() == false && onlyActive)
+                continue;
+
+            if(job.Scheduler().equal(schedulerInfo))
+            {
+                result.add(job);
+            }
+        }
+        return result;
     }
 
 
@@ -234,7 +280,7 @@ public class JobHandler
     }
 
 
-    public Boolean removeJobByName(String name)
+    public boolean removeJobByName(String name)
     {
         for(int i = 0; i < _Jobs.size(); ++i)
         {
@@ -249,10 +295,51 @@ public class JobHandler
     }
 
 
+    public boolean isSchedulingActive()
+    {
+        boolean result = false;
+        for(SyncJob job : _Jobs)
+        {
+            result = result || job.Scheduler().Active();
+        }
+        return result;
+    }
+
+
+    public ArrayList<SchedulerInfo> getSchedulers(boolean onlyActive)
+    {
+        ArrayList<SchedulerInfo> result = new ArrayList<>();
+        for(SyncJob job : _Jobs)
+        {
+            if(job.Active() == false && onlyActive)
+                continue;
+
+            result.add( job.Scheduler() );
+        }
+        return result;
+    }
+
+
     public void addJob(SyncJob job)
     {
         _Jobs.add(job);
     }
+
+    public boolean updateJob(String name, SyncJob job)
+    {
+        for(int i = 0; i < _Jobs.size(); ++i)
+        {
+            if(_Jobs.get(i).Name().equals(name))
+            {
+                _Jobs.set(i, job);
+                return true;
+            }
+        }
+
+        Log.e(L_Tag, "Job with name '" + name + "' not found" );
+        return false;
+    }
+
 
     private ArrayList<SyncJob> _Jobs = new ArrayList<>();
 }
