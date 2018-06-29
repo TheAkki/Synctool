@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import theakki.synctool.BroadcastReceiver;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.SyncJob;
 import theakki.synctool.R;
@@ -33,9 +34,9 @@ public class SchedulerService extends IntentService
     @Override
     public void onHandleIntent(Intent intent)
     {
-        if(intent.hasExtra(ScheduleReceiver.EXTRA_ALARM))
+        if(intent.hasExtra(BroadcastReceiver.EXTRA_ALARM))
         {
-            SchedulerInfo schedulerInfo = new SchedulerInfo( intent.getIntExtra(ScheduleReceiver.EXTRA_ALARM, 0) );
+            SchedulerInfo schedulerInfo = new SchedulerInfo( intent.getIntExtra(BroadcastReceiver.EXTRA_ALARM, 0) );
             Log.d(L_TAG, "Get Wakeup with Extra " + schedulerInfo.getIdentifier());
 
             ArrayList<SyncJob> list = JobHandler.getInstance().getByScheduler(schedulerInfo, true);
