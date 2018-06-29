@@ -12,9 +12,9 @@ import theakki.synctool.Job.Scheduler.SchedulerService;
  * @author theakki
  * @since 0.1
  */
-public class BroadcastReceiver extends android.content.BroadcastReceiver
+public class AlarmReceiver extends android.content.BroadcastReceiver
 {
-    private final static String L_TAG = BroadcastReceiver.class.getSimpleName();
+    private final static String L_TAG = AlarmReceiver.class.getSimpleName();
 
     public final static String EXTRA_ALARM = "AlarmContent";
 
