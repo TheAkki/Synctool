@@ -61,11 +61,16 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private String[] _TypesStrings;
 
+    private String _strOldJobName = "";
+
     private static final int REQUESTCODE_NewOwnCloud = 1;
     private static final int REQUESTCODE_NewFtp = 2;
 
     private static final int REQUESTCODE_BrowseA = 10;
     private static final int REQUESTCODE_BrowseB = 11;
+
+    public static final int REQUESTCODE_NEXT_PAGE = 101;
+
     public final static String Extra_ConnectionName = "ConnectionName";
 
     // ToDo: Test against array
@@ -114,6 +119,7 @@ public class Wizzard_New2 extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         final String strSettings = extras.getString(Wizzard_New1.SETTINGS);
         _job = JobHandler.getJob(strSettings);
+        _strOldJobName = extras.getString(Wizzard_New1.OLD_JOBNAME, "");
 
         // Type Strings
         _TypesStrings = getResources().getStringArray(R.array.ConnectionTypes);
@@ -208,9 +214,7 @@ public class Wizzard_New2 extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intentBack = new Intent(Wizzard_New2.this, Wizzard_New1.class);
-                intentBack.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job));
-                startActivity(intentBack);
+                clickBack();
             }
         });
 
@@ -226,6 +230,14 @@ public class Wizzard_New2 extends AppCompatActivity
         });
 
         restoreDataFromJob();
+    }
+
+    private void clickBack()
+    {
+        Intent intentBack = new Intent();
+        intentBack.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
+        setResult(Activity.RESULT_CANCELED, intentBack);
+        finish();
     }
 
     private void browse(Spinner spnType, Spinner spnName, int Requestcode)
@@ -545,41 +557,58 @@ public class Wizzard_New2 extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        // check that it is the SecondActivity with an OK result
-        if (requestCode == REQUESTCODE_NewOwnCloud)
-        {
-            if (resultCode == RESULT_OK) // Activity.RESULT_OK
-            {
-                fillData(_spinnerTypeA, _spinnerNameA);
-                fillData(_spinnerTypeB, _spinnerNameB);
-            }
-        }
-        else if(requestCode == REQUESTCODE_NewFtp)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                fillData(_spinnerTypeA, _spinnerNameA);
-                fillData(_spinnerTypeB, _spinnerNameB);
-            }
-        }
-        else if(requestCode == REQUESTCODE_BrowseA)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
-                _txtRelativePathA.setText( folder );
-            }
-        }
-        else if(requestCode == REQUESTCODE_BrowseB)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
-                _txtRelativePathB.setText( folder );
-            }
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode)
+        {
+            case REQUESTCODE_NEXT_PAGE:
+                if(resultCode == RESULT_OK)
+                {
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+                else if(resultCode == RESULT_CANCELED)
+                {
+                    //ToDo: Decide if necessary. Normally no page from wizzard should change any from this page
+                    final String strSettings = data.getStringExtra(Wizzard_New1.SETTINGS);
+                    if(strSettings.length() > 0)
+                        _job = JobHandler.getJob(strSettings);
+                    restoreDataFromJob();
+                }
+                break;
+
+            case REQUESTCODE_NewOwnCloud:
+                if (resultCode == RESULT_OK) // Activity.RESULT_OK
+                {
+                    fillData(_spinnerTypeA, _spinnerNameA);
+                    fillData(_spinnerTypeB, _spinnerNameB);
+                }
+                break;
+
+            case REQUESTCODE_NewFtp:
+                if(resultCode == RESULT_OK)
+                {
+                    fillData(_spinnerTypeA, _spinnerNameA);
+                    fillData(_spinnerTypeB, _spinnerNameB);
+                }
+                break;
+
+            case REQUESTCODE_BrowseA:
+                if(resultCode == RESULT_OK)
+                {
+                    final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
+                    _txtRelativePathA.setText( folder );
+                }
+                break;
+
+            case REQUESTCODE_BrowseB:
+                if(resultCode == RESULT_OK)
+                {
+                    final String folder = data.getStringExtra(Wizzard_FolderBrowser.EXTRA_SEND_SELECTED);
+                    _txtRelativePathB.setText( folder );
+                }
+                break;
+        }
     }
 
 
@@ -655,6 +684,10 @@ public class Wizzard_New2 extends AppCompatActivity
             case SpinnerIdxType.Owncloud: // OwnCloud
                 OwnCloud o = new OwnCloud(spnName.getSelectedItem().toString(), txtPath.getText().toString());
                 return o;
+
+            case SpinnerIdxType.Ftp: // FTP
+                FTPConnection f = new FTPConnection(spnName.getSelectedItem().toString(), txtPath.getText().toString());
+                return f;
         }
         return null;
     }
@@ -671,19 +704,10 @@ public class Wizzard_New2 extends AppCompatActivity
         saveConnections();
         saveDirectionAndStrategy();
 
-        // Creation is finished => Store
-        storeJob();
-
-        Intent intentNext = new Intent();
-        intentNext.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
-        setResult(Activity.RESULT_OK, intentNext);
-        finish();
-    }
-
-
-    private void storeJob()
-    {
-        JobHandler.getInstance().addJob(_job);
-        PreferencesHelper.getInstance().saveData(this, JobHandler.getInstance());
+        Intent intentNext = new Intent(Wizzard_New2.this, Wizzard_New3.class);
+        final String strSettings = JobHandler.getSettings(_job);
+        intentNext.putExtra(Wizzard_New1.SETTINGS, strSettings );
+        intentNext.putExtra(Wizzard_New1.OLD_JOBNAME, _strOldJobName);
+        startActivityForResult(intentNext, REQUESTCODE_NEXT_PAGE);
     }
 }

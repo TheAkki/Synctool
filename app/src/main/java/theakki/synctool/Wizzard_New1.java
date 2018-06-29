@@ -2,9 +2,9 @@ package theakki.synctool;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
+import theakki.synctool.Job.Scheduler.Scheduler;
 import theakki.synctool.Job.SyncJob;
 
 /**
@@ -23,6 +24,8 @@ import theakki.synctool.Job.SyncJob;
  */
 public class Wizzard_New1 extends AppCompatActivity
 {
+    private static final String L_TAG = Wizzard_New1.class.getSimpleName();
+
     private EditText _textName;
     private Button _buttonCancel;
     private Button _buttonNext;
@@ -31,8 +34,10 @@ public class Wizzard_New1 extends AppCompatActivity
     private SyncJob _job;
 
     private Boolean _bNewCreated = false;
+    private String _strOldName = "";
 
     public final static String SETTINGS = "Settings";
+    public final static String OLD_JOBNAME = "OldJobName";
 
     public final int REQUESTCODE_NEXT_PAGE = 100;
 
@@ -49,6 +54,7 @@ public class Wizzard_New1 extends AppCompatActivity
             String strSettings = extras.getString(Wizzard_New1.SETTINGS, "");
             if(strSettings.length() > 0)
                 _job = JobHandler.getJob(strSettings);
+            _strOldName = _job.Name();
         }
         if(_job == null)
         {
@@ -85,7 +91,7 @@ public class Wizzard_New1 extends AppCompatActivity
         });
 
         // Switch Active
-        _switchActive = findViewById(R.id.sw_Active);
+        _switchActive = findViewById(R.id.sw_JobActive);
 
     }
 
@@ -119,6 +125,7 @@ public class Wizzard_New1 extends AppCompatActivity
         {
             String strError = getString(R.string.Toast_JobExist, strName);
             Toast.makeText(this, strError, Toast.LENGTH_SHORT).show();
+            Log.d(L_TAG, "Job with name '" + strName + "' already exist");
             return;
         }
 
@@ -128,6 +135,7 @@ public class Wizzard_New1 extends AppCompatActivity
         Intent intentNext = new Intent(Wizzard_New1.this, Wizzard_New2.class);
         final String strSettings = JobHandler.getSettings(_job);
         intentNext.putExtra(SETTINGS, strSettings );
+        intentNext.putExtra(OLD_JOBNAME, _strOldName);
         startActivityForResult(intentNext, REQUESTCODE_NEXT_PAGE);
     }
 
@@ -148,6 +156,8 @@ public class Wizzard_New1 extends AppCompatActivity
             {
                 // Save Connections
                 PreferencesHelper.getInstance().saveData(this, NamedConnectionHandler.getInstance());
+
+                Scheduler.getInstance().update( JobHandler.getInstance().getSchedulers(true) );
 
                 setResult(RESULT_OK, data);
                 finish();

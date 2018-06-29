@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -24,9 +25,14 @@
         <activity android:name=".AllJobs"/>
         <activity android:name=".Wizzard_New1" />
         <activity android:name=".Wizzard_New2" />
+        <activity android:name=".Wizzard_New3" />
         <activity android:name=".Wizzard_NewOwnCloudConnection" />
         <activity android:name=".Wizzard_NewFtpConnection" />
         <activity android:name=".Wizzard_FolderBrowser" />
+        <service
+            android:name=".Job.Scheduler.SchedulerService"
+            android:enabled="true" />
+        <receiver android:name=".BroadcastReceiver" />
     </application>
 
 </manifest>
