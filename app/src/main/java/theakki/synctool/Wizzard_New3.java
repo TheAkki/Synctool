@@ -3,7 +3,6 @@ package theakki.synctool;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.*;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -59,6 +57,7 @@ public class Wizzard_New3 extends AppCompatActivity
 
         // Scheduler active
         _switchActive = findViewById(R.id.sw_SchedulerActive);
+        assert _switchActive != null : "Switch 'Scheduler active' not found";
         _switchActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -69,6 +68,7 @@ public class Wizzard_New3 extends AppCompatActivity
 
         // Scheduler time picker
         _TimePicker = findViewById(R.id.time_Scheduler);
+        assert _TimePicker != null : "Timepicker not found";
         _TimePicker.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
         _TimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -79,6 +79,7 @@ public class Wizzard_New3 extends AppCompatActivity
 
         // Scheduler time view
         _txtTime = findViewById(R.id.txt_Time);
+        assert _txtTime != null : "Text 'Time' not found";
         _txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +90,7 @@ public class Wizzard_New3 extends AppCompatActivity
 
         // Back
         _buttonBack = findViewById(R.id.btn_Back);
+        assert _buttonBack != null : "Button 'Back' not found";
         _buttonBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -100,6 +102,7 @@ public class Wizzard_New3 extends AppCompatActivity
 
         // Next
         _buttonNext = findViewById(R.id.btn_Next);
+        assert _buttonNext != null : "Button 'Next' not found";
         _buttonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

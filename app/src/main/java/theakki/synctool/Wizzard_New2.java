@@ -126,6 +126,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Type A
         _spinnerTypeA = findViewById(R.id.spn_ConnectionTypeA);
+        assert  _spinnerTypeA != null : "Spinner 'Type A' not found";
         _spinnerTypeA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,15 +141,19 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Name A
         _spinnerNameA = findViewById(R.id.spn_ConnectionNameA);
+        assert  _spinnerNameA != null : "Spinner 'Name A' not found";
 
         // Button Add A
         _buttonAddA = findViewById(R.id.btn_AddConnectionNameA);
+        assert _buttonAddA != null : "Button 'Add A' not found";
 
         // Relative Path A
         _txtRelativePathA = findViewById(R.id.txt_LocalPathA);
+        assert _txtRelativePathA != null : "Text 'Relative Path A' not found";
 
         // Browse A
         _buttonBrowseA = findViewById(R.id.btn_BrowseA);
+        assert _buttonBrowseA != null : "Button 'Browse A' not found";
         _buttonBrowseA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +163,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Type B
         _spinnerTypeB = findViewById(R.id.spn_ConnectionTypeB);
+        assert _spinnerTypeB != null : "Spinner 'Type B' not found";
         _spinnerTypeB.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -171,15 +177,19 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Name B
         _spinnerNameB = findViewById(R.id.spn_ConnectionNameB);
+        assert _spinnerNameB != null : "Spinner 'Name A' not found";
 
         // Button Add B
         _buttonAddB = findViewById(R.id.btn_AddConnectionNameB);
+        assert _buttonAddB != null : "Button 'Add A' not found";
 
         // Relative Path B
         _txtRelativePathB = findViewById(R.id.txt_LocalPathB);
+        assert _txtRelativePathB != null : "Text 'Relative Path B' not found";
 
         // Browse B
         _buttonBrowseB = findViewById(R.id.btn_BrowseB);
+        assert _buttonBrowseB != null : "Button 'Browse B' not found";
         _buttonBrowseB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,6 +199,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Sync Direction
         _spinnerDirection = findViewById(R.id.spn_SyncDirection);
+        assert _spinnerDirection != null : "Spinner 'Direction' not found";
         _spinnerDirection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -202,13 +213,16 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Spinner Sync Strategy One Way
         _spinnerStrategy1 = findViewById(R.id.spn_StrategyOneWay);
+        assert _spinnerStrategy1 != null : "Spinner 'Strategy 1' not found";
 
         // Spinner Sync Strategy Two Way
         _spinnerStrategy2 = findViewById(R.id.spn_StrategyTwoWay);
+        assert _spinnerStrategy2 != null : "Spinner 'Strategy 2' not found";
 
 
         // Back
         _buttonBack = findViewById(R.id.btn_Back);
+        assert _buttonBack != null : "Button 'Back' not found";
         _buttonBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -220,6 +234,7 @@ public class Wizzard_New2 extends AppCompatActivity
 
         // Next
         _buttonNext = findViewById(R.id.btn_Next);
+        assert _buttonNext != null : "Button 'Next' not found";
         _buttonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

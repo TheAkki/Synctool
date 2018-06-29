@@ -61,10 +61,12 @@ public class Wizzard_New1 extends AppCompatActivity
             _job = new SyncJob();
             _bNewCreated = true;
         }
+        assert _job != null : "Job not created";
 
 
         // Name
         _textName = findViewById(R.id.edit_JobName);
+        assert _textName != null : "Textview 'Name' not found";
 
 
         // Cancel
@@ -77,6 +79,7 @@ public class Wizzard_New1 extends AppCompatActivity
                 clickBack();
             }
         });
+        assert  _buttonCancel != null : "Button 'Cancel' not found";
 
 
         // Next
@@ -89,9 +92,11 @@ public class Wizzard_New1 extends AppCompatActivity
                 onNextClick();
             }
         });
+        assert _buttonNext != null : "Button 'Next' not found";
 
         // Switch Active
         _switchActive = findViewById(R.id.sw_JobActive);
+        assert _switchActive != null : "Switch 'Active' not found";
 
     }
 
