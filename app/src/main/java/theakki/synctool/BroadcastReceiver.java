@@ -1,19 +1,20 @@
-package theakki.synctool.Job.Scheduler;
+package theakki.synctool;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import theakki.synctool.Job.Scheduler.SchedulerService;
 
 /**
  * Implements a Service to do the scheduled jobs in background
  * @author theakki
  * @since 0.1
  */
-public class ScheduleReceiver extends BroadcastReceiver
+public class BroadcastReceiver extends android.content.BroadcastReceiver
 {
-    private final static String L_TAG = ScheduleReceiver.class.getSimpleName();
+    private final static String L_TAG = BroadcastReceiver.class.getSimpleName();
 
     public final static String EXTRA_ALARM = "AlarmContent";
 
