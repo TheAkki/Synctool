@@ -1,4 +1,4 @@
-package theakki.synctool;
+package theakki.synctool.Receiver;
 
 import android.app.Activity;
 import android.content.Context;
