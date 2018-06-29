@@ -13,7 +13,8 @@
     <string name="Button_Back">Zurück</string>
     <string name="Button_Next">Weiter</string>
     <string name="Label_JobName">Name</string>
-    <string name="Label_Active">Aufgabe ist aktiv</string>
+    <string name="Label_Active">Aktiv</string>
+    <string name="Label_JobActive">Aufgabe ist aktiv</string>
     <string name="Hint_JobName">Name der Aufgabe</string>
     <string name="Value_Active">Aktiv</string>
     <string name="Value_NotActive">Nicht aktiv</string>

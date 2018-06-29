@@ -24,7 +24,7 @@
 
 
     <string name="Label_JobName">Name</string>
-    <string name="Label_Active">Aufgabe ist aktiv</string>
+    <string name="Label_JobActive">Aufgabe ist aktiv</string>
 
     <string name="Text_SelectConnectionType">Wähle  Verbindungstyp</string>
     <string name="Caption_Connection_A">Verbindung A</string>

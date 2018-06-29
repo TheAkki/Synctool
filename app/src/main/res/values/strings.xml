@@ -36,7 +36,9 @@
     <string name="Button_Scan" translatable="false">S</string>
 
     <string name="Label_JobName">Name</string>
-    <string name="Label_Active">Job is active</string>
+    <string name="Label_Active">Active</string>
+    <string name="Label_JobActive">Job is active</string>
+    <string name="Label_SchedulerActive">Scheduler is active</string>
 
     <string name="Text_SelectConnectionType">Select connection type</string>
     <string name="Caption_Connection_A">Connection A</string>
@@ -58,6 +60,8 @@
 
     <string name="Caption_GeneralJobSettings">General Settings</string>
     <string name="Caption_SourceTargetSettings">Source/Target Settings</string>
+    <string name="Caption_SchedulingTrigger">Scheduler/Trigger</string>
+    <string name="Caption_Scheduler">Scheduler</string>
     <string name="Caption_NewOwnCloudConnection">New OwnCloud Connection</string>
     <string name="Caption_NewFtpConnection">New FTP Connection</string>
     <string name="Caption_SyncDirection">Sync direction</string>
@@ -84,6 +88,10 @@
     <string name="Checkbox_UseFTPS">Use FTPs</string>
 
     <string name="Ftp_DefaultPort" translatable="false">21</string>
+
+    <string name="NotificationContent_ScheduledSyncJob_Started">Job \'%1$s\' started</string>
+    <string name="NotificationContent_ScheduledSyncJob_Failed">Job \'%1$s\' failed</string>
+    <string name="NotificationContent_ScheduledSyncJob_Finished">Job \'%1$s\' finished</string>
 
 
     <string-array name="ConnectionTypes">

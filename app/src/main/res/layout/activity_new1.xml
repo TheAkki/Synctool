@@ -27,11 +27,11 @@
             android:inputType="text|textNoSuggestions" />
 
         <Switch
-            android:id="@+id/sw_Active"
+            android:id="@+id/sw_JobActive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:splitTrack="false"
-            android:text="@string/Label_Active"
+            android:text="@string/Label_JobActive"
             android:textOff="@string/Value_NotActive"
             android:textOn="@string/Value_Active" />
 
