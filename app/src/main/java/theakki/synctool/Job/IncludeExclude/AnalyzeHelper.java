@@ -1,5 +1,7 @@
 package theakki.synctool.Job.IncludeExclude;
 
+import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -16,6 +18,8 @@ public class AnalyzeHelper
     private static final String MIME_TYPE = "Mime: ";
     private static final char ASTERIX_C = '*';
     private static final String ASTERIX = "" + ASTERIX_C;
+
+    private static final String L_TAG = AnalyzeHelper.class.getSimpleName();
 
 
     /**
@@ -38,6 +42,7 @@ public class AnalyzeHelper
                 {
                     analyze.Strategy = AnalyzeStrategy.MimeType;
                     analyze.Parameter = param;
+                    logAnalyzeResult(analyze, item);
                 }
 
             }
@@ -49,12 +54,14 @@ public class AnalyzeHelper
                 if(param.length() == 0)
                 {
                     analyze.Strategy = AnalyzeStrategy.FileMatch;
+                    logAnalyzeResult(analyze, item);
                 }
                 else if(param.contains(ASTERIX))
                 {
                     // ToDo: Think about this scheme.... not so easy -> regex
                     analyze.Strategy = AnalyzeStrategy.NotImplemented;
                     analyze.Parameter = item;
+                    logAnalyzeResult(analyze, item);
                 }
                 else
                 {
@@ -62,11 +69,13 @@ public class AnalyzeHelper
                     {
                         analyze.Strategy = AnalyzeStrategy.PathEndsWith;
                         analyze.Parameter = param;
+                        logAnalyzeResult(analyze, item);
                     }
                     else
                     {
                         analyze.Strategy = AnalyzeStrategy.FileEndsWith;
                         analyze.Parameter = param;
+                        logAnalyzeResult(analyze, item);
                     }
                 }
             }
@@ -76,6 +85,7 @@ public class AnalyzeHelper
                 // ToDo: Think about this scheme.... not so easy -> regex
                 analyze.Strategy = AnalyzeStrategy.NotImplemented;
                 analyze.Parameter = item;
+                logAnalyzeResult(analyze, item);
             }
             // starts with seperator
             else if(item.startsWith(File.separator))
@@ -85,6 +95,7 @@ public class AnalyzeHelper
                 {
                     analyze.Strategy = AnalyzeStrategy.PathStartsWith;
                     analyze.Parameter = item;
+                    logAnalyzeResult(analyze, item);
                 }
                 else
                 {
@@ -92,11 +103,13 @@ public class AnalyzeHelper
                     {
                         analyze.Strategy = AnalyzeStrategy.PathStartsWith;
                         analyze.Parameter = item;
+                        logAnalyzeResult(analyze, item);
                     }
                     else
                     {
                         analyze.Strategy = AnalyzeStrategy.FileNameMatch;
                         analyze.Parameter = temp;
+                        logAnalyzeResult(analyze, item);
                     }
                 }
             }
@@ -105,11 +118,13 @@ public class AnalyzeHelper
             {
                 analyze.Strategy = AnalyzeStrategy.PathEndsWith;
                 analyze.Parameter = item;
+                logAnalyzeResult(analyze, item);
             }
             else
             {
                 analyze.Strategy = AnalyzeStrategy.FileNameMatch;
                 analyze.Parameter = item;
+                logAnalyzeResult(analyze, item);
             }
 
             results.add(analyze);
@@ -117,6 +132,13 @@ public class AnalyzeHelper
         return results;
     }
 
+
+    private static void logAnalyzeResult(AnalyzeResult result, String item)
+    {
+        Log.d(L_TAG, "Analyse '" + item + "' as " + result.Strategy.toString() + " with parameter '"
+                + result.Parameter + "'"
+        );
+    }
 
     /**
      * This method test a file with a list of testcases
