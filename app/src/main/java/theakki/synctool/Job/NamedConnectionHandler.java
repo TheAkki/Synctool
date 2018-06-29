@@ -1,7 +1,6 @@
 package theakki.synctool.Job;
 
 import android.support.annotation.Nullable;
-import android.support.constraint.solver.widgets.ConstraintAnchor;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,8 +24,18 @@ import javax.xml.transform.stream.StreamResult;
 import theakki.synctool.Job.ConnectionTypes.ConnectionFactory;
 import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
 
+/**
+ * This class define and handle a named connection
+ * @author theakki
+ * @since 0.1
+ */
 public class NamedConnectionHandler {
 
+    /**
+     * This class define parameter of a connection
+     * @author theakki
+     * @since 0.1
+     */
     public static class Connection
     {
         public String Url;
@@ -36,15 +45,34 @@ public class NamedConnectionHandler {
         public int Port = 0;
     }
 
+    /**
+     * This class define a short element for a list of connection type and name
+     * @author theakki
+     * @since 0.1
+     */
     public static class Connections
     {
         public String Name;
         public ConnectionTypes Type;
     }
 
+
+    /**
+     * This class define a collection element of a Connection
+     * @author theakki
+     * @since 0.1
+     */
     public class ConnectionContainer
     {
+        /**
+         * Connection parameter
+         */
         public Connection Connection = new Connection();
+        /**
+         * This class define and handle a synchronization job.
+         * @author theakki
+         * @since 0.1
+         */
         public boolean DontStore = true;
     }
 
