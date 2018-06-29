@@ -149,14 +149,8 @@ public class JobHandler
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder parser = factory.newDocumentBuilder();
             Document doc = parser.newDocument();
-            Element root = doc.createElement(TAG_Name);
 
-
-            for (SyncJob Job : _Jobs)
-            {
-                Element child = Job.getJobSettings(doc);
-                root.appendChild(child);
-            }
+            Element root = getJobs(doc);
 
             doc.appendChild(root);
 
@@ -172,6 +166,20 @@ public class JobHandler
             e.printStackTrace();
             return "";
         }
+    }
+
+
+    public Element getJobs(Document doc)
+    {
+        Element root = doc.createElement(TAG_Name);
+
+        for (SyncJob Job : _Jobs)
+        {
+            Element child = Job.getJobSettings(doc);
+            root.appendChild(child);
+        }
+
+        return root;
     }
 
 

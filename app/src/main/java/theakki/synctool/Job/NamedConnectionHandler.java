@@ -187,45 +187,8 @@ public class NamedConnectionHandler {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder parser = factory.newDocumentBuilder();
             Document doc = parser.newDocument();
-            Element root = doc.createElement(TAG_Name);
 
-
-            for (Map.Entry<String, ConnectionContainer> entry : _Connections.entrySet())
-            {
-                // Connection
-                Element elemConnection = doc.createElement(TAG_Connection);
-                elemConnection.setAttribute(ATTR_Name, entry.getKey());
-                root.appendChild(elemConnection);
-
-                // Url
-                Element elementUrl = doc.createElement(TAG_URL);
-                elementUrl.setTextContent(entry.getValue().Connection.Url);
-                elemConnection.appendChild(elementUrl);
-
-                // User
-                Element elementUser = doc.createElement(TAG_User);
-                elementUser.setTextContent(entry.getValue().Connection.User);
-                elemConnection.appendChild(elementUser);
-
-                // Password
-                if(entry.getValue().DontStore == false)
-                {
-                    Element elementPassword = doc.createElement(TAG_Password);
-                    elementPassword.setTextContent(entry.getValue().Connection.Password);
-                    elemConnection.appendChild(elementPassword);
-                }
-
-                // Type
-                Element elementType = doc.createElement(TAG_TYPE);
-                elementType.setTextContent(entry.getValue().Connection.Type.toString());
-                elemConnection.appendChild(elementType);
-
-                // Port
-                Element elementPort = doc.createElement(TAG_Port);
-                elementPort.setTextContent( Integer.toString(entry.getValue().Connection.Port) );
-                elemConnection.appendChild(elementPort);
-            }
-
+            Element root = getConnections(doc, false);
             doc.appendChild(root);
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -239,6 +202,49 @@ public class NamedConnectionHandler {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public Element getConnections(Document doc, boolean forceRemovePasswords)
+    {
+        Element root = doc.createElement(TAG_Name);
+
+        for (Map.Entry<String, ConnectionContainer> entry : _Connections.entrySet())
+        {
+            // Connection
+            Element elemConnection = doc.createElement(TAG_Connection);
+            elemConnection.setAttribute(ATTR_Name, entry.getKey());
+            root.appendChild(elemConnection);
+
+            // Url
+            Element elementUrl = doc.createElement(TAG_URL);
+            elementUrl.setTextContent(entry.getValue().Connection.Url);
+            elemConnection.appendChild(elementUrl);
+
+            // User
+            Element elementUser = doc.createElement(TAG_User);
+            elementUser.setTextContent(entry.getValue().Connection.User);
+            elemConnection.appendChild(elementUser);
+
+            // Password
+            if(entry.getValue().DontStore == false && forceRemovePasswords == false)
+            {
+                Element elementPassword = doc.createElement(TAG_Password);
+                elementPassword.setTextContent(entry.getValue().Connection.Password);
+                elemConnection.appendChild(elementPassword);
+            }
+
+            // Type
+            Element elementType = doc.createElement(TAG_TYPE);
+            elementType.setTextContent(entry.getValue().Connection.Type.toString());
+            elemConnection.appendChild(elementType);
+
+            // Port
+            Element elementPort = doc.createElement(TAG_Port);
+            elementPort.setTextContent( Integer.toString(entry.getValue().Connection.Port) );
+            elemConnection.appendChild(elementPort);
+        }
+
+        return root;
     }
 
 
