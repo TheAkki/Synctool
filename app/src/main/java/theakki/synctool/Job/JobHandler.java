@@ -306,6 +306,18 @@ public class JobHandler
     }
 
 
+    /**
+     * Reset the stati of all finished jobs
+     */
+    public void resetStatusWhenFinished()
+    {
+        for(SyncJob job : _Jobs)
+        {
+            job.resetStatusWhenFinished();
+        }
+    }
+
+
     public boolean isSchedulingActive()
     {
         boolean result = false;
