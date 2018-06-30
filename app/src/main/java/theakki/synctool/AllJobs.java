@@ -65,6 +65,14 @@ public class AllJobs extends AppCompatActivity
         public static final int DELETE = 2;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        JobHandler.getInstance().resetStatusWhenFinished();
+    }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
@@ -99,6 +107,7 @@ public class AllJobs extends AppCompatActivity
 
     private final static int REQUEST_EDIT = 1001;
 
+
     private void onContextEditClick(long id)
     {
         Intent editIntent = new Intent(this, Wizzard_New1.class);
@@ -107,6 +116,7 @@ public class AllJobs extends AppCompatActivity
         editIntent.putExtra(Wizzard_New1.SETTINGS, setting);
         startActivityForResult(editIntent, REQUEST_EDIT);
     }
+
 
     private void onContextDeleteClick(long id)
     {
@@ -118,8 +128,7 @@ public class AllJobs extends AppCompatActivity
 
     void onButtonAllStartClick()
     {
+        JobHandler.getInstance().resetStatusWhenFinished();
         JobHandler.getInstance().Do(this, false);
-
-        String loadSettings = JobHandler.getInstance().getData();
     }
 }
