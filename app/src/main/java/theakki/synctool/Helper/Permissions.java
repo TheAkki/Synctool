@@ -20,6 +20,7 @@ public class Permissions
 
     private final static String[] EXTERNAL_PERMS_SD = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final static String[] INTERNET_PERMS_INTERNET = {Manifest.permission.INTERNET};
+    private final static String[] BOOT_PERMS_INTERNET = {Manifest.permission.RECEIVE_BOOT_COMPLETED};
     private final static int EXTERNAL_REQUEST = 128;
 
 
@@ -100,6 +101,16 @@ public class Permissions
     protected static boolean canAccessExternalSd(Activity c)
     {
         return (hasPermission(c, Manifest.permission.WRITE_EXTERNAL_STORAGE));
+    }
+
+    /**
+     * This Method check if is possible to get boot finished message
+     * @param c Activity which is to check
+     * @return True when access is possible
+     */
+    public static boolean canAccessBootEndMessage(Activity c)
+    {
+        return (hasPermission(c, Manifest.permission.RECEIVE_BOOT_COMPLETED));
     }
 
 
