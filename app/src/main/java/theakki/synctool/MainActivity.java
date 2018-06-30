@@ -1,11 +1,12 @@
 package theakki.synctool;
 
 import android.app.Activity;
-import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -14,22 +15,26 @@ import android.widget.Spinner;
 import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Helper.TestEnvironmentHelper;
-import theakki.synctool.Job.ConnectionTypes.OwnCloud;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
 import theakki.synctool.Job.Scheduler.Scheduler;
+import theakki.synctool.System.SettingsHandler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
+    private final static String L_Tag = MainActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
 
         final boolean DEBUG = false;
 
 
-        initSingletonData();
+        initSingletonData(this);
+
 
         if(DEBUG)
         {
@@ -109,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         Button allJobsButton = findViewById(R.id.btn_AllJobs);
+        assert  allJobsButton != null : "Button 'All jobs' not found";
         allJobsButton.setOnClickListener(allJobsListener);
 
         // New Job
@@ -122,11 +128,24 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         Button newJobButton = findViewById(R.id.btn_NewJob);
+        assert newJobButton != null : "Button 'New job' not found";
         newJobButton.setOnClickListener(newJobListener);
+
+        // Settings
+        Button settingsButton = findViewById(R.id.btn_Settings);
+        //Assert.assertTrue ( "Button 'Settings' not found", settingsButton == null);
+        assert settingsButton != null : "Button 'Settings' not found";
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSettingClick();
+            }
+        });
 
 
         // Exit
         Button exitButton = findViewById(R.id.btn_Exit);
+        assert exitButton != null : "Button 'Exit' not found";
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,17 +162,30 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void initSingletonData()
+
+    private void onSettingClick()
     {
+        Intent intentSettings = new Intent(this, Settings.class);
+        startActivity(intentSettings);
+    }
+
+
+    public static void initSingletonData(Context context)
+    {
+        Log.d(L_Tag, "Load SingletonData");
+
         // Jobs
-        final String DefaultSettings = "<JobHandler><SyncJob><Name>Test</Name><SideA type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/A</Path></LocalPath></SideA><SideB type = \"LocalPath\" ><LocalPath><Path>/sdcard/SyncTest/B</Path></LocalPath></SideB></SyncJob></JobHandler>";
-        PreferencesHelper.getInstance().loadData(this, JobHandler.getInstance(), DefaultSettings);
+        PreferencesHelper.getInstance().loadData(context, JobHandler.getInstance());
 
         // Connections
-        PreferencesHelper.getInstance().loadData(this, NamedConnectionHandler.getInstance());
+        PreferencesHelper.getInstance().loadData(context, NamedConnectionHandler.getInstance());
+
+        // Settings
+        SettingsHandler.getInstance().init(context);
+        PreferencesHelper.getInstance().loadData(context, SettingsHandler.getInstance());
 
         // Scheduler
-        Scheduler.getInstance().init(this);
+        Scheduler.getInstance().init(context);
         Scheduler.getInstance().update(JobHandler.getInstance().getSchedulers(true));
     }
 

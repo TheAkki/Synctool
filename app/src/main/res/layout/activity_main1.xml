@@ -56,6 +56,13 @@
             tools:text="@string/MainMenu_NewJob" />
 
         <Button
+            android:id="@+id/btn_Settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MainMenu_Settings"
+            tools:text="@string/MainMenu_Settings" />
+
+        <Button
             android:id="@+id/btn_Exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

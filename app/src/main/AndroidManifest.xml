@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -29,10 +30,25 @@
         <activity android:name=".Wizzard_NewOwnCloudConnection" />
         <activity android:name=".Wizzard_NewFtpConnection" />
         <activity android:name=".Wizzard_FolderBrowser" />
+        <activity android:name=".Settings" />
         <service
             android:name=".Job.Scheduler.SchedulerService"
             android:enabled="true" />
-        <receiver android:name=".BroadcastReceiver" />
+        <receiver android:name=".Receiver.BootEndReceiver" android:enabled="false">
+            <!-- Message from System after BootEnd -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <!-- Message adb broadcast: It is not possible without sudo to send original action -->
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+            </intent-filter>
+            <!-- Message from System after BootEnd -->
+            <intent-filter>
+                <action android:name="android.intent.action.EXTERNAL_APPLICATIONS_AVAILABLE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".Receiver.AlarmReceiver" android:enabled="true" />
     </application>
 
 </manifest>

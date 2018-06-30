@@ -21,6 +21,7 @@
 
     <string name="MainMenu_AllJobs">All Jobs</string>
     <string name="MainMenu_NewJob">New Job</string>
+    <string name="MainMenu_Settings">Settings</string>
     <string name="MainMenu_Exit">Exit</string>
     <string name="MainMenu_Test" translatable="false">Test</string>
     <string name="MainMenu_Setup" translatable="false">Setup</string>
@@ -59,6 +60,7 @@
     <string name="Value_NotActive">NotActive</string>
 
     <string name="Caption_GeneralJobSettings">General Settings</string>
+    <string name="Caption_Settings">Settings</string>
     <string name="Caption_SourceTargetSettings">Source/Target Settings</string>
     <string name="Caption_SchedulingTrigger">Scheduler/Trigger</string>
     <string name="Caption_Scheduler">Scheduler</string>
@@ -92,6 +94,9 @@
     <string name="NotificationContent_ScheduledSyncJob_Started">Job \'%1$s\' started</string>
     <string name="NotificationContent_ScheduledSyncJob_Failed">Job \'%1$s\' failed</string>
     <string name="NotificationContent_ScheduledSyncJob_Finished">Job \'%1$s\' finished</string>
+    <string name="NotificationContent_BootEnd" translatable="false">BootEnd occurred</string>
+
+    <string name="Settings_StartOnBootEnd">Start at end of boot</string>
 
 
     <string-array name="ConnectionTypes">

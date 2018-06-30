@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Caption_Settings"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+        <Switch
+            android:id="@+id/sw_BootEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Settings_StartOnBootEnd" />
+
+        <Button
+            android:id="@+id/btn_Ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Button_Ok" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
