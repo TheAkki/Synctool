@@ -199,7 +199,7 @@ public class Wizzard_NewFtpConnection extends AppCompatActivity
         PreferencesHelper.getInstance().saveData(this, NamedConnectionHandler.getInstance());
 
         final Intent intent = new Intent();
-        intent.putExtra(Wizzard_New2.Extra_ConnectionName, strName);
+        intent.putExtra(Wizzard_New2_SourceTarget.Extra_ConnectionName, strName);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

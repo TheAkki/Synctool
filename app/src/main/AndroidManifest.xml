@@ -24,9 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AllJobs"/>
-        <activity android:name=".Wizzard_New1" />
-        <activity android:name=".Wizzard_New2" />
-        <activity android:name=".Wizzard_New3" />
+        <activity android:name=".Wizzard_New1_General" />
+        <activity android:name=".Wizzard_New2_SourceTarget" />
+        <activity android:name=".Wizzard_New3_Trigger" />
         <activity android:name=".Wizzard_NewOwnCloudConnection" />
         <activity android:name=".Wizzard_NewFtpConnection" />
         <activity android:name=".Wizzard_FolderBrowser" />

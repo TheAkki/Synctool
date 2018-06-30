@@ -27,9 +27,9 @@ import theakki.synctool.Job.SyncJob;
  * @author theakki
  * @since 0.1
  */
-public class Wizzard_New3 extends AppCompatActivity
+public class Wizzard_New3_Trigger extends AppCompatActivity
 {
-    private final static String L_TAG = Wizzard_New3.class.getSimpleName();
+    private final static String L_TAG = Wizzard_New3_Trigger.class.getSimpleName();
 
     private SyncJob _job;
     private String _strOldJobName;
@@ -50,9 +50,9 @@ public class Wizzard_New3 extends AppCompatActivity
         setContentView(R.layout.activity_new3);
 
         Bundle extras = getIntent().getExtras();
-        final String strSettings = extras.getString(Wizzard_New1.SETTINGS);
+        final String strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
         _job = JobHandler.getJob(strSettings);
-        _strOldJobName = extras.getString(Wizzard_New1.OLD_JOBNAME, "");
+        _strOldJobName = extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
 
 
         // Scheduler active
@@ -202,7 +202,7 @@ public class Wizzard_New3 extends AppCompatActivity
     private void clickBack()
     {
         Intent intentBack = new Intent();
-        intentBack.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
+        intentBack.putExtra(Wizzard_New1_General.SETTINGS, JobHandler.getSettings(_job) );
         setResult(Activity.RESULT_CANCELED, intentBack);
         finish();
     }
@@ -218,7 +218,7 @@ public class Wizzard_New3 extends AppCompatActivity
         storeJob();
 
         Intent intentNext = new Intent();
-        intentNext.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
+        intentNext.putExtra(Wizzard_New1_General.SETTINGS, JobHandler.getSettings(_job) );
         setResult(Activity.RESULT_OK, intentNext);
         finish();
     }

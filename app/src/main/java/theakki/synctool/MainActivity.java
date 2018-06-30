@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intentNewJob = new Intent(MainActivity.this, Wizzard_New1.class);
+                Intent intentNewJob = new Intent(MainActivity.this, Wizzard_New1_General.class);
                 startActivity(intentNewJob);
             }
         };

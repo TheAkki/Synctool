@@ -22,9 +22,9 @@ import theakki.synctool.Job.SyncJob;
  * @author theakki
  * @since 0.1
  */
-public class Wizzard_New1 extends AppCompatActivity
+public class Wizzard_New1_General extends AppCompatActivity
 {
-    private static final String L_TAG = Wizzard_New1.class.getSimpleName();
+    private static final String L_TAG = Wizzard_New1_General.class.getSimpleName();
 
     private EditText _textName;
     private Button _buttonCancel;
@@ -51,7 +51,7 @@ public class Wizzard_New1 extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
-            String strSettings = extras.getString(Wizzard_New1.SETTINGS, "");
+            String strSettings = extras.getString(Wizzard_New1_General.SETTINGS, "");
             if(strSettings.length() > 0)
                 _job = JobHandler.getJob(strSettings);
             _strOldName = _job.Name();
@@ -137,7 +137,7 @@ public class Wizzard_New1 extends AppCompatActivity
         _job.Name(strName);
         _job.Active( _switchActive.isChecked() );
 
-        Intent intentNext = new Intent(Wizzard_New1.this, Wizzard_New2.class);
+        Intent intentNext = new Intent(Wizzard_New1_General.this, Wizzard_New2_SourceTarget.class);
         final String strSettings = JobHandler.getSettings(_job);
         intentNext.putExtra(SETTINGS, strSettings );
         intentNext.putExtra(OLD_JOBNAME, _strOldName);

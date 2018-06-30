@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import theakki.synctool.Data.StringTree;
-import theakki.synctool.Helper.PreferencesHelper;
 import theakki.synctool.Helper.ViewHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
 import theakki.synctool.Job.ConnectionTypes.FTPConnection;
@@ -37,7 +36,7 @@ import theakki.synctool.Job.SyncJob;
  * @author theakki
  * @since 0.1
  */
-public class Wizzard_New2 extends AppCompatActivity
+public class Wizzard_New2_SourceTarget extends AppCompatActivity
 {
     private SyncJob _job;
 
@@ -117,9 +116,9 @@ public class Wizzard_New2 extends AppCompatActivity
         setContentView(R.layout.activity_new2);
 
         Bundle extras = getIntent().getExtras();
-        final String strSettings = extras.getString(Wizzard_New1.SETTINGS);
+        final String strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
         _job = JobHandler.getJob(strSettings);
-        _strOldJobName = extras.getString(Wizzard_New1.OLD_JOBNAME, "");
+        _strOldJobName = extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
 
         // Type Strings
         _TypesStrings = getResources().getStringArray(R.array.ConnectionTypes);
@@ -250,7 +249,7 @@ public class Wizzard_New2 extends AppCompatActivity
     private void clickBack()
     {
         Intent intentBack = new Intent();
-        intentBack.putExtra(Wizzard_New1.SETTINGS, JobHandler.getSettings(_job) );
+        intentBack.putExtra(Wizzard_New1_General.SETTINGS, JobHandler.getSettings(_job) );
         setResult(Activity.RESULT_CANCELED, intentBack);
         finish();
     }
@@ -259,7 +258,7 @@ public class Wizzard_New2 extends AppCompatActivity
     {
         final int iSelectedType = spnType.getSelectedItemPosition();
         final String strSelectedName = (String)spnName.getSelectedItem();
-        Intent intentBrowse = new Intent(Wizzard_New2.this, Wizzard_FolderBrowser.class);
+        Intent intentBrowse = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_FolderBrowser.class);
         final IConnection connection;
 
         switch(iSelectedType)
@@ -520,14 +519,14 @@ public class Wizzard_New2 extends AppCompatActivity
 
     private void callNewOwncloudConnection()
     {
-        Intent intentNew = new Intent(Wizzard_New2.this, Wizzard_NewOwnCloudConnection.class);
+        Intent intentNew = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_NewOwnCloudConnection.class);
         startActivityForResult(intentNew, REQUESTCODE_NewOwnCloud);
     }
 
 
     private void callNewFtpConnection()
     {
-        Intent intentNew = new Intent(Wizzard_New2.this, Wizzard_NewFtpConnection.class);
+        Intent intentNew = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_NewFtpConnection.class);
         startActivityForResult(intentNew, REQUESTCODE_NewFtp);
     }
 
@@ -585,7 +584,7 @@ public class Wizzard_New2 extends AppCompatActivity
                 else if(resultCode == RESULT_CANCELED)
                 {
                     //ToDo: Decide if necessary. Normally no page from wizzard should change any from this page
-                    final String strSettings = data.getStringExtra(Wizzard_New1.SETTINGS);
+                    final String strSettings = data.getStringExtra(Wizzard_New1_General.SETTINGS);
                     if(strSettings.length() > 0)
                         _job = JobHandler.getJob(strSettings);
                     restoreDataFromJob();
@@ -719,10 +718,10 @@ public class Wizzard_New2 extends AppCompatActivity
         saveConnections();
         saveDirectionAndStrategy();
 
-        Intent intentNext = new Intent(Wizzard_New2.this, Wizzard_New3.class);
+        Intent intentNext = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_New3_Trigger.class);
         final String strSettings = JobHandler.getSettings(_job);
-        intentNext.putExtra(Wizzard_New1.SETTINGS, strSettings );
-        intentNext.putExtra(Wizzard_New1.OLD_JOBNAME, _strOldJobName);
+        intentNext.putExtra(Wizzard_New1_General.SETTINGS, strSettings );
+        intentNext.putExtra(Wizzard_New1_General.OLD_JOBNAME, _strOldJobName);
         startActivityForResult(intentNext, REQUESTCODE_NEXT_PAGE);
     }
 }
