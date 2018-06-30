@@ -91,6 +91,23 @@ public class FileItemHelper
     }
 
 
+    /**
+     * This Methods extract the relative Path from a full specified path
+     * @param fullpath Full path
+     * @param filename File name
+     * @param remotePath Remote Path to root
+     * @return
+     */
+    public static String getRelativePath(final String fullpath, final String filename, final String remotePath)
+    {
+        final int lengthRemotePath = (remotePath.endsWith(File.separator)) ?  remotePath.length() - 1 : remotePath.length();
+
+        String result = fullpath.substring(lengthRemotePath);
+        result = result.substring(0, result.length() - filename.length());
+
+        return result;
+    }
+
 
     /**
      * This method analyse file items and write them in a list. This list is the parameter result. All entrys will be added.
