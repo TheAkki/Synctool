@@ -12,7 +12,7 @@ import java.util.Set;
 
 import java.util.Calendar;
 
-import theakki.synctool.BroadcastReceiver;
+import theakki.synctool.Receiver.AlarmReceiver;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -89,9 +89,9 @@ public class Scheduler
 
     private void createAlarm(SchedulerInfo schedulerInfo)
     {
-        Intent content = new Intent(_context, BroadcastReceiver.class);
+        Intent content = new Intent(_context, AlarmReceiver.class);
         final int schedulerIdentifier = schedulerInfo.getIdentifier();
-        content.putExtra(BroadcastReceiver.EXTRA_ALARM, schedulerIdentifier);
+        content.putExtra(AlarmReceiver.EXTRA_ALARM, schedulerIdentifier);
 
 
         // Calculate Next time for wakeup

@@ -35,9 +35,12 @@ public class JobHandler
 {
     private final static String L_Tag = JobHandler.class.getSimpleName();
 
-    private final String TAG_Name = "JobHandler";
+    private final static String TAG_Name = "JobHandler";
     private final static String TAG_Settings = "Settings";
 
+    public static final String DEFAULT_SETTINGS = "<" + TAG_Name + "/>";
+
+    // Singleton
     private static final JobHandler ourInstance = new JobHandler();
     public static JobHandler getInstance()
     {
@@ -92,10 +95,10 @@ public class JobHandler
             throw new IllegalArgumentException(strErrorMessage);
         }
 
-        NodeList childs = Node.getChildNodes();
-        for(int i = 0; i < childs.getLength(); ++i)
+        NodeList children = Node.getChildNodes();
+        for(int i = 0; i < children.getLength(); ++i)
         {
-            Element child = (Element) childs.item(i);
+            Element child = (Element) children.item(i);
             SyncJob job = new SyncJob(child);
             if(job == null)
             {
@@ -149,14 +152,8 @@ public class JobHandler
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder parser = factory.newDocumentBuilder();
             Document doc = parser.newDocument();
-            Element root = doc.createElement(TAG_Name);
 
-
-            for (SyncJob Job : _Jobs)
-            {
-                Element child = Job.getJobSettings(doc);
-                root.appendChild(child);
-            }
+            Element root = getJobs(doc);
 
             doc.appendChild(root);
 
@@ -172,6 +169,20 @@ public class JobHandler
             e.printStackTrace();
             return "";
         }
+    }
+
+
+    public Element getJobs(Document doc)
+    {
+        Element root = doc.createElement(TAG_Name);
+
+        for (SyncJob Job : _Jobs)
+        {
+            Element child = Job.getJobSettings(doc);
+            root.appendChild(child);
+        }
+
+        return root;
     }
 
 
@@ -292,6 +303,18 @@ public class JobHandler
             }
         }
         return false;
+    }
+
+
+    /**
+     * Reset the stati of all finished jobs
+     */
+    public void resetStatusWhenFinished()
+    {
+        for(SyncJob job : _Jobs)
+        {
+            job.resetStatusWhenFinished();
+        }
     }
 
 

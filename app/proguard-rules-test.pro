@@ -19,22 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-###
-# Sources
-# https://stackoverflow.com/a/7426918/5561864
-# https://stackoverflow.com/a/26326920/5561864
-###
-
--assumenosideeffects class junit.framework.Assert {
-*;
-}
-
--assumenosideeffects class android.util.Log {
-
-public static *** d(...);
-public static *** i(...);
-public static *** v(...);
-public static *** e(...);
-
-}

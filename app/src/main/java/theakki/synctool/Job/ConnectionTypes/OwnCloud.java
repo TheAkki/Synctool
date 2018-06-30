@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import theakki.synctool.Data.StringTree;
 import theakki.synctool.FromOwnCloud.GetServerInfoOperation;
 import theakki.synctool.Helper.FileItemHelper;
+import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Job.FileItem;
 import theakki.synctool.Job.IConnection;
 import theakki.synctool.OwnCloud.ReadRemoteFilesOperation;
@@ -209,7 +210,7 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     @Override
     public void RequestPermissions(Context context)
     {
-
+        Permissions.requestForPermissionInternet(context);
     }
 
 

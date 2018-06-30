@@ -280,6 +280,22 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
     }
 
 
+    /**
+     * Reset status from finished to not started
+     */
+    public void resetStatusWhenFinished()
+    {
+        if(_status == SyncStatus.FINISH)
+        {
+            _status = SyncStatus.NOT_STARTED;
+            _actNumber = 0;
+            _maxNumber = 0;
+
+            sendUpdate();
+        }
+    }
+
+
 
     private int _status = 0;
     public int getProcess(){ return _status; }
@@ -304,12 +320,16 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
 
     @Override
     protected void onProgressUpdate(Integer... params)
-
     {
         _status = params[0];
         _actNumber = params[1];
         _maxNumber = params[2];
 
+        sendUpdate();
+    }
+
+    private void sendUpdate()
+    {
         if(_adapter != null)
             _adapter.notifyDataSetChanged();
     }

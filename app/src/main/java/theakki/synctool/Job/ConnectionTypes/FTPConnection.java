@@ -4,6 +4,7 @@ import android.content.Context;
 
 import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.FileItemHelper;
+import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Job.FileItem;
 import theakki.synctool.Job.IConnection;
 
@@ -454,5 +455,6 @@ public class FTPConnection extends StoredBase implements IConnection
     @Override
     public void RequestPermissions(Context context)
     {
+        Permissions.requestForPermissionInternet(context);
     }
 }

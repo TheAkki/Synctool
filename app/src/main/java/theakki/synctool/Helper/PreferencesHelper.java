@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
+import theakki.synctool.System.SettingsHandler;
 
 /**
  * Util class for handle Preferences
@@ -18,6 +19,7 @@ public class PreferencesHelper
     private final String MyPREFERENCES = "MyPrefs" ;
     private final String PREF_Connections = "Connections";
     private final String PREF_Jobs = "Jobs";
+    private final String PREF_Settings = "Settings";
 
 
     /**
@@ -45,7 +47,7 @@ public class PreferencesHelper
     public void loadData(Context context, NamedConnectionHandler ConHandler)
     {
         SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        final String strConnections = sharedpreferences.getString(PREF_Connections, "");
+        final String strConnections = sharedpreferences.getString(PREF_Connections, NamedConnectionHandler.DEFAULT_SETTINGS);
 
         ConHandler.setup(strConnections, true);
     }
@@ -71,12 +73,11 @@ public class PreferencesHelper
      * This Method load data for a job handler.
      * @param context Context of app
      * @param JobHandler JobHandler which is to fill with data
-     * @param strDefault Default data when no stored data found
      */
-    public void loadData(Context context,  JobHandler JobHandler, String strDefault)
+    public void loadData(Context context,  JobHandler JobHandler)
     {
         SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        final String strJobs = sharedpreferences.getString(PREF_Jobs, strDefault);
+        final String strJobs = sharedpreferences.getString(PREF_Jobs, JobHandler.DEFAULT_SETTINGS);
 
         JobHandler.setup(strJobs, true);
     }
@@ -94,6 +95,36 @@ public class PreferencesHelper
         SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(PREF_Jobs, strJobs);
+        editor.commit();
+    }
+
+
+    /**
+     * This Method load data for a setting handler.
+     * @param context Context of app
+     * @param settingsHandler SettingsHandler which is to fill with data
+     */
+    public void loadData(Context context, SettingsHandler settingsHandler)
+    {
+        SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        final String strSettings = sharedpreferences.getString(PREF_Settings, SettingsHandler.DEFAULT_SETTINGS);
+
+        settingsHandler.setup(strSettings);
+    }
+
+
+    /**
+     * This Method store data from a setting handler
+     * @param context Context of app
+     * @param settingsHandler SettingsHandler which is provide the data
+     */
+    public void saveData(Context context, SettingsHandler settingsHandler)
+    {
+        final String strJobs = settingsHandler.getData();
+
+        SharedPreferences sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(PREF_Settings, strJobs);
         editor.commit();
     }
 }

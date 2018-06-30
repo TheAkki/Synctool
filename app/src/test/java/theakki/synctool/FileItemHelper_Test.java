@@ -89,4 +89,30 @@ public class FileItemHelper_Test
         }
     }
 
+    @Test
+    public void extract_RemoteWithoutSeperatorAtEnd () throws Exception
+    {
+        final String RemotePath = "/Sonstwo";
+        final String FileName = "Filename.jpg";
+        final String RelativePath = "/Relativer/Path/";
+
+        final String TestPath = FileItemHelper.concatPath(FileItemHelper.concatPath(RemotePath, RelativePath), FileName );
+
+        final String actual = FileItemHelper.getRelativePath(TestPath, FileName, RemotePath);
+        assertEquals(RelativePath, actual);
+    }
+
+    @Test
+    public void extract_RemoteWithSeperatorAtEnd () throws Exception
+    {
+        final String RemotePath = "/Sonstwo/";
+        final String FileName = "Filename.jpg";
+        final String RelativePath = "/Relativer/Path/";
+
+        final String TestPath = FileItemHelper.concatPath(FileItemHelper.concatPath(RemotePath, RelativePath), FileName );
+
+        final String actual = FileItemHelper.getRelativePath(TestPath, FileName, RemotePath);
+        assertEquals(RelativePath, actual);
+    }
+
 }

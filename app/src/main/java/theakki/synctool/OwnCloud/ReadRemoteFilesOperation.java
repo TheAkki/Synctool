@@ -15,6 +15,7 @@ import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.common.utils.Log_OC;
 
+import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Helper.WebdavHelper;
 import theakki.synctool.Job.FileItem;
 
@@ -102,6 +103,7 @@ public class ReadRemoteFilesOperation extends RemoteOperation
                     }
 
                     FileItem remoteFile = WebdavHelper.getFileItem(we);
+                    remoteFile.RelativePath = FileItemHelper.getRelativePath(remoteFile.RelativePath, remoteFile.FileName, _strRemotePath);
                     files.add(remoteFile);
                 }
 
