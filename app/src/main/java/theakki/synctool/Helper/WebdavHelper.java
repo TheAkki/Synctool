@@ -24,7 +24,8 @@ public class WebdavHelper
         return  new FileItem(webdavEntry.name(), webdavEntry.path(), webdavEntry.size(), webdavEntry.modifiedTimestamp(), webdavEntry.contentType());
     }
 
-        public static DavPropertyNameSet getFolderPropSet() {
+    public static DavPropertyNameSet getFolderPropSet()
+    {
         DavPropertyNameSet propSet = new DavPropertyNameSet();
         propSet.add(DavPropertyName.DISPLAYNAME);
 
