@@ -24,6 +24,22 @@
             android:text="@string/Settings_StartOnBootEnd" />
 
         <Button
+            android:id="@+id/btn_Import"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Settings_Import" />
+
+        <Button
+            android:id="@+id/btn_Export"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Settings_Export" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
             android:id="@+id/btn_Ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

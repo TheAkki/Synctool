@@ -75,6 +75,7 @@
     <string name="Toast_InvalidUserPassword">User and Password are not valid</string>
     <string name="Toast_ConnectionExist">Connection with name \'%1$s\' exist already</string>
     <string name="Toast_NoPathSelected">No Path selected</string>
+    <string name="Toast_NoFileExplorerAppInstalled">No file explorer app installed.</string>
 
     <string name="ConnectionTestStatus_NotScanned">Not scanned</string>
     <string name="ConnectionTestStatus_ScannedNotAvailable">Host not available</string>
@@ -97,6 +98,12 @@
     <string name="NotificationContent_BootEnd" translatable="false">BootEnd occurred</string>
 
     <string name="Settings_StartOnBootEnd">Start at end of boot</string>
+    <string name="Settings_Import">Import</string>
+    <string name="Settings_Export">Export</string>
+
+    <string name="Status_PleaseWait">Please wait &#8230;</string>
+    <string name="Status_ImportInProgress">Import configuration</string>
+    <string name="Status_ExportInProgress">Export configuration</string>
 
 
     <string-array name="ConnectionTypes">
