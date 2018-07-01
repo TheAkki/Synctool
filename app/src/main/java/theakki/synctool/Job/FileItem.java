@@ -24,8 +24,8 @@ public class FileItem implements Cloneable
      */
     public FileItem(String name, String relativePath, long size, long modifiedAt)
     {
+        FileName = (name == null) ? "" : name;
         Flag = FLAG_UNKNOWN;
-        FileName = name;
         RelativePath = relativePath;
         FileSize = size;
         Modified = modifiedAt;

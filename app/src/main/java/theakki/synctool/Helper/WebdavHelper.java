@@ -1,6 +1,10 @@
 package theakki.synctool.Helper;
 
 import com.owncloud.android.lib.common.network.WebdavEntry;
+
+import org.apache.jackrabbit.webdav.property.DavPropertyName;
+import org.apache.jackrabbit.webdav.property.DavPropertyNameSet;
+
 import theakki.synctool.Job.FileItem;
 
 /**
@@ -18,6 +22,19 @@ public class WebdavHelper
     public static FileItem getFileItem(WebdavEntry webdavEntry)
     {
         return  new FileItem(webdavEntry.name(), webdavEntry.path(), webdavEntry.size(), webdavEntry.modifiedTimestamp(), webdavEntry.contentType());
+    }
+
+        public static DavPropertyNameSet getFolderPropSet() {
+        DavPropertyNameSet propSet = new DavPropertyNameSet();
+        propSet.add(DavPropertyName.DISPLAYNAME);
+
+        propSet.add(DavPropertyName.GETCONTENTTYPE);
+        propSet.add(DavPropertyName.RESOURCETYPE);
+        propSet.add(DavPropertyName.GETCONTENTLENGTH);
+        propSet.add(DavPropertyName.GETLASTMODIFIED);
+        propSet.add(DavPropertyName.CREATIONDATE);
+        propSet.add(DavPropertyName.GETETAG);
+        return propSet;
     }
 
 }
