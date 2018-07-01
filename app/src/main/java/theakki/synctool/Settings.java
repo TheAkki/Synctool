@@ -130,7 +130,7 @@ public class Settings extends AppCompatActivity
         if (importFilePickerIntent.resolveActivityInfo(getPackageManager(), 0) != null)
         {
             Log.d(L_Tag, "Call external app for selecting import file");
-            startActivityForResult(importFilePickerIntent, Request.ExportFileSelect);
+            startActivityForResult(importFilePickerIntent, Request.ImportFileSelect);
         }
         else
         {
@@ -142,14 +142,26 @@ public class Settings extends AppCompatActivity
     private void importFile(final Uri uri)
     {
         final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Settings_Import), true, false);
-        new Thread()
-        {
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
             public void run()
             {
                 ImportExport.getInstance().Import(getContext(), uri);
                 progress.dismiss();
             }
-        }.start();
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch(Exception e)
+        {
+            return;
+        }
+
+        loadViewFromData();
     }
 
 

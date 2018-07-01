@@ -105,7 +105,7 @@ public class SettingsHandler
 
     public void setup(Element Node)
     {
-        loadSettings(Node);
+        loadSettingHandler(Node);
     }
 
 
