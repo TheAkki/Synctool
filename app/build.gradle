@@ -7,12 +7,14 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled false
-        versionCode 1
-        versionName "0.0.1"
+        versionCode 100
+        versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
             minifyEnabled false
             useProguard false
             debuggable true
@@ -27,25 +29,26 @@ android {
         preDexLibraries true
     }
 
-    //lintOptions {
-    //    // Turns off checks for the issue IDs you specify.
-    //    disable 'TypographyFractions','TypographyQuotes'
-    //    // Turns on checks for the issue IDs you specify. These checks are in
-    //    // addition to the default lint checks.
-    //    enable 'RtlHardcoded','RtlCompat', 'RtlEnabled'
-    //    // To enable checks for only a subset of issue IDs and ignore all others,
-    //    // list the issue IDs with the 'check' property instead. This property overrides
-    //    // any issue IDs you enable or disable using the properties above.
-    //    check 'NewApi', 'InlinedApi'
-    //    // If set to true, turns off analysis progress reporting by lint.
-    //    quiet true
-    //    // if set to true (default), stops the build if errors are found.
-    //    abortOnError false
-    //    // if true, only report errors.
-    //    ignoreWarnings true
-    //}
-
-
+    lintOptions
+    {
+        checkReleaseBuilds false
+    //  lintOptions {
+    //  // Turns off checks for the issue IDs you specify.
+    //  disable 'TypographyFractions','TypographyQuotes'
+    //  // Turns on checks for the issue IDs you specify. These checks are in
+    //  // addition to the default lint checks.
+    //  enable 'RtlHardcoded','RtlCompat', 'RtlEnabled'
+    //  // To enable checks for only a subset of issue IDs and ignore all others,
+    //  // list the issue IDs with the 'check' property instead. This property overrides
+    //  // any issue IDs you enable or disable using the properties above.
+    //  check 'NewApi', 'InlinedApi'
+    //  // If set to true, turns off analysis progress reporting by lint.
+    //  quiet true
+    //  // if set to true (default), stops the build if errors are found.
+    //  abortOnError false
+    //  // if true, only report errors.
+    //  ignoreWarnings true
+    }
 }
 
 dependencies {
