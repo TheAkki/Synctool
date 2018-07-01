@@ -3,6 +3,7 @@ package theakki.synctool.System;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -20,6 +21,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Receiver.BootEndReceiver;
 
 public class SettingsHandler
@@ -99,6 +101,11 @@ public class SettingsHandler
         }
 
         loadSettingHandler(Node);
+    }
+
+    public void setup(Element Node)
+    {
+        loadSettings(Node);
     }
 
 
@@ -194,6 +201,12 @@ public class SettingsHandler
         _Context.getPackageManager().setComponentEnabledSetting(component, flag, PackageManager.DONT_KILL_APP);
 
         int b = _Context.getPackageManager().getComponentEnabledSetting(component);
+    }
+
+    private final static String ApplicationFolder = "SyncTool";
+    public String getApplicationDataPath()
+    {
+        return FileItemHelper.concatPath( Environment.getExternalStorageDirectory().getAbsolutePath(),  ApplicationFolder);
     }
 
 

@@ -126,14 +126,27 @@ public class NamedConnectionHandler {
             return;
         }
 
-        final String name = Node.getTagName();
+        loadNode(Node);
+    }
+
+    public void setup(Element node, boolean forceReload)
+    {
+        if(forceReload)
+            _Connections.clear();
+
+        loadNode(node);
+    }
+
+    private void loadNode(Element node)
+    {
+        final String name = node.getTagName();
         if(name.compareToIgnoreCase(TAG_Name) != 0)
             throw new IllegalArgumentException("Name of Node '" + name + "' not expected");
 
-        NodeList childs = Node.getChildNodes();
-        for(int i = 0; i < childs.getLength(); ++i)
+        NodeList children = node.getChildNodes();
+        for(int i = 0; i < children.getLength(); ++i)
         {
-            Element child = (Element) childs.item(i);
+            Element child = (Element) children.item(i);
 
             ConnectionContainer container = new ConnectionContainer();
 
@@ -162,13 +175,14 @@ public class NamedConnectionHandler {
                     container.Connection.Password = elem.getTextContent();
                     // Es war gespeichert, also wieder speichern.
                     container.DontStore = false;
-                }else if(TAG_TYPE.compareToIgnoreCase(elemName) == 0)
+                }
+                else if(TAG_TYPE.compareToIgnoreCase(elemName) == 0)
                 {
                     container.Connection.Type = ConnectionFactory.connectiontypeFromString(elem.getTextContent(), ConnectionTypes.Local);
                 }
                 else if(TAG_Port.compareToIgnoreCase(elemName) == 0)
                 {
-                    container.Connection.Port = Integer.parseInt( elem.getTextContent() );
+                    container.Connection.Port = Integer.parseInt(elem.getTextContent());
                 }
             }
 

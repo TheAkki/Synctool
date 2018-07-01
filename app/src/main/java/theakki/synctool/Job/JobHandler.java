@@ -87,7 +87,31 @@ public class JobHandler
             return;
         }
 
-        final String name = Node.getTagName();
+        loadNode(Node);
+
+    }
+
+    public void setup(Element Node, boolean forceReload)
+    {
+        if(forceReload)
+        {
+            _Jobs.clear();
+            _initDone = false;
+        }
+
+        if(_initDone == true)
+        {
+            Log.d(L_Tag, "Init already done");
+            return;
+        }
+
+        loadNode(Node);
+    }
+
+
+    private void loadNode(Element node)
+    {
+        final String name = node.getTagName();
         if(name.compareToIgnoreCase(TAG_Name) != 0)
         {
             final String strErrorMessage = "Name of Node '" + name + "' not expected";
@@ -95,7 +119,7 @@ public class JobHandler
             throw new IllegalArgumentException(strErrorMessage);
         }
 
-        NodeList children = Node.getChildNodes();
+        NodeList children = node.getChildNodes();
         for(int i = 0; i < children.getLength(); ++i)
         {
             Element child = (Element) children.item(i);
@@ -110,6 +134,7 @@ public class JobHandler
             _Jobs.add(job);
         }
     }
+
 
 
     @Nullable
