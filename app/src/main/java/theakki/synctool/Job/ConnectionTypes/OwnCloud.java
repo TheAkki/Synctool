@@ -180,11 +180,13 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
     private StringTree convertToTree(ArrayList<Object> objects)
     {
         StringTree root = new StringTree("");
-        for(Object o : objects)
+        if(objects != null)
         {
-            FileItem fi = (FileItem)o;
-            String[] parts = FileItemHelper.splittPath(fi.RelativePath);
-            root.include(parts);
+            for(Object o : objects) {
+                FileItem fi = (FileItem) o;
+                String[] parts = FileItemHelper.splittPath(fi.RelativePath);
+                root.include(parts);
+            }
         }
         return root;
     }
