@@ -1,6 +1,5 @@
 package theakki.synctool;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,16 +8,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 
+import java.io.File;
 
-import theakki.synctool.Helper.Permissions;
 import theakki.synctool.Helper.PreferencesHelper;
-import theakki.synctool.Helper.TestEnvironmentHelper;
 import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.NamedConnectionHandler;
 import theakki.synctool.Job.Scheduler.Scheduler;
 import theakki.synctool.System.SettingsHandler;
+
+import static junit.framework.Assert.*;
+
 
 public class MainActivity extends AppCompatActivity
 {
@@ -34,74 +34,8 @@ public class MainActivity extends AppCompatActivity
 
 
         initSingletonData(this);
+        prepareFolder();
 
-
-        if(DEBUG)
-        {
-            View.OnClickListener listener = new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    // Normaler Testfall
-                    //JobHandler.getInstance().Do((Activity) v.getContext(), false);
-                    //String loadSettings = JobHandler.getInstance().getSettings();
-
-                    // Owncloud Test
-                    //OwnCloud oc = new OwnCloud();
-                    //oc.User("OwnCloudConnection");
-                    //oc.Password("Test");
-                    //oc.Url("https://192.168.178.42/owncloud");
-
-                    //oc.Connect((Activity)v.getContext());
-
-
-                }
-            };
-
-            Button testButton = findViewById(R.id.btnTest);
-            if(testButton != null)
-            {
-                testButton.setOnClickListener(listener);
-                testButton.setVisibility(View.VISIBLE);
-            }
-
-            View.OnClickListener setupListener = new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Permissions.requestForPermissionSD((Activity) v.getContext());
-
-                    Spinner spn = findViewById(R.id.spn_Setup);
-                    if(spn == null)
-                        return;
-
-                    int iSelected = spn.getSelectedItemPosition();
-
-                    switch(iSelected)
-                    {
-                        case 0:
-                            TestEnvironmentHelper.createSetup1();
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-
-            };
-
-            Button setupButton = findViewById(R.id.btn_Setup);
-            if(setupButton != null)
-            {
-                setupButton.setOnClickListener(setupListener);
-                setupButton.setVisibility(View.VISIBLE);
-
-                Spinner spn = findViewById(R.id.spn_Setup);
-                spn.setVisibility(View.VISIBLE);
-            }
-        }
 
         // All Jobs
         View.OnClickListener allJobsListener = new View.OnClickListener()
@@ -114,7 +48,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
         Button allJobsButton = findViewById(R.id.btn_AllJobs);
-        assert  allJobsButton != null : "Button 'All jobs' not found";
+        assertNotNull("Button 'All jobs' not found", allJobsButton);
         allJobsButton.setOnClickListener(allJobsListener);
 
         // New Job
@@ -128,13 +62,12 @@ public class MainActivity extends AppCompatActivity
             }
         };
         Button newJobButton = findViewById(R.id.btn_NewJob);
-        assert newJobButton != null : "Button 'New job' not found";
+        assertNotNull("Button 'New job' not found", newJobButton);
         newJobButton.setOnClickListener(newJobListener);
 
         // Settings
         Button settingsButton = findViewById(R.id.btn_Settings);
-        //Assert.assertTrue ( "Button 'Settings' not found", settingsButton == null);
-        assert settingsButton != null : "Button 'Settings' not found";
+        assertNotNull("Button 'Settings' not found", settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         // Exit
         Button exitButton = findViewById(R.id.btn_Exit);
-        assert exitButton != null : "Button 'Exit' not found";
+        assertNotNull("Button 'Exit' not found", exitButton);
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +121,24 @@ public class MainActivity extends AppCompatActivity
         Scheduler.getInstance().init(context);
         Scheduler.getInstance().update(JobHandler.getInstance().getSchedulers(true));
     }
+
+
+    private void prepareFolder()
+    {
+        File f = new File(SettingsHandler.getInstance().getApplicationDataPath());
+        if( f.isDirectory() )
+            return;
+        if(f.exists())
+        {
+            Log.e(L_Tag, "Application Path exist but is no directory");
+            return;
+        }
+        else
+        {
+            f.mkdirs();
+        }
+    }
+
 
     @Override
     protected void onPause()
