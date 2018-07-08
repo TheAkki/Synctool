@@ -141,7 +141,7 @@ public class Settings extends AppCompatActivity
 
     private void importFile(final Uri uri)
     {
-        final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Settings_Import), true, false);
+        final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Status_ImportInProgress), true, false);
 
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -199,7 +199,7 @@ public class Settings extends AppCompatActivity
 
     private void exportFile(final Uri uri)
     {
-        final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Settings_Export), true, false);
+        final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Status_ExportInProgress), true, false);
         new Thread()
         {
             public void run()
