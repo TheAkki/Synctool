@@ -17,6 +17,8 @@ import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.JobInfo;
 import theakki.synctool.View.JobInfoViewAdapter;
 
+import static junit.framework.Assert.*;
+
 /**
  * Created by theakki on 06.04.18.
  */
@@ -35,11 +37,13 @@ public class AllJobs extends AppCompatActivity
 
         // List view
         _listAllJobs = findViewById(R.id.lv_jobs);
+        assertNotNull("Listview 'jobs' not found", _listAllJobs);
         registerForContextMenu(_listAllJobs);
         loadData();
 
         // Start All Button
         _btnStartAll = findViewById(R.id.btn_StartAll);
+        assertNotNull("Button 'Start' not found", _btnStartAll);
         _btnStartAll.setOnClickListener(new View.OnClickListener()
         {
             @Override

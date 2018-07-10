@@ -40,22 +40,25 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
     private final static String L_TAG = SyncJob.class.getSimpleName();
 
     // XML Tags
-    private final String TAG_ROOT = "SyncJob";
-    private final String TAG_SideA = "SideA";
-    private final String TAG_SideB = "SideB";
-    private final String TAG_Name = "Name";
-    private final String ATTR_Type = "type";
-    private final String TAG_Active = "Active";
-    private final String TAG_SyncDirection = "SyncDir";
-    private final String TAG_OneWayStrategy = "StrategyOneWay";
-    private final String TAG_TwoWayStrategy = "StrategyTwoWay";
-    private final String TAG_WhiteList = "IncludeList";
-    private final String TAG_Blacklist = "ExcludeList";
-    private final String TAG_Item = "Item";
-    private final String TAG_Schedule = "Schedule";
-    private final String ATTR_Schedule_Active = "Active";
-    private final String ATTR_Schedule_Hour =  "Hour";
-    private final String ATTR_Schedule_Minute = "Minute";
+    private final static String TAG_ROOT = "SyncJob";
+    private final static String TAG_SideA = "SideA";
+    private final static String TAG_SideB = "SideB";
+    private final static String TAG_Name = "Name";
+    private final static String ATTR_Type = "type";
+    private final static String TAG_Active = "Active";
+    private final static String TAG_SyncDirection = "SyncDir";
+    private final static String TAG_OneWayStrategy = "StrategyOneWay";
+    private final static String TAG_TwoWayStrategy = "StrategyTwoWay";
+    private final static String TAG_WhiteList = "IncludeList";
+    private final static String TAG_Blacklist = "ExcludeList";
+    private final static String TAG_Item = "Item";
+    private final static String TAG_Schedule = "Schedule";
+    private final static String ATTR_Schedule_Active = "Active";
+    private final static String ATTR_Schedule_Hour =  "Hour";
+    private final static String ATTR_Schedule_Minute = "Minute";
+
+    public static final String DEFAULT_SETTINGS = "<" + TAG_ROOT + "/>";
+
 
     // Attributees
     private SchedulerInfo _Scheduling = new SchedulerInfo();

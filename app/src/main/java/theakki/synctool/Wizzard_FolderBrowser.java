@@ -18,6 +18,8 @@ import theakki.synctool.Data.StringTree;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.View.TreeItemHolder;
 
+import static junit.framework.Assert.*;
+
 /**
  * Class to show a page with a folder tree.
  * @author theakki
@@ -44,17 +46,22 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
         super.onCreate(savedInstanceState);
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_folderbrowser);
-        Bundle extras = getIntent().getExtras();
 
-        String pathOffset = extras.getString(EXTRA_RECEIVE_PATH_OFFSET);
+        String pathOffset = null;
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            pathOffset = extras.getString(EXTRA_RECEIVE_PATH_OFFSET);
+
+            StringTree data = extras.getParcelable(EXTRA_RECEIVE_FOLDERS);
+            _treeData = transform(data);
+        }
         if(pathOffset != null)
             _PathOffset = pathOffset;
 
-        StringTree data = extras.getParcelable(EXTRA_RECEIVE_FOLDERS);
-        _treeData = transform(data);
-
         // Button Cancel
         _buttonCancel = findViewById(R.id.btn_Cancel);
+        assertNotNull("Button 'Cancel' not found", _buttonCancel);
         _buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +72,7 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
 
         // Button Ok
         _buttonOk = findViewById(R.id.btn_Ok);
+        assertNotNull("Button 'OK' not found", _buttonOk);
         _buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +82,7 @@ public class Wizzard_FolderBrowser extends AppCompatActivity
 
         // Textedit Selected Path
         _txtSelectedPath = findViewById(R.id.txt_selectedPath);
+        assertNotNull("Textedit 'Path' not found", _txtSelectedPath);
         _txtSelectedPath.setText(_SelectedPath);
 
 

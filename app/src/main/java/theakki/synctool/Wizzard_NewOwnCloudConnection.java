@@ -17,6 +17,8 @@ import theakki.synctool.Job.ConnectionTypes.ConnectionTypes;
 import theakki.synctool.Job.ConnectionTypes.OwnCloud;
 import theakki.synctool.Job.NamedConnectionHandler;
 
+import static junit.framework.Assert.*;
+
 public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 {
     private Button _btnBack;
@@ -38,6 +40,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 
         // Back Button
         _btnBack = findViewById(R.id.btn_Back);
+        assertNotNull("Button 'Back' not found", _btnBack);
         _btnBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -49,6 +52,7 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 
         // Ok Button
         _btnOk = findViewById(R.id.btn_Ok);
+        assertNotNull("Button 'Next' not found", _btnOk);
         _btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,9 +63,11 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 
         // Url Text
         _txtUrl = findViewById(R.id.txt_Url);
+        assertNotNull("Text 'Url' not found", _txtUrl);
 
         // Button Scan
         _btnScan = findViewById(R.id.btn_Scan);
+        assertNotNull("Button 'Scan' not found", _btnScan);
         _btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,18 +77,23 @@ public class Wizzard_NewOwnCloudConnection extends AppCompatActivity
 
         // Name Text
         _txtName = findViewById(R.id.txt_Name);
+        assertNotNull("Text 'Name' not found", _txtName);
 
         // Status Text
         _txtConnStatus = findViewById(R.id.txt_ConnectionStatus);
+        assertNotNull("Text 'Status' not found", _txtConnStatus);
 
         // Username Text
         _txtUser = findViewById(R.id.txt_username);
+        assertNotNull("Text 'User' not found", _txtUser);
 
         // Password Text
         _txtPassword = findViewById(R.id.txt_Password);
+        assertNotNull("Text 'Password' not found", _txtPassword);
 
         // Checkbox Ask Password
         _cbAskPassword = findViewById(R.id.cb_AskPassword);
+        assertNotNull("Checkbox 'Ask Password' not found", _cbAskPassword);
 
         Permissions.requestForPermissionInternet(this);
     }
