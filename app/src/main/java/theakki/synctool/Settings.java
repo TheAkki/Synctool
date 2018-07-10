@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -139,29 +141,31 @@ public class Settings extends AppCompatActivity
         }
     }
 
+    private Handler handlerReloadView = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            loadViewFromData();
+        }
+    };
+
+
     private void importFile(final Uri uri)
     {
         final ProgressDialog progress = ProgressDialog.show(this, getString(R.string.Status_PleaseWait), getString(R.string.Status_ImportInProgress), true, false);
 
-        Thread thread = new Thread(new Runnable(){
+        Thread thread = new Thread(){
             @Override
             public void run()
             {
                 ImportExport.getInstance().Import(getContext(), uri);
                 progress.dismiss();
+                handlerReloadView.sendEmptyMessage(0);
             }
-        });
+        };
 
-        try {
-            thread.start();
-            thread.join();
-        }
-        catch(Exception e)
-        {
-            return;
-        }
-
-        loadViewFromData();
+        thread.start();
     }
 
 
