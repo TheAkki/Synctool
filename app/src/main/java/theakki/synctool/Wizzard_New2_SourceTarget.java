@@ -33,6 +33,8 @@ import theakki.synctool.Job.Settings.SyncDirection;
 import theakki.synctool.Job.Settings.TwoWayStrategy;
 import theakki.synctool.Job.SyncJob;
 
+import static junit.framework.Assert.*;
+
 /**
  * Class to show the second wizzard page for new job
  * @author theakki
@@ -117,17 +119,26 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_new2);
 
+        String strSettings = JobHandler.EMPTY_JOB;
+        _strOldJobName = "";
+
         Bundle extras = getIntent().getExtras();
-        final String strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
+        if(extras != null)
+        {
+            strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
+            _strOldJobName = extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
+        }
         _job = JobHandler.getJob(strSettings);
-        _strOldJobName = extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
+
 
         // Type Strings
         _TypesStrings = getResources().getStringArray(R.array.ConnectionTypes);
+        assertNotNull("Array 'ConnectionTypes' not found");
+
 
         // Spinner Type A
         _spinnerTypeA = findViewById(R.id.spn_ConnectionTypeA);
-        assert  _spinnerTypeA != null : "Spinner 'Type A' not found";
+        assertNotNull("Spinner 'Type A' not found", _spinnerTypeA);
         _spinnerTypeA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -142,19 +153,19 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Spinner Name A
         _spinnerNameA = findViewById(R.id.spn_ConnectionNameA);
-        assert  _spinnerNameA != null : "Spinner 'Name A' not found";
+        assertNotNull("Spinner 'Name A' not found", _spinnerNameA);
 
         // Button Add A
         _buttonAddA = findViewById(R.id.btn_AddConnectionNameA);
-        assert _buttonAddA != null : "Button 'Add A' not found";
+        assertNotNull("Button 'Add A' not found", _buttonAddA);
 
         // Relative Path A
         _txtRelativePathA = findViewById(R.id.txt_LocalPathA);
-        assert _txtRelativePathA != null : "Text 'Relative Path A' not found";
+        assertNotNull("Text 'Relative Path A' not found", _txtRelativePathA);
 
         // Browse A
         _buttonBrowseA = findViewById(R.id.btn_BrowseA);
-        assert _buttonBrowseA != null : "Button 'Browse A' not found";
+        assertNotNull("Button 'Browse A' not found", _buttonBrowseA);
         _buttonBrowseA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +175,7 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Spinner Type B
         _spinnerTypeB = findViewById(R.id.spn_ConnectionTypeB);
-        assert _spinnerTypeB != null : "Spinner 'Type B' not found";
+        assertNotNull("Spinner 'Type B' not found", _spinnerTypeB);
         _spinnerTypeB.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -178,19 +189,19 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Spinner Name B
         _spinnerNameB = findViewById(R.id.spn_ConnectionNameB);
-        assert _spinnerNameB != null : "Spinner 'Name A' not found";
+        assertNotNull("Spinner 'Name A' not found", _spinnerNameB);
 
         // Button Add B
         _buttonAddB = findViewById(R.id.btn_AddConnectionNameB);
-        assert _buttonAddB != null : "Button 'Add A' not found";
+        assertNotNull("Button 'Add A' not found", _buttonAddB);
 
         // Relative Path B
         _txtRelativePathB = findViewById(R.id.txt_LocalPathB);
-        assert _txtRelativePathB != null : "Text 'Relative Path B' not found";
+        assertNotNull("Text 'Relative Path B' not found", _txtRelativePathB);
 
         // Browse B
         _buttonBrowseB = findViewById(R.id.btn_BrowseB);
-        assert _buttonBrowseB != null : "Button 'Browse B' not found";
+        assertNotNull("Button 'Browse B' not found", _buttonBrowseB);
         _buttonBrowseB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +211,7 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Spinner Sync Direction
         _spinnerDirection = findViewById(R.id.spn_SyncDirection);
-        assert _spinnerDirection != null : "Spinner 'Direction' not found";
+        assertNotNull("Spinner 'Direction' not found", _spinnerDirection);
         _spinnerDirection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -214,16 +225,16 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Spinner Sync Strategy One Way
         _spinnerStrategy1 = findViewById(R.id.spn_StrategyOneWay);
-        assert _spinnerStrategy1 != null : "Spinner 'Strategy 1' not found";
+        assertNotNull("Spinner 'Strategy 1' not found", _spinnerStrategy1);
 
         // Spinner Sync Strategy Two Way
         _spinnerStrategy2 = findViewById(R.id.spn_StrategyTwoWay);
-        assert _spinnerStrategy2 != null : "Spinner 'Strategy 2' not found";
+        assertNotNull("Spinner 'Strategy 2' not found", _spinnerStrategy2);
 
 
         // Back
         _buttonBack = findViewById(R.id.btn_Back);
-        assert _buttonBack != null : "Button 'Back' not found";
+        assertNotNull("Button 'Back' not found", _buttonBack);
         _buttonBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -235,7 +246,7 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
 
         // Next
         _buttonNext = findViewById(R.id.btn_Next);
-        assert _buttonNext != null : "Button 'Next' not found";
+        assertNotNull("Button 'Next' not found", _buttonNext);
         _buttonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

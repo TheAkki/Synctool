@@ -39,6 +39,7 @@ public class JobHandler
     private final static String TAG_Settings = "Settings";
 
     public static final String DEFAULT_SETTINGS = "<" + TAG_Name + "/>";
+    public static final String EMPTY_JOB = "<" + TAG_Settings + ">" + SyncJob.DEFAULT_SETTINGS + "</" + TAG_Settings + ">";
 
     // Singleton
     private static final JobHandler ourInstance = new JobHandler();

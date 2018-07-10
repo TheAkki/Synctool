@@ -22,6 +22,8 @@ import theakki.synctool.Job.JobHandler;
 import theakki.synctool.Job.Scheduler.SchedulerInfo;
 import theakki.synctool.Job.SyncJob;
 
+import static junit.framework.Assert.*;
+
 /**
  * Class to show the second wizzard page for new job
  * @author theakki
@@ -49,15 +51,22 @@ public class Wizzard_New3_Trigger extends AppCompatActivity
         // Get the view from new_activity.xml
         setContentView(R.layout.activity_new3);
 
+        String strSettings = JobHandler.EMPTY_JOB;
+        _strOldJobName = "";
+
         Bundle extras = getIntent().getExtras();
-        final String strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
+        if(extras != null)
+        {
+            strSettings = extras.getString(Wizzard_New1_General.SETTINGS);
+
+            extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
+        }
         _job = JobHandler.getJob(strSettings);
-        _strOldJobName = extras.getString(Wizzard_New1_General.OLD_JOBNAME, "");
 
 
         // Scheduler active
         _switchActive = findViewById(R.id.sw_SchedulerActive);
-        assert _switchActive != null : "Switch 'Scheduler active' not found";
+        assertNotNull("Switch 'Scheduler active' not found", _switchActive);
         _switchActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -68,7 +77,7 @@ public class Wizzard_New3_Trigger extends AppCompatActivity
 
         // Scheduler time picker
         _TimePicker = findViewById(R.id.time_Scheduler);
-        assert _TimePicker != null : "Timepicker not found";
+        assertNotNull("Timepicker not found", _TimePicker);
         _TimePicker.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
         _TimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -79,7 +88,7 @@ public class Wizzard_New3_Trigger extends AppCompatActivity
 
         // Scheduler time view
         _txtTime = findViewById(R.id.txt_Time);
-        assert _txtTime != null : "Text 'Time' not found";
+        assertNotNull("Text 'Time' not found", _txtTime);
         _txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +99,7 @@ public class Wizzard_New3_Trigger extends AppCompatActivity
 
         // Back
         _buttonBack = findViewById(R.id.btn_Back);
-        assert _buttonBack != null : "Button 'Back' not found";
+        assertNotNull("Button 'Back' not found", _buttonBack);
         _buttonBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -102,7 +111,7 @@ public class Wizzard_New3_Trigger extends AppCompatActivity
 
         // Next
         _buttonNext = findViewById(R.id.btn_Next);
-        assert _buttonNext != null : "Button 'Next' not found";
+        assertNotNull("Button 'Next' not found", _buttonNext);
         _buttonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

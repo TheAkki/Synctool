@@ -17,6 +17,8 @@ import theakki.synctool.Job.NamedConnectionHandler;
 import theakki.synctool.Job.Scheduler.Scheduler;
 import theakki.synctool.Job.SyncJob;
 
+import static junit.framework.Assert.*;
+
 /**
  * Class to show the first wizzard page for new job
  * @author theakki
@@ -31,7 +33,7 @@ public class Wizzard_New1_General extends AppCompatActivity
     private Button _buttonNext;
     private Switch _switchActive;
 
-    private SyncJob _job;
+    private SyncJob _job = null;
 
     private Boolean _bNewCreated = false;
     private String _strOldName = "";
@@ -61,16 +63,17 @@ public class Wizzard_New1_General extends AppCompatActivity
             _job = new SyncJob();
             _bNewCreated = true;
         }
-        assert _job != null : "Job not created";
+        assertNotNull("Job not created", _job);
 
 
         // Name
         _textName = findViewById(R.id.edit_JobName);
-        assert _textName != null : "Textview 'Name' not found";
+        assertNotNull("Textview 'Name' not found", _textName);
 
 
         // Cancel
         _buttonCancel = findViewById(R.id.btn_Cancel);
+        assertNotNull("Button 'Cancel' not found", _buttonCancel);
         _buttonCancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -79,11 +82,11 @@ public class Wizzard_New1_General extends AppCompatActivity
                 clickBack();
             }
         });
-        assert  _buttonCancel != null : "Button 'Cancel' not found";
 
 
         // Next
         _buttonNext = findViewById(R.id.btn_Next);
+        assertNotNull("Button 'Next' not found", _buttonNext);
         _buttonNext.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -92,13 +95,12 @@ public class Wizzard_New1_General extends AppCompatActivity
                 onNextClick();
             }
         });
-        assert _buttonNext != null : "Button 'Next' not found";
 
         // Switch Active
         _switchActive = findViewById(R.id.sw_JobActive);
-        assert _switchActive != null : "Switch 'Active' not found";
-
+        assertNotNull("Switch 'Active' not found", _switchActive);
     }
+
 
     @Override
     protected void onResume() {

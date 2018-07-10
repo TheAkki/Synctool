@@ -1,4 +1,4 @@
-package de.synctool.theakki.synctool;
+package theakki.synctool;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.rule.ActivityTestRule;
@@ -7,9 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import theakki.synctool.MainActivity;
-
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
