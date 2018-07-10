@@ -374,6 +374,21 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
     }
 
 
+    private int _iState, _iActFile, _iMaxFile;
+    private void updateProgress(int State, int actFile, int maxFile)
+    {
+        _iActFile = actFile;
+        _iMaxFile = maxFile;
+        updateProgress(State);
+    }
+
+    private void updateProgress(int State)
+    {
+        _iState = State;
+        publishProgress(_iState, _iActFile, _iMaxFile);
+    }
+
+
     private void Do(Context context) throws IllegalStateException
     {
         if(_SideA == null)
@@ -385,33 +400,34 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
 
         _SideB.RequestPermissions(context);
 
-        publishProgress(SyncStatus.CONNECT_FILES_A, 0, 0);
+        updateProgress(SyncStatus.CONNECT_FILES_A, 0, 0);
         _SideA.Connect(context);
-        publishProgress(SyncStatus.CONNECT_FILES_B, 0, 0);
+        updateProgress(SyncStatus.CONNECT_FILES_B);
         _SideB.Connect(context);
 
         ArrayList<AnalyzeResult> whitelist = AnalyzeHelper.prepareList(_IncludeList);
         ArrayList<AnalyzeResult> blacklist = AnalyzeHelper.prepareList(_ExcludeList);
 
-        publishProgress(SyncStatus.READ_FILES_A, 0, 0);
+        updateProgress(SyncStatus.READ_FILES_A);
         ArrayList<FileItem> FilesA = _SideA.getFileList();
         ArrayList<FileItem> FilteredFilesA = AnalyzeHelper.filterFileList(FilesA, blacklist, whitelist);
 
-        publishProgress(SyncStatus.READ_FILES_B, 0, 0);
+        updateProgress(SyncStatus.READ_FILES_B);
         ArrayList<FileItem> FilesB = _SideB.getFileList();
         ArrayList<FileItem> FilteredFilesB = AnalyzeHelper.filterFileList(FilesB, blacklist, whitelist);
 
-        publishProgress(SyncStatus.ANALYSE_FILES, 0, 0);
+        updateProgress(SyncStatus.ANALYSE_FILES);
         ArrayList<FileMergeResult> MergedFiles = FileItemHelper.mergeFileList(FilteredFilesA, FilteredFilesB, _Direction, _SingleStrategy);
-        publishProgress(SyncStatus.CREATE_JOB, 0, 0);
+        updateProgress(SyncStatus.CREATE_JOB);
         ArrayList<DoingList> JobList = ApplyStrategy(MergedFiles);
 
+        updateProgress(SyncStatus.COPY_FILES);
         Apply(JobList, _SideA, _SideB);
 
         _SideA.Disconnect();
         _SideB.Disconnect();
 
-        publishProgress(SyncStatus.FINISH, 1, 1);
+        updateProgress(SyncStatus.FINISH);
     }
 
 
@@ -513,12 +529,13 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
             if(result == false)
             {
                 // fail...
-                errors++;
+                ++errors;
             }
             else
             {
-                publishProgress(SyncStatus.COPY_FILES, success, list.size());
+                ++success;
             }
+            publishProgress(SyncStatus.COPY_FILES, success + errors, list.size());
         }
 
         if(errors > 0)
@@ -530,24 +547,73 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
 
     private boolean Copy(DoingSide Source, DoingSide Target, IConnection conSource, IConnection conTarget)
     {
-        try
-        {
-            File tempFile = File.createTempFile("temporaery", ".tmp");
-            final String strFileSource = FileItemHelper.concatPath(Source.File.RelativePath, Source.File.FileName);
+        boolean bSourceIsLocal = conSource.hasLocalSupport();
+        boolean bTargetIsLocal = conTarget.hasLocalSupport();
+        final String strFileSource = FileItemHelper.concatPath(Source.File.RelativePath, Source.File.FileName);
+        final String strFileTarget = FileItemHelper.concatPath(Target.File.RelativePath, Target.File.FileName);
 
-            conSource.Read(strFileSource, tempFile);
-            conTarget.Write(tempFile, Target.File);
 
-            tempFile.delete();
-        }
-        catch(Exception e)
+        if(bSourceIsLocal)
         {
-            Log.e(L_TAG, e.getStackTrace().toString());
-            e.printStackTrace();
-            return false;
+            final String strLocalSourceFile;
+
+            try
+            {
+                strLocalSourceFile = conSource.getLocalFilename(strFileSource);
+                File source = new File(strLocalSourceFile);
+                conTarget.Write(source, Target.File);
+                return true;
+            }
+            catch(IllegalAccessException e)
+            {
+                // should be allowed
+                Log.e(L_TAG, "Can't get local filename for relative source file '" + strFileSource + "' for connection: " + conSource.Type() );
+
+                // retry without shortcut
+                bSourceIsLocal = false;
+            }
         }
+        else if(bTargetIsLocal)
+        {
+            final String strLocalTargetFile;
+
+            try
+            {
+                strLocalTargetFile = conTarget.getLocalFilename(strFileTarget);
+                File target = new File(strLocalTargetFile);
+                conSource.Read(strFileSource, target);
+                return true;
+            }
+            catch(IllegalAccessException e)
+            {
+                // should be allowed
+                Log.e(L_TAG, "Can't get local filename for relative target file '" + strFileTarget + "' for connection: " + conTarget.Type() );
+
+                // retry without shortcut
+                bTargetIsLocal = false;
+            }
+        }
+
+        if(bSourceIsLocal == false && bTargetIsLocal == false)
+        {
+            try
+            {
+                File tempFile = File.createTempFile("temporary", ".tmp");
+
+                conSource.Read(strFileSource, tempFile);
+                conTarget.Write(tempFile, Target.File);
+
+                tempFile.delete();
+            }
+            catch(Exception e)
+            {
+                Log.e(L_TAG, e.getStackTrace().toString());
+                e.printStackTrace();
+                return false;
+            }
+        }
+
         return true;
-
     }
 
 
