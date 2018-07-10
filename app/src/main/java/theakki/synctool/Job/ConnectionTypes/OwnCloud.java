@@ -162,6 +162,20 @@ public class OwnCloud extends StoredBase implements OnRemoteOperationListener, I
 
 
     @Override
+    public boolean hasLocalSupport()
+    {
+        return false;
+    }
+
+
+    @Override
+    public String getLocalFilename(String relativeFilename) throws IllegalAccessException
+    {
+        throw new IllegalAccessException("Not allowed to call this method for this object");
+    }
+
+
+    @Override
     public StringTree Tree() {
         StringTree root = new StringTree("");
 

@@ -148,6 +148,21 @@ public class LocalPath implements IConnection
         return false;
     }
 
+
+    @Override
+    public boolean hasLocalSupport()
+    {
+        return true;
+    }
+
+
+    @Override
+    public String getLocalFilename(String relativeFilename) throws IllegalAccessException
+    {
+        return FileItemHelper.concatPath(_Path, relativeFilename);
+    }
+
+
     /**
      * This method read all folders on local device. This is done recursive
      * @param parent Parent Tree node
