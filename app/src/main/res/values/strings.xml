@@ -104,6 +104,7 @@
     <string name="Status_PleaseWait">Please wait &#8230;</string>
     <string name="Status_ImportInProgress">Import configuration</string>
     <string name="Status_ExportInProgress">Export configuration</string>
+    <string name="Status_CreateFolderTree">Build folder tree</string>
 
 
     <string-array name="ConnectionTypes">

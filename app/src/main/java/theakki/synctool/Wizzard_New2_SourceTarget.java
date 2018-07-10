@@ -1,6 +1,8 @@
 package theakki.synctool;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -258,8 +260,9 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
     {
         final int iSelectedType = spnType.getSelectedItemPosition();
         final String strSelectedName = (String)spnName.getSelectedItem();
-        Intent intentBrowse = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_FolderBrowser.class);
+        final Intent intentBrowse = new Intent(Wizzard_New2_SourceTarget.this, Wizzard_FolderBrowser.class);
         final IConnection connection;
+        final int iRequestcode = Requestcode;
 
         switch(iSelectedType)
         {
@@ -281,26 +284,22 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
                 return;
         }
 
-        final Thread thread = new Thread(new Runnable() {
+        // ProgressDialog to show
+        final ProgressDialog progress = ProgressDialog.show(Wizzard_New2_SourceTarget.this, getString(R.string.Status_PleaseWait), getString(R.string.Status_CreateFolderTree), true, false);
+
+        // Thread to avoid blocking ui thread
+        new Thread() {
             @Override
-            public void run() {
-                  readTree(connection);
+            public void run()
+            {
+                readTree(connection);
+                progress.dismiss();
+                intentBrowse.putExtra(Wizzard_FolderBrowser.EXTRA_RECEIVE_FOLDERS, _Tree);
+                startActivityForResult(intentBrowse, iRequestcode);
             }
-        });
-
-        try
-        {
-            thread.start();
-            thread.join();
-        }
-        catch(Exception e)
-        {
-            return;
-        }
-
-        intentBrowse.putExtra(Wizzard_FolderBrowser.EXTRA_RECEIVE_FOLDERS, _Tree);
-        startActivityForResult(intentBrowse, Requestcode);
+        }.start();
     }
+
 
     private StringTree _Tree;
     private void readTree(IConnection connection)
