@@ -7,7 +7,7 @@
     <string name="SyncStatus_ReadFilesA">Lese Dateien von Quelle A</string>
     <string name="SyncStatus_ReadFilesB">Lese Dateien von Quelle B</string>
     <string name="SyncStatus_AnalyseFiles">Analysiere Dateien</string>
-    <string name="SyncStatus_CreateJobs">Beendet</string>
+    <string name="SyncStatus_CreateJobs">Erstelle Aufgaben</string>
     <string name="SyncStatus_Finish">Beendet</string>
 
 
@@ -75,6 +75,7 @@
         <item>OwnCloud</item>
         <item>FTP</item>
     </string-array>
+    <string name="SyncStatus_CopyFiles">Kopiere Dateien</string>
 
 
     <!-- DEBUG -->

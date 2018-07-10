@@ -7,7 +7,7 @@
     <string name="SyncStatus_ConnectA">Verbinde mit Quelle A</string>
     <string name="SyncStatus_ConnectB">Verbinde mit Quelle B</string>
     <string name="SyncStatus_NotStarted">Nicht gestarted</string>
-    <string name="SyncStatus_CreateJobs">Beendet</string>
+    <string name="SyncStatus_CreateJobs">Erstelle Aufgaben</string>
     <string name="Button_StartAllJobs">Starte alle Aufgaben</string>
     <string name="Button_Cancel">Abbruch</string>
     <string name="Button_Back">Zurück</string>
@@ -44,4 +44,23 @@
     <string name="Caption_NewOwnCloudConnection">Neue OwnCloud Verbindung</string>
     <string name="Caption_SyncDirection">Synchronisationsrichtung</string>
     <string name="Caption_SyncStrategy">Synchronisationsstrategie</string>
+    <string name="Hint_NameConnection">Verbindungsname</string>
+    <string name="Hint_RelativePath">Relativer Pfad</string>
+    <string name="Hint_Port">Port</string>
+    <string name="Caption_NewFtpConnection">Neue FTP Verbindung</string>
+    <string name="Toast_InvalidUserPassword">Benutzername/Passwort ist ungültig</string>
+    <string name="Toast_ConnectionExist">Verbindung \'%1$s\' existiert bereits.</string>
+    <string name="Toast_NoPathSelected">Kein Pfad ausgewählt</string>
+    <string name="ConnectionTestStatus_NotScanned">Not gescannt</string>
+    <string name="ConnectionTestStatus_ScannedNotAvailable">Host nicht erreichbar</string>
+    <string name="ConnectionTestStatus_ScannedAvailable">Host verfügbar</string>
+    <string name="ConnectionTestStatus_AccessDenied">Zugriff verweigert</string>
+    <string name="ConnectionTestStatus_AccessGranted">Zugriff gewährt</string>
+    <string name="ContextM_SelectAction">Aktion auswählen</string>
+    <string name="ContextM_Edit">Bearbeiten</string>
+    <string name="ContextM_Delete">Löschen</string>
+    <string name="Checkbox_AskPassword_NextTime">Passwort nicht speichern</string>
+    <string name="Checkbox_UseFTPS">Nutze sichere Verbindung</string>
+    <string name="SyncStatus_CopyFiles">Kopiere Dateien</string>
+    <string name="Hint_IP_Domain">IP oder Url</string>
 </resources>

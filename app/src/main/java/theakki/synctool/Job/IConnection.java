@@ -87,6 +87,21 @@ public interface IConnection
 
 
     /**
+     * Check if this interface can act with local files
+     * @return True when it has access to local files
+     */
+    boolean hasLocalSupport();
+
+
+    /**
+     * Get the local filename of a relative path.
+     * @param relativeFilename Relative filename
+     * @return  Absolute local filename
+     */
+    String getLocalFilename(String relativeFilename) throws IllegalAccessException;
+
+
+    /**
      * Return a tree with folder names with the given local path as base
      * @return Tree
      */

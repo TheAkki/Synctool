@@ -177,6 +177,20 @@ public class FTPConnection extends StoredBase implements IConnection
     }
 
 
+    @Override
+    public boolean hasLocalSupport()
+    {
+        return false;
+    }
+
+
+    @Override
+    public String getLocalFilename(String relativeFilename) throws IllegalAccessException
+    {
+        throw new IllegalAccessException("Not allowed to call this method for this object");
+    }
+
+
     /**
      * This method read all folders on local device. This is done recursive
      * @param parent Parent Tree node
