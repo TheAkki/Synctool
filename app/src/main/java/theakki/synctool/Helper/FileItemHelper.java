@@ -26,6 +26,9 @@ public class FileItemHelper
      */
     public static ArrayList<FileItem> convertFromObjectArray(ArrayList<Object> objects)
     {
+        if(objects == null)
+            return new ArrayList<>();
+
         ArrayList<FileItem> fileItems = new ArrayList<>(objects.size());
         for (Object object : objects)
         {
