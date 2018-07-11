@@ -12,4 +12,5 @@ public class DoingSide
     public JobType Type = JobType.Nothing;
     public FileItem File;
     public String Param = "";
+    public boolean DeleteAfter = false;
 }
