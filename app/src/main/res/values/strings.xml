@@ -124,6 +124,8 @@
         <item>Mirror</item>
         <item>New files in date folder</item>
         <item>All files in date folder</item>
+        <item>Move files</item>
+        <item>Move files in date folder</item>
     </string-array>
 
     <string-array name="TwoWaySyncStrategy">
