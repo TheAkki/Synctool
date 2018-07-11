@@ -86,6 +86,7 @@
     <string name="ContextM_SelectAction">Select Action</string>
     <string name="ContextM_Edit">Edit</string>
     <string name="ContextM_Delete">Delete</string>
+    <string name="ContextM_Run">Run</string>
 
     <string name="Checkbox_AskPassword_NextTime">Ask password at next time</string>
     <string name="Checkbox_UseFTPS">Use FTPs</string>

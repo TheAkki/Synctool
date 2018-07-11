@@ -66,6 +66,7 @@ public class AllJobs extends AppCompatActivity
     {
         public static final int EDIT = 1;
         public static final int DELETE = 2;
+        public static final int RUN = 3;
     }
 
     @Override
@@ -85,6 +86,7 @@ public class AllJobs extends AppCompatActivity
         if(v == _listAllJobs)
         {
             menu.setHeaderTitle(R.string.ContextM_SelectAction);
+            menu.add(Menu.NONE, ContextId.RUN, Menu.NONE, R.string.ContextM_Run);
             menu.add(Menu.NONE, ContextId.EDIT, Menu.NONE, R.string.ContextM_Edit);
             menu.add(Menu.NONE, ContextId.DELETE, Menu.NONE, R.string.ContextM_Delete);
         }
@@ -98,11 +100,15 @@ public class AllJobs extends AppCompatActivity
         {
             case ContextId.EDIT:
                 onContextEditClick(info.id);
-                return (true);
+                return true;
 
             case ContextId.DELETE:
                 onContextDeleteClick(info.id);
-                return (true);
+                return true;
+
+            case ContextId.RUN:
+                onContextRunClick(info.id);
+                return true;
         }
 
         return (super.onOptionsItemSelected(item));
@@ -126,6 +132,13 @@ public class AllJobs extends AppCompatActivity
         JobInfo o = (JobInfo) _listAllJobs.getAdapter().getItem((int)id);
         JobHandler.getInstance().removeJobByName(o.Name);
         loadData();
+    }
+
+
+    private void onContextRunClick(long id)
+    {
+        JobInfo o = (JobInfo) _listAllJobs.getAdapter().getItem((int) id);
+        JobHandler.getInstance().Do(this, o.Name);
     }
 
 

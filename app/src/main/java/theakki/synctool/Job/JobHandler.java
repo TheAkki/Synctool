@@ -264,6 +264,18 @@ public class JobHandler
     }
 
 
+    public void Do(Activity context, String name)
+    {
+        for(SyncJob job : _Jobs)
+        {
+            if(name.equals(job.Name()))
+            {
+                job.execute(context);
+            }
+        }
+    }
+
+
     public SyncJob getByName(String name)
     {
         for(SyncJob job : _Jobs)
