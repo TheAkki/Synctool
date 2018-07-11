@@ -101,6 +101,8 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
         public final static int Mirror = 1;
         public final static int NewDate = 2;
         public final static int AllDate = 3;
+        public final static int Move = 4;
+        public final static int MoveDate = 5;
     }
 
 
@@ -659,6 +661,10 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
             case SpinnerIdxDirection.A2BB2A:
                 _job.Direction(SyncDirection.Booth);
                 break;
+
+            default:
+                assertTrue("Invalid SpinnerIdx 'Sync Direction: " + iSelectedDirection, false);
+
         }
 
         final int iSelectedStrategy1 = _spinnerStrategy1.getSelectedItemPosition();
@@ -679,6 +685,18 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
             case SpinnerIdxS1W.AllDate:
                 _job.StrategyOneWay(OneWayStrategy.AllFilesInDateFolder);
                 break;
+
+            case SpinnerIdxS1W.Move:
+                _job.StrategyOneWay(OneWayStrategy.MoveFiles);
+                break;
+
+            case SpinnerIdxS1W.MoveDate:
+                _job.StrategyOneWay(OneWayStrategy.MoveFilesInDateFolder);
+                break;
+
+            default:
+                assertTrue("Invalid SpinnerIdx 'Sync One Way': " + iSelectedStrategy1, false);
+
         }
 
         final int iSelectedStrategy2 = _spinnerStrategy2.getSelectedItemPosition();
@@ -691,6 +709,9 @@ public class Wizzard_New2_SourceTarget extends AppCompatActivity
             case SpinnerIdxS2W.BWins:
                 _job.StrategyTwoWay(TwoWayStrategy.BWins);
                 break;
+
+            default:
+                assertTrue("Invalid SpinnerIdx 'Sync Two Way': " + iSelectedStrategy2, false);
         }
     }
 

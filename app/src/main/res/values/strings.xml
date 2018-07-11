@@ -86,6 +86,7 @@
     <string name="ContextM_SelectAction">Select Action</string>
     <string name="ContextM_Edit">Edit</string>
     <string name="ContextM_Delete">Delete</string>
+    <string name="ContextM_Run">Run</string>
 
     <string name="Checkbox_AskPassword_NextTime">Ask password at next time</string>
     <string name="Checkbox_UseFTPS">Use FTPs</string>
@@ -124,6 +125,8 @@
         <item>Mirror</item>
         <item>New files in date folder</item>
         <item>All files in date folder</item>
+        <item>Move files</item>
+        <item>Move files in date folder</item>
     </string-array>
 
     <string-array name="TwoWaySyncStrategy">

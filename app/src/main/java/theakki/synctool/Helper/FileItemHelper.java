@@ -1,5 +1,7 @@
 package theakki.synctool.Helper;
 
+import android.support.annotation.NonNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.SortedMap;
@@ -38,8 +40,11 @@ public class FileItemHelper
         return fileItems;
     }
 
-    public static ArrayList<FileItem> clone(ArrayList<FileItem> source)
+    public static ArrayList<FileItem> clone(@NonNull ArrayList<FileItem> source)
     {
+        if(source == null)
+            return new ArrayList<>();
+
         ArrayList<FileItem> list = new ArrayList<>(source.size());
         for(FileItem s : source)
             list.add( s.clone() );
@@ -80,8 +85,17 @@ public class FileItemHelper
         }
     }
 
+
+    /**
+     * This Method split a path in a array of folder names
+     * @param path Path which is to split
+     * @return Folder names
+     */
     public static String[] splittPath(String path)
     {
+        if(path == null)
+            return new String[]{};
+
         String p;
         if(path.startsWith(File.separator))
         {
@@ -92,6 +106,26 @@ public class FileItemHelper
 
         return p.split(File.separator);
     }
+
+
+    /**
+     * This method concat foldernames.
+     * @param folders Array of folders
+     * @return String with path
+     */
+    public static String concatPath(@NonNull String[] folders)
+    {
+        if(folders == null)
+            return "";
+
+        String result = File.separator;
+        for(String folder : folders)
+            result = FileItemHelper.concatPath(result, folder);
+
+        return result;
+    }
+
+
 
 
     /**
@@ -331,12 +365,14 @@ public class FileItemHelper
                     case Mirror:
                         onlyChanges = true;
                         break;
+
                     case NewFilesInDateFolder:
                         onlyChanges = true;
                         // one of the next setting is don't care
                         skipMoveAToB = true;
                         skipMoveBToA = true;
                         break;
+
                     case AllFilesInDateFolder:
                         movedFilesAsNewFile = true;
                         onlyChanges = false;
@@ -344,6 +380,14 @@ public class FileItemHelper
                         skipMoveAToB = true;
                         skipMoveBToA = true;
                         break;
+
+                    case MoveFiles:
+                    case MoveFilesInDateFolder: // fall through
+                        // one of the next setting is don't care
+                        skipMoveAToB = true;
+                        skipMoveBToA = true;
+                        break;
+
                     default:
                         throw new RuntimeException("Illegal State detected");
                 }

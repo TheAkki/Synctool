@@ -13,7 +13,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.util.ArrayList;
 
-import theakki.synctool.Helper.Date;
+import theakki.synctool.Helper.DateHelper;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Helper.StringHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionFactory;
@@ -504,6 +504,15 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
                     {
                         case Write:
                             result = Copy(job.SideA, job.SideB, conSideA, conSideB);
+                            if(job.SideA.DeleteAfter)
+                            {
+                                final String filename = FileItemHelper.concatPath(job.SideA.File.RelativePath, job.SideA.File.FileName);
+                                boolean tempResult = conSideA.Delete(filename);
+                                if(tempResult == false)
+                                {
+                                    Log.e(L_TAG, "Can't delete file '" + filename + "' on Connection A");
+                                }
+                            }
                             break;
 
                         default:
@@ -517,6 +526,16 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
                     {
                         case Read:
                             result = Copy(job.SideB, job.SideA, conSideB, conSideA);
+                            if(job.SideB.DeleteAfter)
+                            {
+                                final String filename = FileItemHelper.concatPath(job.SideB.File.RelativePath, job.SideB.File.FileName);
+                                boolean tempResult = conSideB.Delete(filename);
+                                if(tempResult == false)
+                                {
+                                    Log.e(L_TAG, "Can't delete file '" + filename + "' on Connection B");
+                                }
+                            }
+
                             break;
 
                         default:
@@ -538,7 +557,7 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
             {
                 ++success;
             }
-            publishProgress(SyncStatus.COPY_FILES, success + errors, list.size());
+            updateProgress(SyncStatus.COPY_FILES, success + errors, list.size());
         }
 
         if(errors > 0)
@@ -627,17 +646,26 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
         String prefixPathA = "";
         String prefixPathB = "";
 
-        if(_SingleStrategy == OneWayStrategy.AllFilesInDateFolder || _SingleStrategy == OneWayStrategy.NewFilesInDateFolder)
+
+        switch(_SingleStrategy)
         {
-            if(_Direction == SyncDirection.ToA)
-            {
-                prefixPathA = FileItemHelper.concatPath("/", Date.getDate());
-            }
-            else if(_Direction == SyncDirection.ToB)
-            {
-                prefixPathB = FileItemHelper.concatPath("/", Date.getDate());
-            }
+            case AllFilesInDateFolder: /* fall through */
+            case NewFilesInDateFolder: /* fall through */
+            case MoveFilesInDateFolder:
+                if(_Direction == SyncDirection.ToA)
+                {
+                    prefixPathA = FileItemHelper.concatPath("/", DateHelper.getDate());
+                }
+                else if(_Direction == SyncDirection.ToB)
+                {
+                    prefixPathB = FileItemHelper.concatPath("/", DateHelper.getDate());
+                }
+                break;
         }
+
+        final boolean bDeleteSource =   (_SingleStrategy == OneWayStrategy.MoveFiles) ||
+                                        (_SingleStrategy == OneWayStrategy.MoveFilesInDateFolder);
+
 
         for(int i = 0; i < MergedFiles.size(); ++i)
         {
@@ -709,6 +737,7 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
                         temp.SideB.Type = JobType.Read;
                         temp.SideB.File = res.FileB.clone();
                         temp.SideB.File.RelativePath = prefixPathB + temp.SideB.File.RelativePath;
+                        temp.SideB.DeleteAfter = bDeleteSource;
 
                         temp.SideA.Type = JobType.Write;
                         temp.SideA.File = res.FileB.clone();
@@ -721,6 +750,7 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
                         temp.SideA.Type = JobType.Read;
                         temp.SideA.File = res.FileA.clone();
                         temp.SideA.File.RelativePath = prefixPathA + temp.SideA.File.RelativePath;
+                        temp.SideA.DeleteAfter = bDeleteSource;
 
                         temp.SideB.Type = JobType.Write;
                         temp.SideB.File = res.FileA.clone();

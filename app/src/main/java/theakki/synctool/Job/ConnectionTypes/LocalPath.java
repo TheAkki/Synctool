@@ -132,10 +132,14 @@ public class LocalPath implements IConnection
     @Override
     public boolean Write(File SourceFile, FileItem TargetFile)
     {
-        final String strTargetFilePath = FileItemHelper.concatPath(TargetFile.RelativePath, TargetFile.FileName);
 
-        File target = new File( FileItemHelper.concatPath(_Path, strTargetFilePath)  );
-        target.mkdirs();
+        final String strTargetFilePath = FileItemHelper.concatPath(_Path, TargetFile.RelativePath);
+        final String strTargetFile = FileItemHelper.concatPath(strTargetFilePath, TargetFile.FileName);
+
+        File targetPath = new File( strTargetFilePath );
+        targetPath.mkdirs();
+
+        File target = new File(strTargetFile);
 
         try
         {

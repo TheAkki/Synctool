@@ -49,6 +49,8 @@ public class SettingsHelper
         final String Mirror = OneWayStrategy.Mirror.toString();
         final String DateNew = OneWayStrategy.NewFilesInDateFolder.toString();
         final String DateAll = OneWayStrategy.AllFilesInDateFolder.toString();
+        final String Move = OneWayStrategy.MoveFiles.toString();
+        final String MoveDate = OneWayStrategy.MoveFilesInDateFolder.toString();
 
         if(strategy.compareToIgnoreCase(Standard) == 0)
             return OneWayStrategy.Standard;
@@ -58,6 +60,10 @@ public class SettingsHelper
             return OneWayStrategy.NewFilesInDateFolder;
         else if (strategy.compareToIgnoreCase(DateAll) == 0)
             return OneWayStrategy.AllFilesInDateFolder;
+        else if (strategy.compareToIgnoreCase(Move) == 0)
+            return OneWayStrategy.MoveFiles;
+        else if (strategy.compareToIgnoreCase(MoveDate) == 0 )
+            return OneWayStrategy.MoveFilesInDateFolder;
         else
         {
             if(throwEx)
