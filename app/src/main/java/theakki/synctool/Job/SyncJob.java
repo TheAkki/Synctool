@@ -13,7 +13,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.util.ArrayList;
 
-import theakki.synctool.Helper.Date;
+import theakki.synctool.Helper.DateHelper;
 import theakki.synctool.Helper.FileItemHelper;
 import theakki.synctool.Helper.StringHelper;
 import theakki.synctool.Job.ConnectionTypes.ConnectionFactory;
@@ -654,11 +654,11 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
             case MoveFilesInDateFolder:
                 if(_Direction == SyncDirection.ToA)
                 {
-                    prefixPathA = FileItemHelper.concatPath("/", Date.getDate());
+                    prefixPathA = FileItemHelper.concatPath("/", DateHelper.getDate());
                 }
                 else if(_Direction == SyncDirection.ToB)
                 {
-                    prefixPathB = FileItemHelper.concatPath("/", Date.getDate());
+                    prefixPathB = FileItemHelper.concatPath("/", DateHelper.getDate());
                 }
                 break;
         }
