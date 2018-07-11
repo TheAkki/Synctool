@@ -557,7 +557,7 @@ public class SyncJob extends AsyncTask<Context, Integer, Integer>
             {
                 ++success;
             }
-            publishProgress(SyncStatus.COPY_FILES, success + errors, list.size());
+            updateProgress(SyncStatus.COPY_FILES, success + errors, list.size());
         }
 
         if(errors > 0)
