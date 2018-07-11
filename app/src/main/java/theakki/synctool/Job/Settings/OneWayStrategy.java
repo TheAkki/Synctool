@@ -15,5 +15,9 @@ public enum OneWayStrategy
     /** Create Folder with actual Date and copy new Files in it */
     NewFilesInDateFolder,
     /** Create Folder with actual Date and copy all Files in it */
-    AllFilesInDateFolder
+    AllFilesInDateFolder,
+    /** Move files in selected folder */
+    MoveFiles,
+    /** Create Folder with actual Date and move all files in it*/
+    MoveFilesInDateFolder
 }
