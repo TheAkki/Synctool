@@ -27,6 +27,10 @@ android {
         }
     }
 
+    aaptOptions {
+        cruncherEnabled = false     // reproduceable builds: handling png, https://f-droid.org/en/docs/Reproducible_Builds/
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true
     }
