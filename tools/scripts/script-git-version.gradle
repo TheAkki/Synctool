@@ -12,6 +12,21 @@ def getGitVersionCode = { ->
     }
 }
 
+def getGitVersionCodeMaster = { ->
+    try {
+        def code = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', '--count', 'master'
+            standardOutput = code
+        }
+        return code.toString().split("\n")[0]
+    }
+    catch (ignored) {
+        return -1;
+    }
+}
+
+
 def getGitVersionName = { ->
     try {
         def stdout = new ByteArrayOutputStream()
@@ -40,8 +55,34 @@ def getGitVersionTime = { ->
     }
 }
 
+def getGitBranch= { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+    catch (ignored) {
+        return -2;
+    }
+}
+
+
+ext {
+    gitVersionName = getGitVersionName()
+    gitVersionCode = getGitVersionCode()
+    gitVersionCodeMaster = getGitVersionCodeMaster()
+    gitVersionCodeTime = getGitVersionTime()
+    gitBranch = getGitBranch()
+}
+
+
 task printGitVersion() {
-    println("Version Name: " + getGitVersionName() )
-    println("Version Code: " + getGitVersionCode() )
-    println("Version Code Time: " + getGitVersionTime() )
+    println("Version Name: $gitVersionName")
+    println("Version Code: $gitVersionCode")
+    println("Version Code Time: $gitVersionCodeTime")
+    println("Version Code Master: $gitVersionCodeMaster")
+    println("Branch: $gitBranch")
 }
