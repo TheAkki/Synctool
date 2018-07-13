@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: "$project.rootDir/tools/scripts/script-git-version.gradle"
 
 android {
     compileSdkVersion 26
