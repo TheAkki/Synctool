@@ -1,0 +1,88 @@
+def getGitVersionCode = { ->
+    try {
+        def code = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'tag', '--list'
+            standardOutput = code
+        }
+        return 100 + code.toString().split("\n").size()
+    }
+    catch (ignored) {
+        return -1
+    }
+}
+
+def getGitVersionCodeMaster = { ->
+    try {
+        def code = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', '--count', 'master'
+            standardOutput = code
+        }
+        return code.toString().split("\n")[0].toInteger()
+    }
+    catch (ignored) {
+        return -1
+    }
+}
+
+
+def getGitVersionName = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+    catch (ignored) {
+        return null
+    }
+}
+
+def getGitVersionTime = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'log', '-1', '--pretty=format:%ct'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim().toInteger()
+    }
+    catch (ignored) {
+        return -2
+    }
+}
+
+def getGitBranch= { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+    catch (ignored) {
+        return -3
+    }
+}
+
+
+ext {
+    gitVersionName = getGitVersionName()
+    gitVersionCode = getGitVersionCode()
+    gitVersionCodeMaster = getGitVersionCodeMaster()
+    gitVersionCodeTime = getGitVersionTime()
+    gitBranch = getGitBranch()
+}
+
+
+task printGitVersion() {
+    println("Version Name: $gitVersionName")
+    println("Version Code: $gitVersionCode")
+    println("Version Code Time: $gitVersionCodeTime")
+    println("Version Code Master: $gitVersionCodeMaster")
+    println("Branch: $gitBranch")
+}

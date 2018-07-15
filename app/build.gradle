@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: "$project.rootDir/tools/scripts/script-git-version.gradle"
 
 android {
     compileSdkVersion 26
@@ -7,8 +8,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled false
-        versionCode 100
-        versionName "0.1"
+        versionCode gitVersionCodeMaster
+        versionName gitVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -17,14 +18,20 @@ android {
             testCoverageEnabled true
             applicationIdSuffix ".debug"
             minifyEnabled false
+            shrinkResources false
             useProguard false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-test.pro'
         }
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    aaptOptions {
+        cruncherEnabled = false     // reproduceable builds: handling png, https://f-droid.org/en/docs/Reproducible_Builds/
     }
 
     testOptions {
