@@ -8,7 +8,7 @@ def getGitVersionCode = { ->
         return 100 + code.toString().split("\n").size()
     }
     catch (ignored) {
-        return -1;
+        return -1
     }
 }
 
@@ -19,10 +19,10 @@ def getGitVersionCodeMaster = { ->
             commandLine 'git', 'rev-list', '--count', 'master'
             standardOutput = code
         }
-        return code.toString().split("\n")[0]
+        return code.toString().split("\n")[0].toInteger()
     }
     catch (ignored) {
-        return -1;
+        return -1
     }
 }
 
@@ -37,7 +37,7 @@ def getGitVersionName = { ->
         return stdout.toString().trim()
     }
     catch (ignored) {
-        return null;
+        return null
     }
 }
 
@@ -48,10 +48,10 @@ def getGitVersionTime = { ->
             commandLine 'git', 'log', '-1', '--pretty=format:%ct'
             standardOutput = stdout
         }
-        return stdout.toString().trim()
+        return stdout.toString().trim().toInteger()
     }
     catch (ignored) {
-        return -2;
+        return -2
     }
 }
 
@@ -65,7 +65,7 @@ def getGitBranch= { ->
         return stdout.toString().trim()
     }
     catch (ignored) {
-        return -2;
+        return -3
     }
 }
 
